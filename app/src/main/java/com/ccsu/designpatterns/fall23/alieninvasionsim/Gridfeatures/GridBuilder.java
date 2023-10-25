@@ -26,13 +26,13 @@ public class GridBuilder {
     public GridBuilder(int grid_Size) {
         gridLayout = new GridTile[grid_Size][grid_Size];
         gridSize = grid_Size;
-        // VPC - loop through the rows
+        // VC - loop through the rows
         for (int i = 1; i <= grid_Size; i++) {
 
             //loop through the columns adding tiles and setting neighbors
             for (int j = 1; j <= grid_Size; j++) {
-                //VPC - create the grid tile for current location
-                gridLayout[i][j] = new GridTile(j, i);
+                //VC - create the grid tile for current location
+                gridLayout[i][j] = new TerrainTile(j, i);
                 numberOfTilesInGrid++; //this might not be necessary...?
             }
             //GridTile imageViewX = new GridTile();
@@ -56,7 +56,7 @@ public class GridBuilder {
             randomYCoord = randomNum.nextInt(gridSize)+1;;
 
 
-            // VPC - need a collection here to easily figure out if a
+            // VC - need a collection here to easily figure out if a
             // tile is a already a water tile or not...
             // maybe needs to be private class var so we can check when placing
             // resource tiles in placeResourceTiles method too.

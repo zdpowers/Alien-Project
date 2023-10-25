@@ -10,10 +10,10 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
  * @author Vincent Capra
  */
 
-public class GridTile {
+public abstract class GridTile {
 
     private int xPosition, yPosition;
-    //VPC - if do not implement the setNeighbor methods,
+    //VC - if do not implement the setNeighbor methods,
     // these following 4 vars can be deleted
     GridTile up_gridTileNeighbor, down_gridTileNeighbor,
             left_gridTileNeighbor, right_gridTileNeighbor;
@@ -29,7 +29,7 @@ public class GridTile {
      * @author Vincent Capra
      */
     /*
-    VPC - Trying to implement with the constructor getting an
+    VC - Trying to implement with the constructor getting an
     x and y coordinate instead of this
 
 
@@ -48,5 +48,7 @@ public class GridTile {
         //need to call left and SET THEIR right as this ref
     }
     */
+
+    abstract void changeTileDisplay();
 }
 

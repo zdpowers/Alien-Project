@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Gridfeatures;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be

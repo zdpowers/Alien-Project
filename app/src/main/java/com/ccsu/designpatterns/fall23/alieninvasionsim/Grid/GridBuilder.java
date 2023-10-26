@@ -1,6 +1,5 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Gridfeatures;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
-import android.content.Context;
 import java.util.Random;
 /**
  * A class to build the simulation grid

@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Gridfeatures;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 import java.util.Random;
 /**
  * A class to build a resource tile. This tile cannot be occupied.

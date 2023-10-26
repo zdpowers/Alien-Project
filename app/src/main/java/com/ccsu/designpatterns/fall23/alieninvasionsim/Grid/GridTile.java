@@ -1,9 +1,5 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Gridfeatures;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
-import android.content.Context;
-import android.widget.ImageView;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.MainActivity;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
 /**
  * A class to build single tiles within the simulation grid
  *

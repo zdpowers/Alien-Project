@@ -10,11 +10,8 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
  */
 public class Human extends LifeForm {
 
-    private TerrainTile tileOfResidence;
-
-
-    public Human(TerrainTile spawn_tile){
-        tileOfResidence = spawn_tile;
+    Human(TerrainTile spawn_tile) {
+        super(spawn_tile);
     }
 
     @Override

@@ -48,6 +48,7 @@ public class GridBuilder {
     public int getGridSize(){
         return gridSize;
     }
+
     /**
      * This method places connected water tiles in the map based on seed values
      * until ~30% of the map is water
@@ -117,8 +118,9 @@ public class GridBuilder {
     }
 
     /**
-     * This method creates a completely random coordinate pointer to use
-     * as a seed value within the grid for placing resources
+     * This method creates a completely random coordinate pointer in the
+     * format of [row, column] to use as a seed value within the grid
+     * for placing resources
      *
      * @author Vincent Capra
      */
@@ -136,11 +138,15 @@ public class GridBuilder {
      * tiles adjacent
      *
      * @author Vincent Capra
-     * @throws NoAvailableTilesException throw if all possible mutations result
+     * @param originalPointer is the pointer to the tile coordinates to
+     *                        be mutated
+     * @throws NoAvailableTilesException if all possible mutations result
      * in no available adjacent tiles
      */
     private int[] mutateCoordinatePointer(int[] originalPointer)
             throws NoAvailableTilesException{
+        //TODO Need to implement an actual mutation method
+        // Something like add 1 in 1 direction at a time until an avail tile is discovered
         if(true){
             return new int[]{0, 0};
         }
@@ -149,8 +155,8 @@ public class GridBuilder {
     }
 
     /**
-     * This method places connected water tiles in the map based on seed values
-     * until ~30% of the map is water
+     * This method replaces available terrain tiles with non-water
+     * resource tiles at random positions within the map
      *
      * @author Vincent Capra
      */
@@ -158,5 +164,16 @@ public class GridBuilder {
 
     }
 
+    /**
+     * This method places an initial population of Humans at a random
+     * and available terrain tile within the grid
+     *
+     * @author Vincent Capra
+     * @param initial_population is the varible amount of the initial human
+     *                           population. Should be limited to <50
+     */
+    private void seedInitialHumanPopulation(int initial_population){
+
+    }
 
 }

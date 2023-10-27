@@ -23,11 +23,11 @@ public class LifeformFactory implements AbsLifeformFactory{
         if(manipulated_string.equals("human"))
             return new Human(spawn_tile);
         else if (manipulated_string.equals("xenomorph"))
-            return new Xenomorph();
+            return new Xenomorph(spawn_tile);
         else if (manipulated_string.equals("martian"))
-            return new Martian();
+            return new Martian(spawn_tile);
         else if (manipulated_string.equals("vulcan"))
-            return new Vulcan();
-        else return new Saiyan();
+            return new Vulcan(spawn_tile);
+        else return new Saiyan(spawn_tile);
     }
 }

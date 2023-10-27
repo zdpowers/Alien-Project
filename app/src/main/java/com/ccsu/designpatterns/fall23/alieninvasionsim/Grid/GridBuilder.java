@@ -1,6 +1,10 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Arrays.*;
+
 /**
  * A class to build the simulation grid
  *
@@ -8,10 +12,12 @@ import java.util.Random;
  */
 public class GridBuilder {
     private int numberOfTilesInGrid = 0, gridSize;
-    private int randomXCoord, randomYCoord;
-    private GridTile[][] gridLayout;
-    private Random randomNum = new Random();
+    //private int randomColumn, randomRow;
+    private GridTile[][] gridLayout; //VC - is the format [row][column]
 
+    //VC - during the build process we can use this to track what squares
+    // already are resource tiles so we don't over-write
+    HashSet<ResourceTile> resourceTileHashSet = new HashSet<ResourceTile>();
 
     /**
      * This method initializes the grid layout based on a given
@@ -26,12 +32,12 @@ public class GridBuilder {
         gridLayout = new GridTile[grid_Size][grid_Size];
         gridSize = grid_Size;
         // VC - loop through the rows
-        for (int i = 1; i <= grid_Size; i++) {
+        for (int row = 0; row < grid_Size; row++) {
 
             //loop through the columns adding tiles and setting neighbors
-            for (int j = 1; j <= grid_Size; j++) {
+            for (int column = 0; column < grid_Size; column++) {
                 //VC - create the grid tile for current location
-                gridLayout[i][j] = new TerrainTile(j, i);
+                gridLayout[row][column] = new TerrainTile(column, row);
                 numberOfTilesInGrid++; //this might not be necessary...?
             }
             //GridTile imageViewX = new GridTile();
@@ -39,31 +45,107 @@ public class GridBuilder {
         placeWaterTiles();
         placeResourceTiles();
     }
-
+    public int getGridSize(){
+        return gridSize;
+    }
     /**
      * This method places connected water tiles in the map based on seed values
      * until ~30% of the map is water
      *
      * @author Vincent Capra
+     * @exception NoAvailableTilesException
      */
     private void placeWaterTiles(){
         int maxNumOfWaterTiles = numberOfTilesInGrid/3; //place water tiles
         int currentNumOfWaterTiles = 0;
 
-        while (currentNumOfWaterTiles <= maxNumOfWaterTiles) {
-            randomXCoord = randomNum.nextInt(gridSize)+1;
-            randomYCoord = randomNum.nextInt(gridSize)+1;;
 
+        //VC - creating 3 unique pointers [row_pos, column_pos]
+        int[] pointer1 = createRandomCoordinate();
+        int[] pointer2;
+        int[] pointer3;
 
-            // VC - need a collection here to easily figure out if a
-            // tile is a already a water tile or not...
-            // maybe needs to be private class var so we can check when placing
-            // resource tiles in placeResourceTiles method too.
-
-            // need to randomize seeds 1, 2, 3 and then start replacing water tiles
-
-            currentNumOfWaterTiles ++;
+        //VC - setting pointer 2 and 3 until they are all unique
+        do {
+            pointer2 = createRandomCoordinate();
         }
+        while (Arrays.equals(pointer1, pointer2));// && something?
+
+        do {
+            pointer3 = createRandomCoordinate();
+        }
+        while (Arrays.equals(pointer1, pointer3)
+                || Arrays.equals(pointer2, pointer3));
+
+     /*   lines for testing purposes
+        System.out.println(pointer1[0] + " , " + pointer1[1]);
+        System.out.println(pointer2[0] + " , " + pointer2[1]);
+        System.out.println(pointer3[0] + " , " + pointer3[1]);
+        System.out.println("Next Set");
+
+      */
+        try {
+            while (currentNumOfWaterTiles <= maxNumOfWaterTiles) {
+                //VC - This replaces the grid position with a new water resource tile
+                gridLayout[pointer1[0]][pointer1[1]] =
+                        new ResourceTile(pointer1[0], pointer1[1], "water");
+                //VC - adding the tile reference to a hashtable
+                resourceTileHashSet.add((ResourceTile) gridLayout[pointer1[0]][pointer1[1]]);
+
+                //VC - This replaces the grid position with a new water resource tile
+                gridLayout[pointer2[0]][pointer2[1]] =
+                        new ResourceTile(pointer2[0], pointer2[1], "water");
+                //VC - adding the tile reference to a hashtable
+                resourceTileHashSet.add((ResourceTile) gridLayout[pointer2[0]][pointer2[1]]);
+
+                //VC - This replaces the grid position with a new water resource tile
+                gridLayout[pointer3[0]][pointer3[1]] =
+                        new ResourceTile(pointer3[0], pointer3[1], "water");
+                //VC - adding the tile reference to a hashtable
+                resourceTileHashSet.add((ResourceTile) gridLayout[pointer3[0]][pointer3[1]]);
+
+                mutateCoordinatePointer(pointer1);
+                mutateCoordinatePointer(pointer2);
+                mutateCoordinatePointer(pointer3);
+
+                currentNumOfWaterTiles++;
+            }
+        }
+        catch(NoAvailableTilesException NTAE){
+
+        }
+    }
+
+    /**
+     * This method creates a completely random coordinate pointer to use
+     * as a seed value within the grid for placing resources
+     *
+     * @author Vincent Capra
+     */
+    private int[] createRandomCoordinate(){
+        Random randomNum = new Random();
+        int randomColumn = randomNum.nextInt(gridSize);
+        int randomRow = randomNum.nextInt(gridSize);
+
+        return new int[] {randomRow, randomColumn};
+    }
+
+    /**
+     * This method creates a mutates a coordinate pointer to an unoccupied
+     * and adjacent tile. This passes an error if there are no available
+     * tiles adjacent
+     *
+     * @author Vincent Capra
+     * @throws NoAvailableTilesException throw if all possible mutations result
+     * in no available adjacent tiles
+     */
+    private int[] mutateCoordinatePointer(int[] originalPointer)
+            throws NoAvailableTilesException{
+        if(true){
+            return new int[]{0, 0};
+        }
+        else
+            throw new NoAvailableTilesException("no tiles");
     }
 
     /**
@@ -75,4 +157,6 @@ public class GridBuilder {
     private void placeResourceTiles(){
 
     }
+
+
 }

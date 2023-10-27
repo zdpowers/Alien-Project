@@ -1,4 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
+
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
+
 /**
  * An interface to define various factories to create different
  * types of lifeforms.
@@ -9,5 +12,5 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
  */
 public interface AbsLifeformFactory {
 
-    public LifeForm makeLifeform();
+    public LifeForm makeLifeform(String params, TerrainTile spawn_tile);
 }

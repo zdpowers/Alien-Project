@@ -1,5 +1,10 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeformFactory;
+
 import java.lang.Math;
+import java.util.ArrayList;
+
 /**
  * A class to build single terrain tiles. These are tiles that can be
  * occupied by a single country of humans or a single race of aliens
@@ -7,7 +12,9 @@ import java.lang.Math;
  * @author Vincent Capra
  */
 public class TerrainTile extends GridTile{
-    private int[] occupants; //VC - need to change to an array of generic occupants
+    //VC - not sure if this being an arraylist is the best choice
+    private ArrayList<LifeForm> occupants;
+    private LifeformFactory tileLifeformFactory = new LifeformFactory();
 
     public TerrainTile(int column_pos, int row_pos) {
         super(column_pos, row_pos);
@@ -52,6 +59,19 @@ public class TerrainTile extends GridTile{
         // put the count of occupants on the tile too
     }
 
+    /**
+     * method to get the class of the occupants of this tile, then
+     * generates a new lifeform of the same type and adds it to this tile
+     *
+     * @author Vincent Capra
+     * @return boolean true if occupied
+     */
+    public void generateLifeform(){
+        //VC - gets the class of the lifeforms in this tile
+        String class_of_current_occupants = occupants.get(0).getClass().toString();
+        //VC - creates a new lifeform of the same type and adds it to this tile
+        occupants.add(tileLifeformFactory.makeLifeform(class_of_current_occupants, this));
+    }
 
     /**
      * Construct a proper equals method for the class

@@ -17,5 +17,5 @@ public class MainActivity extends AppCompatActivity {
         // Build the grid
         myGrid = new GridBuilder(GridSize);
     }
-    //test
+    //newtest
 }

@@ -8,17 +8,22 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 public abstract class GridTile {
 
-    private int xPosition, yPosition;
+    int columnPosition, rowPosition;
     //VC - if do not implement the setNeighbor methods,
     // these following 4 vars can be deleted
     GridTile up_gridTileNeighbor, down_gridTileNeighbor,
             left_gridTileNeighbor, right_gridTileNeighbor;
-    public GridTile(int x_coord, int y_coord) {
+    public GridTile(int column_pos, int row_pos) {
         //need to place the tile in the layout visually
-        xPosition = x_coord;
-        yPosition = y_coord;
+        columnPosition = column_pos;
+        rowPosition = row_pos;
     }
-
+    public int getColumnPostion(){
+        return this.columnPosition;
+    }
+    public int getRowPostion(){
+        return this.rowPosition;
+    }
     /**
      * These next 4 classes are used to set the neighboring tile references
      *
@@ -46,5 +51,7 @@ public abstract class GridTile {
     */
 
     abstract void changeTileDisplay();
+
+
 }
 

@@ -10,8 +10,8 @@ import java.util.Random;
 public class ResourceTile extends GridTile{
     private int unitsOfResource;
     private String resourceType;
-    public ResourceTile(int x_coord, int y_coord, String resource_type) {
-        super(x_coord, y_coord);
+    public ResourceTile(int column_pos, int row_pos, String resource_type) {
+        super(column_pos, row_pos);
         Random randomizedResourceValue = new Random();
         //VC - assuming that a resource is boarded on all sides for max occupancy
         // that's 200 mining 1 per year for a 25 - 55 year period is
@@ -22,7 +22,13 @@ public class ResourceTile extends GridTile{
         // else throw an error before setting
         resourceType = resource_type;
 
+        //VC - NEED TO ADD TO THE HASHSET
+
         changeTileDisplay();
+    }
+
+    public String getResourceType(){
+        return resourceType;
     }
 
     protected void changeTileDisplay(){
@@ -32,4 +38,34 @@ public class ResourceTile extends GridTile{
         // put the count of occupants on the tile too
     }
 
+    /**
+     * Construct a proper equals method for the class
+     *
+     * @author Vincent Capra
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){return false;}
+        ResourceTile checkEqualResourceTile = (ResourceTile)obj;
+
+        if(this.columnPosition == checkEqualResourceTile.columnPosition
+                && this.rowPosition == checkEqualResourceTile.rowPosition
+                && this.resourceType.equals(checkEqualResourceTile.getResourceType()))
+            return true;
+        else return false;
+    }
+    /**
+     * Construct a proper hashcode method for the class
+     *
+     * @author Vincent Capra
+     */
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += Math.pow(columnPosition, 2);
+        hash += Math.pow(rowPosition, 2);
+        hash += Math.pow((columnPosition+rowPosition), 3);
+        hash += resourceType.hashCode();
+        return hash;
+    }
 }

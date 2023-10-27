@@ -1,5 +1,5 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
-
+import java.lang.Math;
 /**
  * A class to build single terrain tiles. These are tiles that can be
  * occupied by a single country of humans or a single race of aliens
@@ -9,8 +9,8 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 public class TerrainTile extends GridTile{
     private int[] occupants; //VC - need to change to an array of generic occupants
 
-    public TerrainTile(int x_coord, int y_coord) {
-        super(x_coord, y_coord);
+    public TerrainTile(int column_pos, int row_pos) {
+        super(column_pos, row_pos);
 
         //need to place the tile on the board
     }
@@ -52,4 +52,34 @@ public class TerrainTile extends GridTile{
         // put the count of occupants on the tile too
     }
 
+
+    /**
+     * Construct a proper equals method for the class
+     *
+     * @author Vincent Capra
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){return false;}
+        TerrainTile checkEqualTerrainTile = (TerrainTile)obj;
+
+        if(this.columnPosition == checkEqualTerrainTile.columnPosition
+                && this.rowPosition == checkEqualTerrainTile.rowPosition)
+            return true;
+        else return false;
+    }
+
+    /**
+     * Construct a proper hashcode method for the class
+     *
+     * @author Vincent Capra
+     */
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += Math.pow(columnPosition, 2);
+        hash += Math.pow(rowPosition, 2);
+        hash += Math.pow((columnPosition+rowPosition), 3);
+        return hash;
+    }
 }

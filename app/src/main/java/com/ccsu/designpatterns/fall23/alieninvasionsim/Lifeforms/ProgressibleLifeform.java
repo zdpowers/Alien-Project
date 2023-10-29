@@ -7,6 +7,8 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
  * that a progressible unit might need to handle.
  *
  * @author Joseph Lumpkin
+ * @version 1.1
+ * @since 2023-26-10
  */
 public interface ProgressibleLifeform {
 

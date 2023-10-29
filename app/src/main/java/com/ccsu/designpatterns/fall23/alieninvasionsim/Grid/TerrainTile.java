@@ -1,10 +1,13 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.Human;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeformFactory;
-
 import java.lang.Math;
 import java.util.ArrayList;
+import android.service.quicksettings.TileService;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
@@ -24,7 +27,7 @@ public class TerrainTile extends GridTile{
         //need to place the tile on the board
     }
 
-    /**
+        /**
      * method to indicate if the tile is occupied
      *
      * @author Vincent Capra

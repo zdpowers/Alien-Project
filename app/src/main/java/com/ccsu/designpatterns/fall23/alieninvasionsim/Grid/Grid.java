@@ -200,7 +200,7 @@ public class Grid {
      * @version 1.0
      * @since N/A
      */
-    private void placeLifeFormCluster(ArrayList<LifeForm> lifeForms){}
+    private void placeLifeFormCluster(ArrayList<LifeForm> lifeForms) {}
 
     /**
      * Iterate through the array of all lifeforms and progress them.

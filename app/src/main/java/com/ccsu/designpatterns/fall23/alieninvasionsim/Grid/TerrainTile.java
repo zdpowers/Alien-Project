@@ -1,13 +1,9 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.Human;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeformFactory;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeFormFactory;
 import java.lang.Math;
 import java.util.ArrayList;
-import android.service.quicksettings.TileService;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
@@ -15,26 +11,30 @@ import java.util.NoSuchElementException;
  * occupant must be homogenous at all times.
  *
  * @author Vincent Capra
+ * @version 1.0
+ * @since 2023-10-29
  */
 public class TerrainTile extends GridTile{
     //VC - not sure if this being an arraylist is the best choice
-    private ArrayList<LifeForm> occupants;
-    private LifeformFactory tileLifeformFactory = new LifeformFactory();
+    private ArrayList<LifeForm> mOccupants;
+    private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
-    public TerrainTile(int column_pos, int row_pos) {
-        super(column_pos, row_pos);
-
-        //need to place the tile on the board
+    public TerrainTile(int column, int row) {
+        super(column, row);
+        // Need to place the tile on the board
     }
 
-        /**
-     * method to indicate if the tile is occupied
+    /**
+     * Method to indicate if the tile is occupied
+     *
+     * @return boolean true if occupied
      *
      * @author Vincent Capra
-     * @return boolean true if occupied
+     * @version 1.0
+     * @since 2023-10-29
      */
-    public boolean tileIsOccupied(){
-        if (occupants == null)
+    public boolean tileIsOccupied() {
+        if (mOccupants == null)
             return false;
         return true;
     }
@@ -45,23 +45,24 @@ public class TerrainTile extends GridTile{
      * See below generateLifeform() to get a format to implement if
      * we end up needing this method
      *
-     * @author Vincent Capra
+     * @author N/A
+     * @version N/A
+     * @since N/A
      */
-    public void typeOfOccupants(){
-
-    }
+    public void typeOfOccupants() {}
 
     /**
      * method to display to users which type of occupants are in the tile
      * This is probably a great use of the generic for next sprint!!!
      * We can overlay images a human or various types of alien races
      *
-     * @author Vincent Capra
+     * @author N/A
+     * @version N/A
+     * @since N/A
      */
-    protected void changeTileDisplay(){
+    protected void changeTileDisplay() {
         //(set color related to nationality
         //OR place picture of alien race)
-
         // put the count of occupants on the tile too
     }
 
@@ -70,12 +71,14 @@ public class TerrainTile extends GridTile{
      * generates a new lifeform of the same type and adds it to this tile
      *
      * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-10-29
      */
-    public void generateLifeform(){
+    public void generateLifeform() {
         //VC - gets the class of the lifeforms in this tile
-        String class_of_current_occupants = occupants.get(0).getClass().toString();
+        String class_of_current_occupants = mOccupants.get(0).getClass().toString();
         //VC - creates a new lifeform of the same type and adds it to this tile
-        occupants.add(tileLifeformFactory.makeLifeform(class_of_current_occupants, this));
+        mOccupants.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
     }
 
     /**
@@ -88,13 +91,14 @@ public class TerrainTile extends GridTile{
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj == null){return false;}
+        if(obj == null) { return false; }
         TerrainTile checkEqualTerrainTile = (TerrainTile)obj;
 
-        if(this.columnPosition == checkEqualTerrainTile.columnPosition
-                && this.rowPosition == checkEqualTerrainTile.rowPosition)
+        if(this.mColumnPosition == checkEqualTerrainTile.mColumnPosition
+                && this.mRowPosition == checkEqualTerrainTile.mRowPosition)
             return true;
-        else return false;
+        else
+            return false;
     }
 
     /**
@@ -106,9 +110,9 @@ public class TerrainTile extends GridTile{
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(columnPosition, 2);
-        hash += Math.pow(rowPosition, 2);
-        hash += Math.pow((columnPosition+rowPosition), 3);
+        hash += Math.pow(mColumnPosition, 2);
+        hash += Math.pow(mRowPosition, 2);
+        hash += Math.pow((mColumnPosition + mRowPosition), 3);
         return hash;
     }
 }

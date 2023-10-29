@@ -1,13 +1,15 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 import java.util.Random;
+
 /**
  * A class to build a resource tile. This tile cannot be occupied.
- *  This type of tile has a finite or infinite (water)amount of
- *  a resource
+ * This type of tile has a finite or infinite (water)amount of a resource.
  *
  * @author Vincent Capra
+ * @version 1.0
+ * @since 2023-10-26
  */
-public class ResourceTile extends GridTile{
+public class ResourceTile extends GridTile {
     private int unitsOfResource;
     private String resourceType;
     public ResourceTile(int column_pos, int row_pos, String resource_type) {
@@ -23,26 +25,19 @@ public class ResourceTile extends GridTile{
         resourceType = resource_type;
 
         //VC - NEED TO ADD TO THE HASHSET
-
-        changeTileDisplay();
-    }
-
-    public String getResourceType(){
-        return resourceType;
     }
 
     /**
-     * method should change the tile appearance to blue if it is a
-     * water tile, or overlay an appropriate image if it is any other type
-     * Additionally it could display the remaining resource amount
+     * Return the resource type.
      *
-     * @author
+     * @return resourceType Type of resource as a String.
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-10-29
      */
-    protected void changeTileDisplay(){
-        //(set color related to nationality
-        //OR place picture of alien race)
-
-        // put the count of occupants on the tile too
+    public String getResourceType() {
+        return resourceType;
     }
 
     /**
@@ -58,12 +53,13 @@ public class ResourceTile extends GridTile{
         if(obj == null){return false;}
         ResourceTile checkEqualResourceTile = (ResourceTile)obj;
 
-        if(this.columnPosition == checkEqualResourceTile.columnPosition
-                && this.rowPosition == checkEqualResourceTile.rowPosition
+        if(this.mColumnPosition == checkEqualResourceTile.mColumnPosition
+                && this.mRowPosition == checkEqualResourceTile.mRowPosition
                 && this.resourceType.equals(checkEqualResourceTile.getResourceType()))
             return true;
         else return false;
     }
+
     /**
      * Construct a proper hashcode method for the class
      *
@@ -73,9 +69,9 @@ public class ResourceTile extends GridTile{
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(columnPosition, 2);
-        hash += Math.pow(rowPosition, 2);
-        hash += Math.pow((columnPosition+rowPosition), 3);
+        hash += Math.pow(mColumnPosition, 2);
+        hash += Math.pow(mRowPosition, 2);
+        hash += Math.pow((mColumnPosition + mRowPosition), 3);
         hash += resourceType.hashCode();
         return hash;
     }

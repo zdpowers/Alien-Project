@@ -23,37 +23,6 @@ public class TerrainTile extends GridTile {
         //need to place the tile on the board
     }
 
-        //create and return a lifeform iterator
-        public Iterator<LifeForm> createLifeformIterator() {
-            return new LifeformIterator();
-        }
-
-        /**
-         * The createLifeformIterator is a method that returns an iterator for the LifeForm iterator
-         * The LifeformIterator is a private inner class that implements the iterator.
-         *
-         * @author Rocky Trinh
-         */
-
-        private class LifeformIterator implements Iterator<LifeForm> {
-            private int index = 0; //keep track of current position
-
-            //method to check if there are lifeforms to iterate through
-            @Override
-            public boolean hasNext() {
-                return index < lifeform.size();
-            }
-            //method to get the next lifeform and update index
-            @Override
-            public LifeForm next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                return lifeform.get(index++);
-            }
-        }
-
-
         /**
      * method to indicate if the tile is occupied
      *

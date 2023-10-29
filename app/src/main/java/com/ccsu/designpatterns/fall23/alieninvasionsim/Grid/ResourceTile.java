@@ -31,6 +31,13 @@ public class ResourceTile extends GridTile{
         return resourceType;
     }
 
+    /**
+     * method should change the tile appearance to blue if it is a
+     * water tile, or overlay an appropriate image if it is any other type
+     * Additionally it could display the remaining resource amount
+     *
+     * @author
+     */
     protected void changeTileDisplay(){
         //(set color related to nationality
         //OR place picture of alien race)
@@ -42,6 +49,9 @@ public class ResourceTile extends GridTile{
      * Construct a proper equals method for the class
      *
      * @author Vincent Capra
+     * @param obj is a generic Object variable which will be cast
+     *            to a Resource Tile
+     * @return boolean indicating if the passed object is equal to the calling
      */
     @Override
     public boolean equals(Object obj) {
@@ -58,6 +68,7 @@ public class ResourceTile extends GridTile{
      * Construct a proper hashcode method for the class
      *
      * @author Vincent Capra
+     * @return int of the hashcode value for this object
      */
     @Override
     public int hashCode() {

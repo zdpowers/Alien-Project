@@ -49,7 +49,12 @@ public abstract class GridTile {
         //need to call left and SET THEIR right as this ref
     }
     */
-
+    /**
+     * method changes the display of its tile depending on the class of
+     * tile that it is.
+     *
+     * @author
+     */
     abstract void changeTileDisplay();
 
 

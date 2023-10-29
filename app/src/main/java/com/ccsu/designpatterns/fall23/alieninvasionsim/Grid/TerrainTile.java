@@ -1,21 +1,25 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
-import android.service.quicksettings.TileService;
-
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.Human;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
-
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeformFactory;
+import java.lang.Math;
 import java.util.ArrayList;
+import android.service.quicksettings.TileService;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
- * occupied by a single country of humans or a single race of aliens
+ * occupied by humans or a single race/species of aliens. The Class of
+ * occupant must be homogenous at all times.
  *
  * @author Vincent Capra
  */
-public class TerrainTile extends GridTile {
-    private int[] occupants; //VC - need to change to an array of generic occupants
+public class TerrainTile extends GridTile{
+    //VC - not sure if this being an arraylist is the best choice
+    private ArrayList<LifeForm> occupants;
+    private LifeformFactory tileLifeformFactory = new LifeformFactory();
 
     public TerrainTile(int column_pos, int row_pos) {
         super(column_pos, row_pos);
@@ -38,20 +42,21 @@ public class TerrainTile extends GridTile {
     /**
      * method to indicate which type of occupants are in the tile
      * This is probably a great use of the generic for next sprint!!!
+     * See below generateLifeform() to get a format to implement if
+     * we end up needing this method
      *
      * @author Vincent Capra
-     * @return boolean true if occupied
      */
-    public int typeOfOccupants(){ //VC - need to change return type when initialized
-        return 1;
+    public void typeOfOccupants(){
+
     }
 
     /**
-     * method to indicate which type of occupants are in the tile
+     * method to display to users which type of occupants are in the tile
      * This is probably a great use of the generic for next sprint!!!
+     * We can overlay images a human or various types of alien races
      *
      * @author Vincent Capra
-     * @return boolean true if occupied
      */
     protected void changeTileDisplay(){
         //(set color related to nationality
@@ -60,11 +65,26 @@ public class TerrainTile extends GridTile {
         // put the count of occupants on the tile too
     }
 
+    /**
+     * method to get the class of the occupants of this tile, then
+     * generates a new lifeform of the same type and adds it to this tile
+     *
+     * @author Vincent Capra
+     */
+    public void generateLifeform(){
+        //VC - gets the class of the lifeforms in this tile
+        String class_of_current_occupants = occupants.get(0).getClass().toString();
+        //VC - creates a new lifeform of the same type and adds it to this tile
+        occupants.add(tileLifeformFactory.makeLifeform(class_of_current_occupants, this));
+    }
 
     /**
      * Construct a proper equals method for the class
      *
      * @author Vincent Capra
+     * @param obj is a generic Object variable which will be cast
+     *           to a Resource Tile
+     * @return boolean indicating if the passed object is equal to the calling
      */
     @Override
     public boolean equals(Object obj) {
@@ -81,6 +101,7 @@ public class TerrainTile extends GridTile {
      * Construct a proper hashcode method for the class
      *
      * @author Vincent Capra
+     * @return int of the hashcode value for this object
      */
     @Override
     public int hashCode() {

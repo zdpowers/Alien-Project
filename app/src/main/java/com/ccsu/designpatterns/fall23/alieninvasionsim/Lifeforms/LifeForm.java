@@ -1,6 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
 
 /**
  * A class to create a generic life form within the simulation
@@ -26,7 +27,11 @@ public abstract class LifeForm
     private static int reproductionRating;
     private static int miningRating;
 
-    protected LifeForm() {}
+    TerrainTile tileOfResidence;
+
+    LifeForm(TerrainTile spawn_tile){
+        tileOfResidence = spawn_tile;
+    }
 
     @Override
     public final void progress(Grid grid) {

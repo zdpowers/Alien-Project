@@ -226,7 +226,7 @@ public class Grid {
      * @since 2023-29-10
      */
     public GridMemento save() {
-        return new GridMemento(this);
+        return new GridMemento(this.mGridLayout);
     }
 
     /**
@@ -239,6 +239,6 @@ public class Grid {
      * @since 2023-29-10
      */
     public void restore(GridMemento state) {
-        mGridLayout = state.getGridState().mGridLayout;
+        mGridLayout = state.getGridState();
     }
 }

@@ -7,16 +7,15 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
  * @since 2023-29-10
  */
 public class GridMemento {
-    private Grid gridState;
+    private GridTile[][] gridState;
 
     /**
      * Constructor
      * @param gridState the state of the grid that is to be saved in the snapshot
      * @author Zack Powers
-     * @version 1.0
      * @since 2023-29-10
      */
-    GridMemento(Grid gridState) {
+    GridMemento(GridTile[][] gridState) {
         this.gridState = gridState;
     }
 
@@ -26,10 +25,9 @@ public class GridMemento {
      * @return returns the grid state as 2D array
      *
      * @author Zack Powers
-     * @version 1.0
      * @since 2023-29-10
      */
-    Grid getGridState() {
+    GridTile[][] getGridState() {
         return gridState;
     }
 }

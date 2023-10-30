@@ -209,7 +209,7 @@ public class Grid {
      *  @version 1.0
      *  @since 2023-29-10
      */
-    public void ProgressLifeforms() {
+    public void progressLifeForms() {
         for(LifeForm i : mLifeForms) {
             i.progress(this);
         }

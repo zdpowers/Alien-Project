@@ -24,5 +24,5 @@ public interface ProgressibleLifeForm {
      * @version 1.1
      * @since 2023-26-10
      */
-    public void progress(Grid grid);
+    void progress(Grid grid);
 }

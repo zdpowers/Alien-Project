@@ -10,7 +10,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
  * @version 1.1
  * @since 2023-26-10
  */
-public interface ProgressibleLifeform {
+public interface ProgressibleLifeForm {
 
     /**
      * Protected hook to call the private, local methods

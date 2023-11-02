@@ -1,5 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
+import android.widget.GridLayout;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 
 import java.util.ArrayList;
@@ -191,8 +193,8 @@ public class Grid {
      * @throws NoAvailableTilesException    If no available adjacent tile found
      *
      * @author Vincent Capra
-     * @version 1.0
-     * @since N/A
+     * @version 1.1
+     * @since 2023-11-2
      */
     private int[] mutateCoordinatePointer(int[] origin)
             throws NoAvailableTilesException{
@@ -238,11 +240,26 @@ public class Grid {
      * This method replaces available terrain tiles with non-water
      * resource tiles at random positions within the map
      *
-     * @author N/A
+     * @author Vincent Capra
      * @version 1.0
-     * @since N/A
+     * @since 2023-11-2
      */
-    private void placeResourceTiles() {}
+    private void placeResourceTiles() {
+        String[] resources ={"uranium","iron", "oil" };
+        for (String resource: resources){
+            int resourceTileCount = 0;
+            //VC - This loop places 4 tiles per resource type on the grid
+            while(resourceTileCount < 4){
+                int[] coordinateToCheck = createRandomCoordinate();
+                if(mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]].getClass()
+                        != ResourceTile.class)
+                    mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]] =
+                            new ResourceTile(coordinateToCheck[1],coordinateToCheck[0], resource);
+                resourceTileCount ++;
+            }
+        }
+    }
+
 
     /**
      * This method places an initial population

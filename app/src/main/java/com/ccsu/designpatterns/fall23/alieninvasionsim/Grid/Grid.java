@@ -1,5 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
+import android.widget.GridLayout;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 
 import java.util.ArrayList;
@@ -107,36 +109,62 @@ public class Grid {
         //System.out.println(pointer3[0] + " , " + pointer3[1]);
         //System.out.println("Next Set");
 
-        try {
-            while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
-                //VC - This replaces the grid position with a new water resource tile
-                mGridLayout[pointer1[0]][pointer1[1]] =
-                        new ResourceTile(pointer1[0], pointer1[1], "water");
-                //VC - Adding the tile reference to a hashtable
-                mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer1[0]][pointer1[1]]);
 
-                //VC - This replaces the grid position with a new water resource tile
-                mGridLayout[pointer2[0]][pointer2[1]] =
-                        new ResourceTile(pointer2[0], pointer2[1], "water");
-                //VC - Adding the tile reference to a hashtable
-                mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer2[0]][pointer2[1]]);
+        while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
+            //VC - This replaces the grid position with a new water resource tile
+            mGridLayout[pointer1[0]][pointer1[1]] =
+                    new ResourceTile(pointer1[0], pointer1[1], "water");
+            //VC - Adding the tile reference to a hashtable
+            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer1[0]][pointer1[1]]);
 
-                //VC - This replaces the grid position with a new water resource tile
-                mGridLayout[pointer3[0]][pointer3[1]] =
-                        new ResourceTile(pointer3[0], pointer3[1], "water");
-                //VC - Adding the tile reference to a hashtable
-                mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer3[0]][pointer3[1]]);
+            //VC - This replaces the grid position with a new water resource tile
+            mGridLayout[pointer2[0]][pointer2[1]] =
+                    new ResourceTile(pointer2[0], pointer2[1], "water");
+            //VC - Adding the tile reference to a hashtable
+            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer2[0]][pointer2[1]]);
 
-                // Acquire the next tile for water resource allocation for each pointer
-                mutateCoordinatePointer(pointer1);
-                mutateCoordinatePointer(pointer2);
-                mutateCoordinatePointer(pointer3);
+            //VC - This replaces the grid position with a new water resource tile
+            mGridLayout[pointer3[0]][pointer3[1]] =
+                    new ResourceTile(pointer3[0], pointer3[1], "water");
+            //VC - Adding the tile reference to a hashtable
+            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer3[0]][pointer3[1]]);
 
-                // Increase the number of water tiles by 3
-                currentNumOfWaterTiles += 3;
+            boolean pointer1NoAvailableTiles = false;
+            boolean pointer2NoAvailableTiles = false;
+            boolean pointer3NoAvailableTiles = false;
+
+            // VC - Acquire the next tile for water resource allocation for each pointer
+            // If a given pointer is out of mutations(IE surrounded in a corner) is throws an
+            // an exception which sets no tiles available. If it happens to all 3 pointers
+            // before 30% of the map is water, we currently don't support a handling of that
+            if (!pointer1NoAvailableTiles) {
+
+                try {
+                    mutateCoordinatePointer(pointer1);
+                    currentNumOfWaterTiles += 1;
+                } catch (NoAvailableTilesException e) {
+                    pointer1NoAvailableTiles = true;
+                }
+            }
+            if (!pointer2NoAvailableTiles) {
+
+                try {
+                    mutateCoordinatePointer(pointer2);
+                    currentNumOfWaterTiles += 1;
+                } catch (NoAvailableTilesException e) {
+                    pointer2NoAvailableTiles = true;
+                }
+            }
+            if (!pointer3NoAvailableTiles) {
+
+                try {
+                    mutateCoordinatePointer(pointer1);
+                    currentNumOfWaterTiles += 1;
+                } catch (NoAvailableTilesException e) {
+                    pointer1NoAvailableTiles = true;
+                }
             }
         }
-        catch(NoAvailableTilesException e) {}
     }
 
     /**
@@ -165,15 +193,44 @@ public class Grid {
      * @throws NoAvailableTilesException    If no available adjacent tile found
      *
      * @author Vincent Capra
-     * @version 1.0
-     * @since N/A
+     * @version 1.1
+     * @since 2023-11-2
      */
     private int[] mutateCoordinatePointer(int[] origin)
             throws NoAvailableTilesException{
-        //TODO Need to implement an actual mutation method
-        // Something like add 1 in 1 direction at a time until an avail tile is discovered
-        if(true){
-            return new int[]{0, 0};
+        int columnValue = origin[0];
+        int rowValue = origin[1];
+
+        int[] permutation_1,  permutation_2, permutation_3, permutation_4;
+        ArrayList<int[]>permutations = new ArrayList<>();
+
+        // VC = 1 checks up, 2 to the right, 3 down, 4 to the left. Then add each viable permutation
+        // to the array list to get randomly chosen from
+        if (columnValue-1 >= 0
+                && mGridLayout[columnValue-1][rowValue].getClass() != ResourceTile.class) {
+            permutation_1 = new int[] {columnValue - 1, rowValue};
+            permutations.add(permutation_1);
+        }
+        if (columnValue+1 < mGridAxisLength
+                && mGridLayout[columnValue+1][rowValue].getClass() != ResourceTile.class) {
+            permutation_2 = new int[] {columnValue + 1, rowValue};
+            permutations.add(permutation_2);
+        }
+        if (rowValue-1 >= 0
+                && mGridLayout[columnValue][rowValue-1].getClass() != ResourceTile.class) {
+            permutation_3 = new int[] {columnValue, rowValue-1};
+            permutations.add(permutation_3);
+        }
+        if (rowValue+1 < mGridAxisLength
+                && mGridLayout[columnValue][rowValue+1].getClass() != ResourceTile.class) {
+            permutation_4 = new int[] {columnValue, rowValue+1};
+            permutations.add(permutation_4);
+        }
+
+        if(!permutations.isEmpty()){ // check that arraylist is not null
+            Random randomPermutation = new Random();
+            // return a randomized result from the
+            return permutations.get(randomPermutation.nextInt(permutations.size()));
         }
         else
             throw new NoAvailableTilesException("no tiles");
@@ -183,11 +240,26 @@ public class Grid {
      * This method replaces available terrain tiles with non-water
      * resource tiles at random positions within the map
      *
-     * @author N/A
+     * @author Vincent Capra
      * @version 1.0
-     * @since N/A
+     * @since 2023-11-2
      */
-    private void placeResourceTiles() {}
+    private void placeResourceTiles() {
+        String[] resources ={"uranium","iron", "oil" };
+        for (String resource: resources){
+            int resourceTileCount = 0;
+            //VC - This loop places 4 tiles per resource type on the grid
+            while(resourceTileCount < 4){
+                int[] coordinateToCheck = createRandomCoordinate();
+                if(mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]].getClass()
+                        != ResourceTile.class)
+                    mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]] =
+                            new ResourceTile(coordinateToCheck[1],coordinateToCheck[0], resource);
+                resourceTileCount ++;
+            }
+        }
+    }
+
 
     /**
      * This method places an initial population

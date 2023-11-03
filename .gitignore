@@ -9,3 +9,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+app/src/main/res/drawable/earth_rotation.gif

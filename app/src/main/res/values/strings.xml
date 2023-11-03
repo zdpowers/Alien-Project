@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Alien Invasion Sim</string>
+    <string name="lifeform_photo">LifeForm Photo</string>
 </resources>

@@ -1,12 +1,11 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
-import android.widget.GridLayout;
+import android.util.Log;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -21,15 +20,10 @@ public class Grid {
     /** Length of a single side of the grid as a
      * number of elements along the same horizontal or vertical line. */
     private int mGridAxisLength;
-
-    /** VC - A list of all Tiles in this Grid [column][row] */
-    private GridTile[][] mGridLayout;
-    /** A list of all LifeForms in the simulation */
+    /** A list of all LifeForms in the grid */
     ArrayList<LifeForm> mLifeForms = new ArrayList<>();
-
-    //VC - during the build process we can use this to track what squares
-    // already are resource tiles so we don't over-write
-    HashSet<ResourceTile> mResourceTileHashSet = new HashSet<ResourceTile>();
+    /** A list of all tiles in the grid */
+    ArrayList<Tile> mTiles = new ArrayList<>();
 
     /**
      * Constructs the grid layout based on a given
@@ -46,13 +40,12 @@ public class Grid {
     public Grid(int gridAxisLength) {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
-        mGridLayout = new GridTile[gridAxisLength][gridAxisLength];
 
         // VC - Initially construct the Grid with Terrain Tiles
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
-                mGridLayout[column][row] = new TerrainTile(column, row);
+                mTiles.add(new TerrainTile(column, row));
             }
         }
         // Overwrite the default tiles to place some water and resource tiles
@@ -100,76 +93,34 @@ public class Grid {
         do {
             pointer3 = createRandomCoordinate();
         }
-        while (Arrays.equals(pointer1, pointer3)
-                || Arrays.equals(pointer2, pointer3));
-
-        //// lines for testing purposes
-        //System.out.println(pointer1[0] + " , " + pointer1[1]);
-        //System.out.println(pointer2[0] + " , " + pointer2[1]);
-        //System.out.println(pointer3[0] + " , " + pointer3[1]);
-        //System.out.println("Next Set");
-
+        while (Arrays.equals(pointer1, pointer3) || Arrays.equals(pointer2, pointer3));
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             //VC - This replaces the grid position with a new water resource tile
-            mGridLayout[pointer1[0]][pointer1[1]] =
-                    new ResourceTile(pointer1[0], pointer1[1], "water");
-            //VC - Adding the tile reference to a hashtable
-            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer1[0]][pointer1[1]]);
-
-            //VC - This replaces the grid position with a new water resource tile
-            mGridLayout[pointer2[0]][pointer2[1]] =
-                    new ResourceTile(pointer2[0], pointer2[1], "water");
-            //VC - Adding the tile reference to a hashtable
-            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer2[0]][pointer2[1]]);
-
-            //VC - This replaces the grid position with a new water resource tile
-            mGridLayout[pointer3[0]][pointer3[1]] =
-                    new ResourceTile(pointer3[0], pointer3[1], "water");
-            //VC - Adding the tile reference to a hashtable
-            mResourceTileHashSet.add((ResourceTile) mGridLayout[pointer3[0]][pointer3[1]]);
-
-            boolean pointer1NoAvailableTiles = false;
-            boolean pointer2NoAvailableTiles = false;
-            boolean pointer3NoAvailableTiles = false;
+            mTiles.add(new ResourceTile(pointer1[0], pointer1[1], "water"));
+            mTiles.add(new ResourceTile(pointer2[0], pointer2[1], "water"));
+            mTiles.add(new ResourceTile(pointer3[0], pointer3[1], "water"));
+            currentNumOfWaterTiles += 3;
 
             // VC - Acquire the next tile for water resource allocation for each pointer
             // If a given pointer is out of mutations(IE surrounded in a corner) is throws an
             // an exception which sets no tiles available. If it happens to all 3 pointers
             // before 30% of the map is water, we currently don't support a handling of that
-            if (!pointer1NoAvailableTiles) {
-
-                try {
-                    mutateCoordinatePointer(pointer1);
-                    currentNumOfWaterTiles += 1;
-                } catch (NoAvailableTilesException e) {
-                    pointer1NoAvailableTiles = true;
-                }
-            }
-            if (!pointer2NoAvailableTiles) {
-
-                try {
-                    mutateCoordinatePointer(pointer2);
-                    currentNumOfWaterTiles += 1;
-                } catch (NoAvailableTilesException e) {
-                    pointer2NoAvailableTiles = true;
-                }
-            }
-            if (!pointer3NoAvailableTiles) {
-
-                try {
-                    mutateCoordinatePointer(pointer1);
-                    currentNumOfWaterTiles += 1;
-                } catch (NoAvailableTilesException e) {
-                    pointer1NoAvailableTiles = true;
-                }
-            }
+            try {
+                mutateCoordinatePointer(pointer1);
+            } catch (NoAvailableTilesException e) {}
+            try {
+                mutateCoordinatePointer(pointer2);
+            } catch (NoAvailableTilesException e) {}
+            try {
+                mutateCoordinatePointer(pointer3);
+            } catch (NoAvailableTilesException e) {}
         }
     }
 
     /**
      * This method creates a completely random coordinate pointer in the
-     * format of [row, column] to use as a seed value within the grid
+     * format of [column, row] to use as a seed value within the grid
      * for placing resources
      *
      * @returns coord   Random coordinate within the Grid as an int[x, y]
@@ -196,44 +147,47 @@ public class Grid {
      * @version 1.1
      * @since 2023-11-2
      */
-    private int[] mutateCoordinatePointer(int[] origin)
-            throws NoAvailableTilesException{
-        int columnValue = origin[0];
-        int rowValue = origin[1];
+    private int[] mutateCoordinatePointer(int[] origin) throws NoAvailableTilesException {
+        ArrayList<int[]> permutations = new ArrayList<>();
 
-        int[] permutation_1,  permutation_2, permutation_3, permutation_4;
-        ArrayList<int[]>permutations = new ArrayList<>();
+        // Check above this tile
+        try {
+            int index = getTileIndex(new int[] {origin[0], origin[1] - 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                permutations.add(new int[] {origin[0], origin[1] - 1});
+            }
+        } catch (NoAvailableTilesException e) {} // Index most likely out of bounds
 
-        // VC = 1 checks up, 2 to the right, 3 down, 4 to the left. Then add each viable permutation
-        // to the array list to get randomly chosen from
-        if (columnValue-1 >= 0
-                && mGridLayout[columnValue-1][rowValue].getClass() != ResourceTile.class) {
-            permutation_1 = new int[] {columnValue - 1, rowValue};
-            permutations.add(permutation_1);
-        }
-        if (columnValue+1 < mGridAxisLength
-                && mGridLayout[columnValue+1][rowValue].getClass() != ResourceTile.class) {
-            permutation_2 = new int[] {columnValue + 1, rowValue};
-            permutations.add(permutation_2);
-        }
-        if (rowValue-1 >= 0
-                && mGridLayout[columnValue][rowValue-1].getClass() != ResourceTile.class) {
-            permutation_3 = new int[] {columnValue, rowValue-1};
-            permutations.add(permutation_3);
-        }
-        if (rowValue+1 < mGridAxisLength
-                && mGridLayout[columnValue][rowValue+1].getClass() != ResourceTile.class) {
-            permutation_4 = new int[] {columnValue, rowValue+1};
-            permutations.add(permutation_4);
-        }
+        // Check to the right of this tile
+        try {
+            int index = getTileIndex(new int[] {origin[0] + 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                permutations.add(new int[] {origin[0] + 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {} // Index most likely out of bounds
 
-        if(!permutations.isEmpty()){ // check that arraylist is not null
-            Random randomPermutation = new Random();
-            // return a randomized result from the
-            return permutations.get(randomPermutation.nextInt(permutations.size()));
-        }
-        else
-            throw new NoAvailableTilesException("no tiles");
+        // Check below this tile
+        try {
+            int index = getTileIndex(new int[] {origin[0], origin[1] + 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                permutations.add(new int[] {origin[0], origin[1] + 1});
+            }
+        } catch (NoAvailableTilesException e) {} // Index most likely out of bounds
+
+        // Check to the left of this tile
+        try {
+            int index = getTileIndex(new int[] {origin[0] - 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                permutations.add(new int[] {origin[0] - 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {} // Index most likely out of bounds
+
+        // Choose a random result
+        if(!permutations.isEmpty()){ // Check that arraylist is not null
+            Random random = new Random();
+            return permutations.get(random.nextInt(permutations.size()));
+        } else
+            throw new NoAvailableTilesException("No available tiles found.");
     }
 
     /**
@@ -245,17 +199,22 @@ public class Grid {
      * @since 2023-11-2
      */
     private void placeResourceTiles() {
-        String[] resources ={"uranium","iron", "oil" };
-        for (String resource: resources){
+        String[] resources ={"uranium", "iron", "oil"};
+        for (String resource : resources) {
             int resourceTileCount = 0;
             //VC - This loop places 4 tiles per resource type on the grid
-            while(resourceTileCount < 4){
-                int[] coordinateToCheck = createRandomCoordinate();
-                if(mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]].getClass()
-                        != ResourceTile.class)
-                    mGridLayout[coordinateToCheck[1]][coordinateToCheck[0]] =
-                            new ResourceTile(coordinateToCheck[1],coordinateToCheck[0], resource);
-                resourceTileCount ++;
+            while(resourceTileCount < 4) {
+                int[] coord = createRandomCoordinate(); // Coordinate to check
+                try {
+                    int index = getTileIndex(coord);
+                    // If this tile is not already a ResourceTile
+                    if (!(mTiles.get(index) instanceof ResourceTile)) {
+                        mTiles.set(index, new ResourceTile(coord[0], coord[1], resource));
+                        resourceTileCount ++;
+                    }
+                } catch (NoAvailableTilesException e) {
+                    Log.e("Grid", e.getMessage());
+                }
             }
         }
     }
@@ -298,7 +257,7 @@ public class Grid {
      * @since 2023-29-10
      */
     public GridMemento save() {
-        return new GridMemento(this.mGridLayout);
+        return new GridMemento(mTiles);
     }
 
     /**
@@ -311,6 +270,26 @@ public class Grid {
      * @since 2023-29-10
      */
     public void restore(GridMemento state) {
-        mGridLayout = state.getGridState();
+        mTiles = state.getGridState();
+    }
+
+    /**
+     * Retrieve a tile index within mTiles with a given coordinate on the grid.
+     *
+     * @param coords    Coordinates of the tile index to retrieve as (x, y).
+     * @return The index where the Tile can be found in this Grid's mTiles.
+     * @throws NoAvailableTilesException If a tile is out of bounds and not found.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-2
+     */
+    private int getTileIndex(int[] coords) throws NoAvailableTilesException {
+        // Check for invalid coordinates
+        if (coords[0] < 0 || coords[1] < 0 || // Negative value coordinates
+            coords[0] > mGridAxisLength || coords[1] > mGridAxisLength) { // Exceeding grid bounds
+            throw new NoAvailableTilesException("No tile found. Invalid coordinates.");
+        }
+        return coords[1] * mGridAxisLength + coords[0];
     }
 }

@@ -1,5 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
+import java.util.ArrayList;
+
 /**
  * Grid memento class
  * @author Zack Powers
@@ -7,7 +9,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
  * @since 2023-29-10
  */
 public class GridMemento {
-    private GridTile[][] gridState;
+    private ArrayList<Tile> gridState;
 
     /**
      * Constructor
@@ -15,7 +17,7 @@ public class GridMemento {
      * @author Zack Powers
      * @since 2023-29-10
      */
-    GridMemento(GridTile[][] gridState) {
+    GridMemento(ArrayList<Tile> gridState) {
         this.gridState = gridState;
     }
 
@@ -27,7 +29,7 @@ public class GridMemento {
      * @author Zack Powers
      * @since 2023-29-10
      */
-    GridTile[][] getGridState() {
+    ArrayList<Tile> getGridState() {
         return gridState;
     }
 }

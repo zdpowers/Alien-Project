@@ -9,9 +9,11 @@ import java.util.Random;
  * @version 1.0
  * @since 2023-10-26
  */
-public class ResourceTile extends GridTile {
+public class ResourceTile extends Tile {
+
     private int unitsOfResource;
     private String resourceType;
+
     public ResourceTile(int column_pos, int row_pos, String resource_type) {
         super(column_pos, row_pos);
         Random randomizedResourceValue = new Random();

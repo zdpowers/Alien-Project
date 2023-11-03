@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2023-10-29
  */
-public class TerrainTile extends GridTile{
+public class TerrainTile extends Tile {
     //VC - not sure if this being an arraylist is the best choice
     private ArrayList<LifeForm> mOccupants;
     private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();

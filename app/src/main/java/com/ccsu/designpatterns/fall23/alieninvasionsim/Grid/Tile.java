@@ -8,11 +8,11 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
  * @version 1.0
  * @since 2023-10-26
  */
-public abstract class GridTile {
+public abstract class Tile {
     int mColumnPosition;
     int mRowPosition;
 
-    public GridTile(int column, int row) {
+    public Tile(int column, int row) {
         // Need to place the tile in the layout visually
         mColumnPosition = column;
         mRowPosition = row;

@@ -1,8 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 /**
- * A class to define an exception thrown during tile placement
- * if there are no available tiles adjacent to the origin pointer.
+ * An exception that is thrown if there are no available tiles found.
  *
  * @author Vincent Capra
  * @version 1.0

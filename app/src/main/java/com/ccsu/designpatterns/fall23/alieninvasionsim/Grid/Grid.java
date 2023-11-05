@@ -97,10 +97,18 @@ public class Grid {
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             //VC - This replaces the grid position with a new water resource tile
-            mTiles.add(new ResourceTile(pointer1[0], pointer1[1], "water"));
-            mTiles.add(new ResourceTile(pointer2[0], pointer2[1], "water"));
-            mTiles.add(new ResourceTile(pointer3[0], pointer3[1], "water"));
-            currentNumOfWaterTiles += 3;
+            try {
+                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+                currentNumOfWaterTiles += 1;
+            } catch (NoAvailableTilesException e) {}
+            try {
+                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+                currentNumOfWaterTiles += 1;
+            } catch (NoAvailableTilesException e) {}
+            try {
+                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+                currentNumOfWaterTiles += 1;
+            } catch (NoAvailableTilesException e) {}
 
             // VC - Acquire the next tile for water resource allocation for each pointer
             // If a given pointer is out of mutations(IE surrounded in a corner) is throws an
@@ -287,9 +295,19 @@ public class Grid {
     private int getTileIndex(int[] coords) throws NoAvailableTilesException {
         // Check for invalid coordinates
         if (coords[0] < 0 || coords[1] < 0 || // Negative value coordinates
-            coords[0] > mGridAxisLength || coords[1] > mGridAxisLength) { // Exceeding grid bounds
+            coords[0] >= mGridAxisLength || coords[1] >= mGridAxisLength) { // Exceeding grid bounds
             throw new NoAvailableTilesException("No tile found. Invalid coordinates.");
         }
-        return coords[1] * mGridAxisLength + coords[0];
+        if (coords[0] == 0 && coords[1] == 0) {
+            return 0;
+        }
+        else {
+            // y * mGridAxisLength, add in the x value, and subtract 1 because arrays start at 0
+            return (coords[1] * mGridAxisLength) + coords[0] -1;
+        }
+    }
+
+    public ArrayList<Tile> getTiles() {
+        return mTiles;
     }
 }

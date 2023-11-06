@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 /**
  * Abstract data class which holds references to shared
@@ -9,8 +9,8 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
  * @since 2023-10-26
  */
 public abstract class Tile {
-    int mColumnPosition;
-    int mRowPosition;
+    protected int mColumnPosition;
+    protected int mRowPosition;
 
     public Tile(int column, int row) {
         // Need to place the tile in the layout visually

@@ -1,17 +1,17 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 
 /**
- * A class to define the behavior of Martian Alien
+ * A class to define the behavior of Vulcan Alien
  * lifeforms within the simulation
  *
  * @author Vincent Capra
  */
-public class Martian extends LifeForm {
+public class Vulcan extends LifeForm {
 
-    Martian(TerrainTile spawn_tile) {
+    Vulcan(TerrainTile spawn_tile) {
         super(spawn_tile);
     }
 

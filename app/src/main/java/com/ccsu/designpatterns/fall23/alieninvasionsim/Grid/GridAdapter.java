@@ -41,9 +41,15 @@ public class GridAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.grid_item, null);
 
         CardView cardView = view.findViewById(R.id.cvTile);
-        if (mTiles.get(i) instanceof ResourceTile) {
+        if (mTiles.get(i) instanceof ResourceTile
+                && ((ResourceTile) mTiles.get(i)).getResourceType().equals("water")) {
             cardView.setBackgroundColor(Color.BLUE);
-        } else {
+        }
+        else if (mTiles.get(i) instanceof ResourceTile
+                && !((ResourceTile) mTiles.get(i)).getResourceType().equals("water")){
+            cardView.setBackgroundColor(Color.GRAY);
+        }
+        else {
             cardView.setBackgroundColor(Color.GREEN);
         }
         return view;

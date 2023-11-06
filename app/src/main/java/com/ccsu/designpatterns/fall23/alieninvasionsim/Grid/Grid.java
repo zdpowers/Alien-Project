@@ -95,33 +95,48 @@ public class Grid {
         }
         while (Arrays.equals(pointer1, pointer3) || Arrays.equals(pointer2, pointer3));
 
-        while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
-            //VC - This replaces the grid position with a new water resource tile
-            try {
-                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
-                currentNumOfWaterTiles += 1;
-            } catch (NoAvailableTilesException e) {}
-            try {
-                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
-                currentNumOfWaterTiles += 1;
-            } catch (NoAvailableTilesException e) {}
-            try {
-                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
-                currentNumOfWaterTiles += 1;
-            } catch (NoAvailableTilesException e) {}
 
+        try {
+            mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+            currentNumOfWaterTiles += 1;
+        } catch (NoAvailableTilesException e) {}
+        try {
+            mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+            currentNumOfWaterTiles += 1;
+        } catch (NoAvailableTilesException e) {}
+        try {
+            mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+            currentNumOfWaterTiles += 1;
+        } catch (NoAvailableTilesException e) {}
+
+
+        while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
             // If a given pointer is out of mutations(IE surrounded in a corner) is throws an
             // an exception which sets no tiles available. If it happens to all 3 pointers
             // before 30% of the map is water, we currently don't support a handling of that
             try {
-                mutateCoordinatePointer(pointer1);
+                pointer1 = mutateCoordinatePointer(pointer1);
             } catch (NoAvailableTilesException e) {}
             try {
-                mutateCoordinatePointer(pointer2);
+                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+                currentNumOfWaterTiles += 1;
+            } catch (NoAvailableTilesException e) {}
+
+            try {
+                pointer2 = mutateCoordinatePointer(pointer2);
             } catch (NoAvailableTilesException e) {}
             try {
-                mutateCoordinatePointer(pointer3);
+                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+                currentNumOfWaterTiles += 1;
+            } catch (NoAvailableTilesException e) {}
+
+            try {
+                pointer3 = mutateCoordinatePointer(pointer3);
+            } catch (NoAvailableTilesException e) {}
+            try {
+                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+                currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {}
         }
     }

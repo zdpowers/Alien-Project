@@ -1,8 +1,8 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 import android.util.Log;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +21,9 @@ public class Grid {
      * number of elements along the same horizontal or vertical line. */
     private int mGridAxisLength;
     /** A list of all LifeForms in the grid */
-    private ArrayList<LifeForm> mLifeForms = new ArrayList<>();
+    ArrayList<LifeForm> mLifeForms = new ArrayList<>();
     /** A list of all tiles in the grid */
-    private ArrayList<Tile> mTiles = new ArrayList<>();
+    ArrayList<Tile> mTiles = new ArrayList<>();
 
     /**
      * Constructs the grid layout based on a given

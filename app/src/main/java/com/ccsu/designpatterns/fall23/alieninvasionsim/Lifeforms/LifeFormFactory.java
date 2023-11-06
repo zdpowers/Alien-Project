@@ -1,6 +1,6 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
 
 /**
  * In the Sprint 1 Abstract Factory pattern this is

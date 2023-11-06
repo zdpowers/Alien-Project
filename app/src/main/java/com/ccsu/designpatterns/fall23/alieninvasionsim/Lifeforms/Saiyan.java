@@ -1,17 +1,17 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
 
 /**
- * A class to define the behavior of Martian Alien
+ * A class to define the behavior of Saiyan Alien
  * lifeforms within the simulation
  *
  * @author Vincent Capra
  */
-public class Martian extends LifeForm {
+public class Saiyan extends LifeForm {
 
-    Martian(TerrainTile spawn_tile) {
+    Saiyan(TerrainTile spawn_tile) {
         super(spawn_tile);
     }
 

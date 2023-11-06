@@ -1,17 +1,17 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
 
 /**
- * A class to define the behavior of Saiyan Alien
+ * A class to define the behavior of Vulcan Alien
  * lifeforms within the simulation
  *
  * @author Vincent Capra
  */
-public class Saiyan extends LifeForm {
+public class Vulcan extends LifeForm {
 
-    Saiyan(TerrainTile spawn_tile) {
+    Vulcan(TerrainTile spawn_tile) {
         super(spawn_tile);
     }
 

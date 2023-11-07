@@ -43,6 +43,20 @@ public abstract class LifeForm
     }
 
     /**
+     * If this is a composite component return it's composite interface.
+     * Leaving for now as possible expansion if we decide later to expand the
+     * tree structure of the LifeForm sub-classes.
+     *
+     * @return Composite interface for this class if it is a composite
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-26-10
+     */
+    public LifeFormComposite composite() {
+        return null;
+    }
+
+    /**
      * A method to gather resources for this LifeForm.
      *
      * @author Vincent Capra

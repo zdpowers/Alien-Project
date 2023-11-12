@@ -1,6 +1,6 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 
 /**
  * In the Sprint 1 Abstract Factory pattern this is
@@ -20,13 +20,13 @@ public class LifeFormFactory implements AbsLifeFormFactory {
         manipulated_string =
                 manipulated_string.substring(manipulated_string.lastIndexOf("."));
 
-        if(manipulated_string.equals("human"))
+        if(manipulated_string.contains("human"))
             return new Human(spawnTile);
-        else if (manipulated_string.equals("xenomorph"))
+        else if (manipulated_string.contains("xenomorph"))
             return new Xenomorph(spawnTile);
-        else if (manipulated_string.equals("martian"))
+        else if (manipulated_string.contains("martian"))
             return new Martian(spawnTile);
-        else if (manipulated_string.equals("vulcan"))
+        else if (manipulated_string.contains("vulcan"))
             return new Vulcan(spawnTile);
         else return new Saiyan(spawnTile);
     }

@@ -1,7 +1,7 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeFormFactory;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import java.lang.Math;
 import java.util.ArrayList;
 

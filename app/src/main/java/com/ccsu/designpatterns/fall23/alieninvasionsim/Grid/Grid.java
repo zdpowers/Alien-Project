@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -25,11 +26,11 @@ public class Grid {
     /**
      * A list of all LifeForms in the grid
      */
-    ArrayList<LifeForm> mLifeForms = new ArrayList<>();
+    private List<LifeForm> mLifeForms = new ArrayList<>();
     /**
      * A list of all tiles in the grid
      */
-    ArrayList<Tile> mTiles = new ArrayList<>();
+    private List<Tile> mTiles = new ArrayList<>();
     /**
      * VC - the instance variable for Singleton implementation
      */
@@ -319,7 +320,7 @@ public class Grid {
      * @since 2023-29-10
      */
     public GridMemento save() {
-        return new GridMemento(mTiles);
+        return new GridMemento((ArrayList) mTiles);
     }
 
     /**
@@ -359,6 +360,6 @@ public class Grid {
     }
 
     public ArrayList<Tile> getTiles() {
-        return mTiles;
+        return (ArrayList) mTiles;
     }
 }

@@ -1,7 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
 
 import java.util.ArrayList;
 import java.util.Iterator;

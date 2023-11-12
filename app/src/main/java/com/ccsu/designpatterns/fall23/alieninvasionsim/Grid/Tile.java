@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
 
 /**
  * Abstract data class which holds references to shared

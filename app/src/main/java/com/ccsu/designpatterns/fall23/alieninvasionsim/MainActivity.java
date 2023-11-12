@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.GridAdapter;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.GridAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private Grid mSimulationGrid;

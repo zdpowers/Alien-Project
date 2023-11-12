@@ -13,6 +13,9 @@ import java.util.Objects;
  */
 public class EventManager {
 
+    /**
+     * Hashmap containing an ArrayList of EventListeners as a value associated with an eventType as a key
+     */
     private HashMap<String, ArrayList<EventListener>> listeners = new HashMap<>();
 
     /**

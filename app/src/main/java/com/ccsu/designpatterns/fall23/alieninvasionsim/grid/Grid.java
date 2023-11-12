@@ -2,6 +2,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import android.util.Log;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
 import java.util.ArrayList;
@@ -35,6 +36,11 @@ public class Grid {
      * VC - the instance variable for Singleton implementation
      */
     private static Grid instance;
+
+    /**
+     * An instance of EventManager which is used to maintain and update EventListeners
+     */
+    private EventManager manager = new EventManager();
 
     /**
      * Constructs the grid layout based on a given

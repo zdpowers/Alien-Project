@@ -11,7 +11,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
  */
 
 public abstract class LifeForm
-        implements ProgressibleLifeForm {
+        implements ProgressibleLifeForm, EventListener {
 
     /** Resource amounts held by this life form. */
     private int amountOf_Water;
@@ -134,4 +134,6 @@ public abstract class LifeForm
      */
     public abstract LifeForm clone();
 
+    @Override
+    public void update(String data) {}
 }

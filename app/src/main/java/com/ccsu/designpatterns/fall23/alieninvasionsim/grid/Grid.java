@@ -14,7 +14,7 @@ import java.util.Random;
  * This holds the Tile and LifeForm data in a grid
  * to act as the "world" for the simulation.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Joseph Lumpkin, Zack Powers
  * @version 1.0
  * @since 2023-10-26
  */

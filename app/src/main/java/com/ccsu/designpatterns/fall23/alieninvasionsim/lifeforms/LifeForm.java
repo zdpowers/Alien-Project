@@ -6,7 +6,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 /**
  * A class to create a generic life form within the simulation
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Joseph Lumpkin, Zack Powers
  */
 
 public abstract class LifeForm
@@ -29,8 +29,27 @@ public abstract class LifeForm
 
     TerrainTile tileOfResidence;
 
+    /**
+     * Constructor.
+     * @param spawn_tile the tile in which the object is placed.
+     */
     LifeForm(TerrainTile spawn_tile){
         tileOfResidence = spawn_tile;
+    }
+
+    /**
+     * Prototype constructor. This constructor is used when using the clone method to create a copy of a LifeForm object
+     * @param source the source object which is to be cloned. The new object is initialized with the parameters of the source object.
+     * @author Zack Powers
+     * @version 1.0
+     * @since 2023-12-11
+     */
+    LifeForm(LifeForm source) {
+        this.tileOfResidence = source.tileOfResidence;
+        this.amountOf_Water = source.amountOf_Water;
+        this.amountOf_Uranium = source.amountOf_Uranium;
+        this.amountOf_Oil = source.amountOf_Oil;
+        this.amountOf_Iron = source.amountOf_Iron;
     }
 
     @Override
@@ -103,5 +122,15 @@ public abstract class LifeForm
      * @since 2023-26-10
      */
     protected abstract void defend(int damage);
+
+    /**
+     * Abstract clone method for the prototype creational pattern.
+     * Called to create a copy of lifeForm object to populate neighboring tiles.
+     * @return a copy of the LifeForm object that the method is called on.
+     * @author Zack Powers
+     * @version 1.0
+     * @since 2023-12-11
+     */
+    public abstract LifeForm clone();
 
 }

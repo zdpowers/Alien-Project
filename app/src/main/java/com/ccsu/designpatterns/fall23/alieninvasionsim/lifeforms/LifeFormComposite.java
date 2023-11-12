@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class LifeFormComposite extends LifeForm{
+public class LifeFormComposite extends LifeForm {
     protected List<LifeForm> tribeMembers = new ArrayList<LifeForm>();
     private String tribeDescription;
     LifeFormComposite(TerrainTile spawn_tile) {
@@ -78,4 +78,13 @@ public class LifeFormComposite extends LifeForm{
 
     @Override
     protected void defend(int damage) {}
+
+    /**
+     * Abstract clone method for the prototype creational pattern.
+     * @return null because this class is not to be cloned
+     */
+    @Override
+    public LifeForm clone() {
+        return null;
+    }
 }

@@ -1,6 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 
 /**
  * An interface to detail all progress

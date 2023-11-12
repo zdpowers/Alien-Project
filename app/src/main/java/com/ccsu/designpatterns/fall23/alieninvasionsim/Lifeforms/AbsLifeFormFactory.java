@@ -1,6 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 
 /**
  * An interface to define various factories to create different

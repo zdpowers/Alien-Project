@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.earth_rotation).into(background);
 
         // Build the simulation grid
-        mSimulationGrid = new Grid(10);
-        //mSimulationGrid = Grid.getInstance(10);
+        //mSimulationGrid = new Grid(10);
+        mSimulationGrid = Grid.getInstance(10);
         GridView gridView = findViewById(R.id.gvGrid);
         gridView.setNumColumns((int) Math.sqrt(mSimulationGrid.getGridSize()));
         GridAdapter adapter = new GridAdapter(this, mSimulationGrid.getTiles());

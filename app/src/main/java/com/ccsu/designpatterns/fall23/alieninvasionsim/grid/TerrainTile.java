@@ -1,5 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Human;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import java.lang.Math;
@@ -34,7 +35,7 @@ public class TerrainTile extends Tile {
      * @since 2023-10-29
      */
     public boolean tileIsOccupied() {
-        if (mOccupants == null)
+        if (this.mOccupants == null)
             return false;
         return true;
     }
@@ -78,8 +79,26 @@ public class TerrainTile extends Tile {
         //VC - gets the class of the lifeforms in this tile
         String class_of_current_occupants = mOccupants.get(0).getClass().toString();
         //VC - creates a new lifeform of the same type and adds it to this tile
-        mOccupants.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
+        LifeForm newResidentLifeform =
+                mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this);
+        this.mOccupants.add(newResidentLifeform);
     }
+
+    /**
+     * Override of method generateLifeform to place a certain type of lifeform in this tile ,
+     * which is specified directly by the input parameter.
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-11-12
+     */
+    public void generateLifeform(String lifeformType) {
+        //VC - creates a new lifeform of the same type and adds it to this tile
+        LifeForm newResidentLifeform =
+                mTileLifeFormFactory.makeLifeForm(lifeformType, this);
+        this.mOccupants.add(newResidentLifeform);
+    }
+
 
     /**
      * Construct a proper toString method for the class

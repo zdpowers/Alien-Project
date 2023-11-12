@@ -17,8 +17,8 @@ public class LifeFormFactory implements AbsLifeFormFactory {
         // VC - next 2 lines takes something like [...].alieninvasionsim.Lifeforms.Human
         // and returns "human"
         String manipulated_string = life_form_class.toLowerCase();
-        manipulated_string =
-                manipulated_string.substring(manipulated_string.lastIndexOf("."));
+        //manipulated_string =
+          //      manipulated_string.substring(manipulated_string.lastIndexOf("."));
 
         if(manipulated_string.contains("human"))
             return new Human(spawnTile);

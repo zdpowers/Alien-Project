@@ -35,6 +35,10 @@ public class Grid {
      * VC - the instance variable for Singleton implementation
      */
     private static Grid instance;
+    /**
+     * VC - value to adjust the initial human starting population
+     */
+    private int initialSeedPopulation = 3;
 
     /**
      * Constructs the grid layout based on a given
@@ -47,7 +51,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-10-26
      */
-    public Grid(int gridAxisLength) {
+    public Grid(int gridAxisLength) throws NoAvailableTilesException {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
 
@@ -61,6 +65,7 @@ public class Grid {
         // Overwrite the default tiles to place some water and resource tiles
         placeWaterTiles();
         placeResourceTiles();
+        placeLifeFormCluster();
     }
 
     /**
@@ -73,7 +78,7 @@ public class Grid {
      * @since 2023-11-11
      */
 
-    public static Grid getInstance(int gridAxisLength){
+    public static Grid getInstance(int gridAxisLength) throws NoAvailableTilesException {
 
         //VC - Adding this for robustness, should handle any threading issues
         // in the event that we need to add them later.
@@ -299,15 +304,40 @@ public class Grid {
 
     /**
      * This method places an initial population
-     * of LifeForms at a random location.
+     * of Human LifeForms at a random location.
      *
-     * @param lifeForms Array of LifeForms to be
-     *                  placed in a clustered area.
-     * @author N/A
+     * @author Vincent Capra
      * @version 1.0
-     * @since N/A
+     * @since 2023-11-11
      */
-    private void placeLifeFormCluster(ArrayList<LifeForm> lifeForms) {
+    private void placeLifeFormCluster() throws NoAvailableTilesException {
+        int[] humanSeedTile = createRandomCoordinate();
+        boolean availableTerrainTile = false;
+
+        //VC - Loop confirmed that the random tile is a Terrain tile and
+        // thus Humans can be placed there
+        while (!availableTerrainTile) {
+            try {
+                int index = getTileIndex(humanSeedTile);
+                // If this tile is not a ResourceTile
+                if ((mTiles.get(index) instanceof TerrainTile)) {
+                    availableTerrainTile = true;
+                }
+            } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
+            }
+        }
+
+        //VC - gets the proper tile to seed the human population
+        int tileNumber = getTileIndex(humanSeedTile);
+        TerrainTile populationTile = (TerrainTile) mTiles.get(tileNumber);
+
+        //VC - generate as many humans in the random tile as dictated initialSeedPopulation value
+        int humanSeedPopulationCounter = 0;
+        while (humanSeedPopulationCounter < initialSeedPopulation){
+            populationTile.generateLifeform("human");
+            humanSeedPopulationCounter++;
+        }
     }
 
     /**

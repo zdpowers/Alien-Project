@@ -14,8 +14,8 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
-    Context mContext;
-    ArrayList<Tile> mTiles;
+    private Context mContext;
+    private ArrayList<Tile> mTiles;
 
     public GridAdapter(Context context, ArrayList<Tile> tiles) {
         mContext = context;

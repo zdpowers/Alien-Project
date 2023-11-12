@@ -1,8 +1,8 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import android.util.Log;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,16 +130,19 @@ public class Grid {
             mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         }
         try {
             mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         }
         try {
             mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         }
 
 
@@ -151,31 +154,37 @@ public class Grid {
             try {
                 pointer1 = mutateCoordinatePointer(pointer1);
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer2 = mutateCoordinatePointer(pointer2);
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer3 = mutateCoordinatePointer(pointer3);
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
             }
         }
     }
@@ -217,6 +226,7 @@ public class Grid {
                 permutations.add(new int[]{origin[0], origin[1] - 1});
             }
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
         // Check to the right of this tile
@@ -226,6 +236,7 @@ public class Grid {
                 permutations.add(new int[]{origin[0] + 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
         // Check below this tile
@@ -235,6 +246,7 @@ public class Grid {
                 permutations.add(new int[]{origin[0], origin[1] + 1});
             }
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
         // Check to the left of this tile
@@ -244,6 +256,7 @@ public class Grid {
                 permutations.add(new int[]{origin[0] - 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
         // Choose a random result

@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 import java.util.Random;
 
 /**

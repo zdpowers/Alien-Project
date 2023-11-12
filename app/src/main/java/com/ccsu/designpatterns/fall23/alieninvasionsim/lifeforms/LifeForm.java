@@ -1,5 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 
@@ -33,7 +34,7 @@ public abstract class LifeForm
      * Constructor.
      * @param spawn_tile the tile in which the object is placed.
      */
-    LifeForm(TerrainTile spawn_tile){
+    public LifeForm(TerrainTile spawn_tile){
         tileOfResidence = spawn_tile;
     }
 
@@ -44,7 +45,7 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-12-11
      */
-    LifeForm(LifeForm source) {
+    public LifeForm(LifeForm source) {
         this.tileOfResidence = source.tileOfResidence;
         this.amountOf_Water = source.amountOf_Water;
         this.amountOf_Uranium = source.amountOf_Uranium;

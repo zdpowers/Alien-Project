@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Grid;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 // GridCell.java
 import java.util.HashMap;
 import java.util.Map;

@@ -381,4 +381,62 @@ public class Grid {
     public ArrayList<Tile> getTiles() {
         return (ArrayList) mTiles;
     }
+    /**
+     * Uses the GridCell class to apply and get the buff and debuff values
+     *
+     * @author Rocky Trinh
+     * @version 1.0
+     * @since 2023-12-11
+     */
+    public void getBuffs(String[] args) {
+        GridCell cell = new GridCell();
+
+        //Apply the buffs/debuffs
+        cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
+        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
+        cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF, 2);
+        cell.applyBuffDebuff(BuffDebuffTypes.HP_BUFF, 1);
+        cell.applyBuffDebuff(BuffDebuffTypes.HP_DEBUFF, -1);
+        cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF, -1);
+        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -1);
+        cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF, -1);
+
+        //Get value(s)
+        int attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
+        int speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+        int defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
+        int hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        int attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
+        int speedDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+        int defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
+        int hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+
+        //display new stats to logger (not sure if we want to this)
+/*      System.out.println("Attack Buff Value: " + attackBuffValue);
+        System.out.println("Defense Debuff value: " + defenseDebuffValue);*/
+
+        //Remove buffs
+        cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_DEBUFF);
+
+        //Get values after removal
+        attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
+        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+        defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
+        hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
+        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+        defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
+        hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+
+/*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
+        System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
+    }
 }
+

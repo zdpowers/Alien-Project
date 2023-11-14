@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.utilities;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,6 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities.EventListener;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 

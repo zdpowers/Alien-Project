@@ -2,7 +2,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import android.util.Log;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities.EventManager;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
 import java.util.ArrayList;

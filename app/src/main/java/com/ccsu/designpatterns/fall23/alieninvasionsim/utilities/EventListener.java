@@ -1,4 +1,4 @@
-package com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities;
+package com.ccsu.designpatterns.fall23.alieninvasionsim.utilities;
 
 /**
  * This is an interface that is to be implemented by any object that needs to be subscribed to the EventManager as a listener.

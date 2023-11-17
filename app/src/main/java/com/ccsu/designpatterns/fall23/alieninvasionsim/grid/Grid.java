@@ -2,6 +2,9 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import android.util.Log;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Human;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
@@ -67,6 +70,7 @@ public class Grid {
         // Overwrite the default tiles to place some water and resource tiles
         placeWaterTiles();
         placeResourceTiles();
+        placeLifeFormCluster();
     }
 
     /**
@@ -313,7 +317,18 @@ public class Grid {
      * @version 1.0
      * @since N/A
      */
-    private void placeLifeFormCluster(ArrayList<LifeForm> lifeForms) {
+    private void placeLifeFormCluster() {
+        int index = 0;
+        Tile tile = mTiles.get(0);
+        while (!(tile instanceof TerrainTile)) {
+            index++;
+            tile = mTiles.get(index);
+        }
+
+        LifeFormFactory lff = new LifeFormFactory();
+        tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) tile));
+        tile = mTiles.get(index + 1);
+        tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) tile));
     }
 
     /**

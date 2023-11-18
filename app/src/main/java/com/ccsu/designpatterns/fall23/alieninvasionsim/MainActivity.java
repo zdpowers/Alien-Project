@@ -2,6 +2,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -25,5 +26,14 @@ public class MainActivity extends AppCompatActivity {
         gridView.setNumColumns((int) Math.sqrt(mSimulationGrid.getGridSize()));
         GridAdapter adapter = new GridAdapter(this, mSimulationGrid.getTiles());
         gridView.setAdapter(adapter);
+
+        // Setup the Reverse Button
+        findViewById(R.id.ibRvs).setOnClickListener(view -> {
+            //TODO Implement reverse functionality here
+        });
+        // Setup the Forward Button
+        findViewById(R.id.ibFwd).setOnClickListener(view -> {
+            mSimulationGrid.progressLifeForms();
+        });
     }
 }

@@ -327,8 +327,10 @@ public class Grid {
 
         LifeFormFactory lff = new LifeFormFactory();
         tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) tile));
+        mLifeForms.add(tile.getOccupant());
         tile = mTiles.get(index + 1);
         tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) tile));
+        mLifeForms.add(tile.getOccupant());
     }
 
     /**

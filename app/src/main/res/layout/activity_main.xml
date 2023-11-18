@@ -19,7 +19,7 @@
         android:layout_marginStart="46dp"
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cvConsole"
+        app:layout_constraintEnd_toStartOf="@+id/clConsole"
         app:layout_constraintStart_toEndOf="@+id/ivBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -32,18 +32,52 @@
             android:numColumns="10"
             android:stretchMode="none"
             tools:listitem="@layout/grid_item" />
+
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvConsole"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clConsole"
         android:layout_width="600dp"
         android:layout_height="0dp"
-        android:background="@color/white"
-        android:alpha=".3"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/rounded_white_background"
         app:cardCornerRadius="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cvGrid"
+        app:layout_constraintBottom_toTopOf="@+id/clControls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cvGrid"
         app:layout_constraintTop_toTopOf="@id/cvGrid" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clControls"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_white_background"
+        app:layout_constraintBottom_toBottomOf="@+id/cvGrid"
+        app:layout_constraintEnd_toEndOf="@+id/clConsole"
+        app:layout_constraintStart_toStartOf="@+id/clConsole">
+
+        <ImageButton
+            android:id="@+id/ibRvs"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@null"
+            android:src="@drawable/rvs_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ibFwd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ibFwd"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@null"
+            android:src="@drawable/fwd_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ibRvs"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

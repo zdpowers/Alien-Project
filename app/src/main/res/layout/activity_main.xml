@@ -12,28 +12,38 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvGrid"
-        android:layout_width="1000dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clGridStatusEffect"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        app:cardCornerRadius="24dp"
+        android:padding="46dp"
+        android:background="@drawable/rounded_white_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/clConsole"
-        app:layout_constraintStart_toEndOf="@+id/ivBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <GridView
-            android:id="@+id/gvGrid"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnWidth="100dp"
-            android:numColumns="10"
-            android:stretchMode="none"
-            tools:listitem="@layout/grid_item" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvGrid"
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.cardview.widget.CardView>
+            <GridView
+                android:id="@+id/gvGrid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnWidth="100dp"
+                android:numColumns="10"
+                android:stretchMode="none"
+                tools:listitem="@layout/grid_item" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clConsole"
@@ -44,15 +54,15 @@
         app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toTopOf="@+id/clControls"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cvGrid"
-        app:layout_constraintTop_toTopOf="@id/cvGrid" />
+        app:layout_constraintStart_toEndOf="@+id/clGridStatusEffect"
+        app:layout_constraintTop_toTopOf="@id/clGridStatusEffect" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clControls"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_white_background"
-        app:layout_constraintBottom_toBottomOf="@+id/cvGrid"
+        app:layout_constraintBottom_toBottomOf="@+id/clGridStatusEffect"
         app:layout_constraintEnd_toEndOf="@+id/clConsole"
         app:layout_constraintStart_toStartOf="@+id/clConsole">
 

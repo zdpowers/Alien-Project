@@ -5,6 +5,8 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import java.lang.Math;
 import java.util.ArrayList;
+//import java.util.List;
+import java.util.*;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  */
 public class TerrainTile extends Tile {
     //VC - not sure if this being an arraylist is the best choice
-    private ArrayList<LifeForm> mOccupants;
+    private List<LifeForm> mOccupants = new ArrayList<>();
     private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
     public TerrainTile(int column, int row) {

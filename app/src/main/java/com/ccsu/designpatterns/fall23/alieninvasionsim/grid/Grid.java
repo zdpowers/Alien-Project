@@ -402,7 +402,7 @@ public class Grid {
         }
     }
 
-    public ArrayList<Tile> getTiles() {
-        return (ArrayList) mTiles;
+    public List<Tile> getTiles() {
+        return mTiles;
     }
 }

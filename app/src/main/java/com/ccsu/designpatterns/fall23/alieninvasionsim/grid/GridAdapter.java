@@ -12,12 +12,13 @@ import androidx.cardview.widget.CardView;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GridAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<Tile> mTiles;
+    private List<Tile> mTiles = new ArrayList<>();
 
-    public GridAdapter(Context context, ArrayList<Tile> tiles) {
+    public GridAdapter(Context context, List<Tile> tiles) {
         mContext = context;
         mTiles = tiles;
     }

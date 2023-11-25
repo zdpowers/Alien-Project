@@ -14,10 +14,10 @@ public abstract class LifeForm
         implements ProgressibleLifeForm, EventListener {
 
     /** Resource amounts held by this life form. */
-    private int amountOf_Water;
-    private int amountOf_Uranium;
-    private int amountOf_Oil;
-    private int amountOf_Iron;
+    private int amountOf_Water = 0;
+    private int amountOf_Uranium = 0;
+    private int amountOf_Oil = 0;
+    private int amountOf_Iron = 0;
 
     /** Rating modifiers for this life form. */
     private static int defenseRating;   // Amount to reduce incoming damage by
@@ -29,6 +29,7 @@ public abstract class LifeForm
     private static int miningRating;
 
     TerrainTile tileOfResidence;
+    private int populationCount= 1;
 
     /**
      * Constructor.
@@ -36,6 +37,13 @@ public abstract class LifeForm
      */
     public LifeForm(TerrainTile spawn_tile){
         tileOfResidence = spawn_tile;
+    }
+
+    public int getPopulationCount(){
+        return populationCount;
+    }
+    public void setPopulationCount(int populationIncrement){
+        populationCount += populationIncrement;
     }
 
     /**

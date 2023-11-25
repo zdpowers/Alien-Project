@@ -2,6 +2,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import java.util.Random;
 
 /**
  * A class to define the behavior of Human lifeforms within the simulation
@@ -38,11 +39,12 @@ public class Human extends LifeForm {
      */
     @Override
     protected void reproduce() {
-        //VC - Need to run some chance that this human reproduces,
-        // then if true, call the TerrainTile that this human is in
-        // for method
+        Random randomNum = new Random();
+        if (tileOfResidence.getOccupant().getPopulationCount() > 2
+                && randomNum.nextInt(5) == 3){
 
-        tileOfResidence.generateLifeform(); //VC - may need to pass in the type?
+        }
+
     }
 
     @Override

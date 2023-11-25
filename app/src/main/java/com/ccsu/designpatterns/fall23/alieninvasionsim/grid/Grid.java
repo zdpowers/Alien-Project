@@ -320,9 +320,10 @@ public class Grid {
         LifeFormFactory lff = new LifeFormFactory();
         int humanTileCount = 0, alienTileCount = 0;
         Tile temp_tile;
+        int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
         while (humanTileCount < 5) {
-            int[] coord = createRandomCoordinate(); // Coordinate to check
+            coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
                 temp_tile = mTiles.get(index);
@@ -340,17 +341,17 @@ public class Grid {
         }
 
         while (alienTileCount < 3) {
-            int[] coord = createRandomCoordinate(); // Coordinate to check
+            coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
                 temp_tile = mTiles.get(index);
                 // If this tile is not already a ResourceTile
                 if (temp_tile instanceof TerrainTile &&
                         !((TerrainTile) temp_tile).tileIsOccupied()) {
-                    temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
+                    temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
 
-                    humanTileCount++;
+                    alienTileCount++;
                 }
             } catch (NoAvailableTilesException e) {
                 Log.e("Grid", e.getMessage());

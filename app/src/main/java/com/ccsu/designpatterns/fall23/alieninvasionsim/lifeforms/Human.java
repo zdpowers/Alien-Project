@@ -40,7 +40,7 @@ public class Human extends LifeForm {
     @Override
     protected void reproduce() {
         Random randomNum = new Random();
-        if (tileOfResidence.getOccupant().getPopulationCount() > 2
+        if (super.getPopulationCount() > 2
                 && randomNum.nextInt(5) == 3){
 
         }

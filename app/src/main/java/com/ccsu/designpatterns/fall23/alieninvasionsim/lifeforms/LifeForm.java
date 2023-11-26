@@ -28,7 +28,7 @@ public abstract class LifeForm
     private static int reproductionRating;
     private static int miningRating;
 
-    TerrainTile tileOfResidence;
+    private TerrainTile tileOfResidence;
     private int populationCount= 1;
 
     /**
@@ -44,6 +44,13 @@ public abstract class LifeForm
     }
     public void setPopulationCount(int populationIncrement){
         populationCount += populationIncrement;
+    }
+
+    public TerrainTile getTileOfResidence() {
+        return tileOfResidence;
+    }
+    public void setTileOfResidence(TerrainTile inputTile){
+        tileOfResidence = inputTile;
     }
 
     /**

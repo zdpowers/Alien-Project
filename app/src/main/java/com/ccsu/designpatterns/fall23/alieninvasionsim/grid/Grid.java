@@ -469,7 +469,7 @@ public class Grid {
      * @since 2023-29-10
      */
     public static class GridMemento {
-        private ArrayList<Tile> gridState;
+        private List<Tile> gridState;
 
         /**
          * Constructor
@@ -477,7 +477,7 @@ public class Grid {
          * @author Zack Powers
          * @since 2023-29-10
          */
-        private GridMemento(ArrayList<Tile> gridState) {
+        private GridMemento(List<Tile> gridState) {
             this.gridState = gridState;
         }
 
@@ -487,7 +487,7 @@ public class Grid {
          * @author Zack Powers
          * @since 2023-29-10
          */
-        private ArrayList<Tile> getGridState() {
+        private List<Tile> getGridState() {
             return gridState;
         }
     }

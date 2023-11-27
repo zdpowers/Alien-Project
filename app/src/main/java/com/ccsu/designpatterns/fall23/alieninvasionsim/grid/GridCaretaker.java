@@ -10,7 +10,7 @@ import java.util.Stack;
  */
 public class GridCaretaker {
 
-    private Stack<GridMemento> mementoList = new Stack<>();
+    private Stack<Grid.GridMemento> mementoList = new Stack<>();
 
     /**
      * Constructor
@@ -23,7 +23,7 @@ public class GridCaretaker {
      * @author Zack Powers
      * @since 2023-29-10
      */
-    public void add(GridMemento state) {
+    public void add(Grid.GridMemento state) {
         mementoList.push(state);
     }
 
@@ -33,7 +33,7 @@ public class GridCaretaker {
      * @author Zack Powers
      * @since 2023-29-10
      */
-    public GridMemento get() {
+    public Grid.GridMemento get() {
         return mementoList.pop();
     }
 }

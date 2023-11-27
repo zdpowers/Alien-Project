@@ -44,6 +44,10 @@ public class Grid {
      * An instance of EventManager which is used to maintain and update EventListeners
      */
     private EventManager manager = new EventManager();
+    /**
+     * An instance of GridCaretaker, which is used to store GridMementos
+     */
+    private GridCaretaker gridCaretaker = new GridCaretaker();
 
     /**
      * Constructs the grid layout based on a given
@@ -356,7 +360,9 @@ public class Grid {
      * @since 2023-29-10
      */
     public GridMemento save() {
-        return new GridMemento((ArrayList) mTiles);
+        GridMemento state = new GridMemento((ArrayList) mTiles);
+        gridCaretaker.add(state);
+        return state;
     }
 
     /**
@@ -454,6 +460,36 @@ public class Grid {
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
+    }
+
+    /**
+     * Nested Static Grid memento class
+     * @author Zack Powers
+     * @version 1.1
+     * @since 2023-29-10
+     */
+    public static class GridMemento {
+        private ArrayList<Tile> gridState;
+
+        /**
+         * Constructor
+         * @param gridState the state of the grid that is to be saved in the snapshot
+         * @author Zack Powers
+         * @since 2023-29-10
+         */
+        private GridMemento(ArrayList<Tile> gridState) {
+            this.gridState = gridState;
+        }
+
+        /**
+         * Method to get the grid state.
+         * @return returns the grid state as 2D array
+         * @author Zack Powers
+         * @since 2023-29-10
+         */
+        private ArrayList<Tile> getGridState() {
+            return gridState;
+        }
     }
 }
 

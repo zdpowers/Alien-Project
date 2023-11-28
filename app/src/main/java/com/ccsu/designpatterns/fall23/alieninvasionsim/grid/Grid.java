@@ -231,47 +231,7 @@ public class Grid {
      * @since 2023-11-2
      */
     private int[] mutateCoordinatePointer(int[] origin) throws NoAvailableTilesException {
-        ArrayList<int[]> permutations = new ArrayList<>();
-
-        // Check above this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0], origin[1] - 1});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check to the right of this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0] + 1, origin[1]});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check below this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0], origin[1] + 1});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check to the left of this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0] - 1, origin[1]});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
+        List<int[]> permutations = getNeighboringTiles(origin);
 
         // Choose a random result
         if (!permutations.isEmpty()) { // Check that arraylist is not null
@@ -336,6 +296,7 @@ public class Grid {
                         !((TerrainTile) temp_tile).tileIsOccupied()) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
+                    temp_tile.getOccupant().setPopulationCount(3);
 
                     humanTileCount++;
                 }
@@ -354,6 +315,7 @@ public class Grid {
                         !((TerrainTile) temp_tile).tileIsOccupied()) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
+                    temp_tile.getOccupant().setPopulationCount(2);
 
                     alienTileCount++;
                 }
@@ -516,6 +478,63 @@ public class Grid {
         private List<Tile> getGridState() {
             return gridState;
         }
+    }
+
+    /**
+     * Checks all neighboring tiles for the input and returns a List of available
+     * neighboring tiles.
+     *
+     * @param origin Coordinates of the tile index to retrieve as (x, y).
+     * @return List of available tiles that neighbor the passed in tile
+     * @throws NoAvailableTilesException If a tile is out of bounds and not found.
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-2
+     */
+    public List<int[]> getNeighboringTiles(int[] origin) throws NoAvailableTilesException {
+        List<int[]> neighboringTiles = new ArrayList<>();
+
+        // Check above this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the right of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check below this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the left of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        return neighboringTiles;
     }
 }
 

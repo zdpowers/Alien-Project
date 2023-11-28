@@ -45,19 +45,30 @@ public class GridAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         view = inflater.inflate(R.layout.grid_item, null);
+        ImageView iv = view.findViewById(R.id.ivGridItemImage);
 
         CardView cardView = view.findViewById(R.id.cvTile);
         if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("water")) {
             cardView.setBackgroundColor(Color.rgb(0, 161, 255));
-        } else if (mTiles.get(i) instanceof ResourceTile && !((ResourceTile) mTiles.get(i)).getResourceType().equals("water")) {
+        }
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("iron")) {
             cardView.setBackgroundColor(Color.GRAY);
-        } else {
+            iv.setImageResource(R.drawable.iron);
+        }
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("uranium")) {
+            cardView.setBackgroundColor(Color.GRAY);
+            iv.setImageResource(R.drawable.uranium);
+        }
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("oil")) {
+            cardView.setBackgroundColor(Color.GRAY);
+            iv.setImageResource(R.drawable.oil_barrel);
+        }
+        else {
             cardView.setBackgroundColor(Color.rgb(149, 246, 121));
         }
 
         LifeForm occupant = mTiles.get(i).getOccupant();
         if (occupant != null) {
-            ImageView iv = view.findViewById(R.id.ivGridItemImage);
             iv.setImageResource((occupant instanceof Martian) ?
                     R.drawable.alien : R.drawable.human_1);
 

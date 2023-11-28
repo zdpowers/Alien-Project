@@ -22,6 +22,10 @@ public abstract class Tile {
         mRowPosition = row;
     }
 
+    public int[] getTileCoordinates(){
+        return new int[]{mColumnPosition, mRowPosition};
+    }
+
     public LifeForm getOccupant() {
         return occupant;
     }

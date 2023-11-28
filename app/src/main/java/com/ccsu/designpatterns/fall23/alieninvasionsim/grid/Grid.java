@@ -116,7 +116,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-10-26
      */
-    private void placeWaterTiles() {
+    private void placeWaterTiles(WeatherStrategy weatherStrategy) {
         int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3; // Allowed amount of water
         int currentNumOfWaterTiles = 0; // Amount of water tiles accumulator
 
@@ -155,6 +155,15 @@ public class Grid {
             Log.e("Grid", e.getMessage());
         }
 
+        //Adjust the number of water tiles based on the weather strategy
+
+        if (weatherStrategy instanceof DroughtWeatherStrategy) {
+            maxNumOfWaterTiles /= 2; //This line will reduce the max number of water tiles by half during a Drought
+        }
+
+        if(weatherStrategy instanceof FloodingWeatherStrategy) {
+            maxNumOfWaterTiles  *= 2; //This line will increase the max number of water tiles by 2 during a flood
+        }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
@@ -311,8 +320,6 @@ public class Grid {
      * This method places an initial population
      * of LifeForms at a random location.
      *
-     * @param lifeForms Array of LifeForms to be
-     *                  placed in a clustered area.
      * @author N/A
      * @version 1.0
      * @since N/A
@@ -399,14 +406,14 @@ public class Grid {
         return (ArrayList) mTiles;
     }
     /**
-     * Uses the GridCell class to apply and get the buff and debuff values
+     * Uses the tile class to apply and get the buff and debuff values
      *
      * @author Rocky Trinh
      * @version 1.0
      * @since 2023-12-11
      */
     public void getBuffs(String[] args) {
-        GridCell cell = new GridCell();
+        Tile cell = mTiles.get(0);
 
         //Apply the buffs/debuffs
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
@@ -454,6 +461,20 @@ public class Grid {
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
+
+        // Apply the weather effects using the strategy pattern
+        WeatherContext weatherContext = new WeatherContext();
+
+        // Set the Sunny weather strategy
+        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
+        // Set the Drought weather strategy
+        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+        // Set the Flooding weather strategy
+        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+        // Set the Blizzard weather strategy
+        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+        // Apply the weather effect to the cells
+        weatherContext.applyWeather(cell);
     }
 }
 

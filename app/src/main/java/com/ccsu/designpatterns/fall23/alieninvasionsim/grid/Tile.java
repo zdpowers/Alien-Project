@@ -2,6 +2,9 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Abstract data class which holds references to shared
  * data between different tile types in the simulation.
@@ -20,6 +23,7 @@ public abstract class Tile {
         // Need to place the tile in the layout visually
         mColumnPosition = column;
         mRowPosition = row;
+        this.buffsDebuffs = new HashMap<>();
     }
 
     public LifeForm getOccupant() {
@@ -28,5 +32,21 @@ public abstract class Tile {
 
     public void setOccupant(LifeForm occupant) {
         this.occupant = occupant;
+    }
+
+
+    //These are the buff and debuff methods
+    private Map<BuffDebuffTypes, Integer> buffsDebuffs;
+
+    public void applyBuffDebuff(BuffDebuffTypes type, int value) {
+        buffsDebuffs.put(type, value);
+    }
+
+    public void removeBuffDebuff(BuffDebuffTypes type) {
+        buffsDebuffs.remove(type);
+    }
+
+    public int getBuffDebuffValue(BuffDebuffTypes type) {
+        return buffsDebuffs.getOrDefault(type, 0);
     }
 }

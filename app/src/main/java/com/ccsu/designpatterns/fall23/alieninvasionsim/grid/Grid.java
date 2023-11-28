@@ -356,7 +356,7 @@ public class Grid {
     /**
      * Method to restore the grid to a previous state from a memento object
      *
-     * @param state a memento object containing a grid state
+     * @param state a memento object containing a grid statez
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10
@@ -375,7 +375,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-2
      */
-    private int getTileIndex(int[] coords) throws NoAvailableTilesException {
+    public int getTileIndex(int[] coords) throws NoAvailableTilesException {
         // Check for invalid coordinates
         if (coords[0] < 0 || coords[1] < 0 || // Negative value coordinates
                 coords[0] >= mGridAxisLength || coords[1] >= mGridAxisLength) { // Exceeding grid bounds
@@ -489,9 +489,9 @@ public class Grid {
      * @throws NoAvailableTilesException If a tile is out of bounds and not found.
      * @author Joseph Lumpkin
      * @version 1.0
-     * @since 2023-11-2
+     * @since 2023-11-28
      */
-    public List<int[]> getNeighboringTiles(int[] origin) throws NoAvailableTilesException {
+    public List<int[]> getNeighboringTiles(int[] origin) {
         List<int[]> neighboringTiles = new ArrayList<>();
 
         // Check above this tile

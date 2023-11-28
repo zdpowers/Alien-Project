@@ -1,8 +1,14 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A class to create a generic life form within the simulation
@@ -29,6 +35,10 @@ public abstract class LifeForm
     private static int miningRating;
 
     private TerrainTile tileOfResidence;
+    private List<TerrainTile> neighboringTerrain;
+    private List<ResourceTile> neighboringResources;
+    private boolean haveNeighboringTiles = false;
+
     private int populationCount= 1;
 
     /**
@@ -98,7 +108,26 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-26-10
      */
-    protected abstract void gather();
+    protected void gather() {
+        int[] currentCoordinates = getTileOfResidence().getTileCoordinates();
+        String adjoining_resources;
+        try{
+            neighboringTerrain =
+                    getNeighboringTerrainTileReferences(tileOfResidence.getTileCoordinates());}
+        catch(NoAvailableTilesException NAT){
+            System.out.println("Some neighboring tiles may not be available");
+        }
+
+        try{
+            neighboringResources =
+                    getNeighboringResourceTileReferences(tileOfResidence.getTileCoordinates());}
+        catch(NoAvailableTilesException NAT){
+            System.out.println("Some neighboring tiles may not be available");
+        }
+        haveNeighboringTiles = true;
+
+        System.out.println("Human at " + currentCoordinates + "is next to ");
+    }
 
     /**
      * A method to create more LifeForms via reproduction.
@@ -151,4 +180,54 @@ public abstract class LifeForm
 
     @Override
     public void update(String data) {}
+
+    /**
+     * Method takes an input coordinate for this tile as a [col, row] array and returns
+     * references to all neighboring Terrain Tile Objects
+     * @return List of neighboring Terrain Tiles
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    private List<TerrainTile> getNeighboringTerrainTileReferences(int[] inputCoordinates) throws NoAvailableTilesException {
+        List<TerrainTile> returnTileReferences = new ArrayList<>();
+        List<int[]> neighborTiles =
+                Grid.getInstance(10).getNeighboringTiles(inputCoordinates);
+        Iterator<int[]> tileIterator = neighborTiles.listIterator();
+
+        //VC - Loops over all surrounding tiles to check if a Terrain Tile and adds reference to Array List
+        while(tileIterator.hasNext()) {
+            int[] currentTileCoordinates = tileIterator.next();
+            int index = Grid.getInstance(10).getTileIndex(currentTileCoordinates);
+            if(Grid.getInstance(10).getTiles().get(index) instanceof TerrainTile){
+                returnTileReferences.add((TerrainTile) Grid.getInstance(10).getTiles().get(index));
+            }
+        }
+        return returnTileReferences;
+    }
+
+    /**
+     * Method takes an input coordinate for this tile as a [col, row] array and returns
+     * references to all neighboring Resource Tile Objects
+     * @return List of neighboring Resource Tiles
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    private List<ResourceTile> getNeighboringResourceTileReferences(int[] inputCoordinates) throws NoAvailableTilesException {
+        List<ResourceTile> returnTileReferences = new ArrayList<>();
+        List<int[]> neighborTiles =
+                Grid.getInstance(10).getNeighboringTiles(inputCoordinates);
+        Iterator<int[]> tileIterator = neighborTiles.listIterator();
+
+        //VC - Loops over all surrounding tiles to check if a Resource Tile and adds reference to Array List
+        while(tileIterator.hasNext()) {
+            int[] currentTileCoordinates = tileIterator.next();
+            int index = Grid.getInstance(10).getTileIndex(currentTileCoordinates);
+            if(Grid.getInstance(10).getTiles().get(index) instanceof ResourceTile){
+                returnTileReferences.add((ResourceTile) Grid.getInstance(10).getTiles().get(index));
+            }
+        }
+        return returnTileReferences;
+    }
 }

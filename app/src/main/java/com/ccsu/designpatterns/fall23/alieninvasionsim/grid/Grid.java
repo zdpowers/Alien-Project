@@ -315,26 +315,52 @@ public class Grid {
      * This method places an initial population
      * of LifeForms at a random location.
      *
-     * @param lifeForms Array of LifeForms to be
-     *                  placed in a clustered area.
-     * @author N/A
+     * @author Joseph Lumpkin
      * @version 1.0
-     * @since N/A
+     * @since 2023-11-16
      */
     private void placeLifeFormCluster() {
         int index = 0;
-        Tile tile = mTiles.get(0);
-        while (!(tile instanceof TerrainTile)) {
-            index++;
-            tile = mTiles.get(index);
+        LifeFormFactory lff = new LifeFormFactory();
+        int humanTileCount = 0, alienTileCount = 0;
+        Tile temp_tile;
+        int[] coord;
+        //VC - This loop places 4 tiles per resource type on the grid
+        while (humanTileCount < 5) {
+            coord = createRandomCoordinate(); // Coordinate to check
+            try {
+                index = getTileIndex(coord);
+                temp_tile = mTiles.get(index);
+                // If this tile is terrain and unoccupied
+                if (temp_tile instanceof TerrainTile &&
+                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                    temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
+                    mLifeForms.add(temp_tile.getOccupant());
+
+                    humanTileCount++;
+                }
+            } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
+            }
         }
 
-        LifeFormFactory lff = new LifeFormFactory();
-        tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) tile));
-        mLifeForms.add(tile.getOccupant());
-        tile = mTiles.get(index + 1);
-        tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) tile));
-        mLifeForms.add(tile.getOccupant());
+        while (alienTileCount < 3) {
+            coord = createRandomCoordinate(); // Coordinate to check
+            try {
+                index = getTileIndex(coord);
+                temp_tile = mTiles.get(index);
+                // If this tile is not already a ResourceTile
+                if (temp_tile instanceof TerrainTile &&
+                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                    temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
+                    mLifeForms.add(temp_tile.getOccupant());
+
+                    alienTileCount++;
+                }
+            } catch (NoAvailableTilesException e) {
+                Log.e("Grid", e.getMessage());
+            }
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
@@ -59,6 +60,10 @@ public class GridAdapter extends BaseAdapter {
             ImageView iv = view.findViewById(R.id.ivGridItemImage);
             iv.setImageResource((occupant instanceof Martian) ?
                     R.drawable.alien : R.drawable.human_1);
+
+            //shows the population on the tile
+            TextView tv = view.findViewById(R.id.tilePopulation);
+            tv.setText(Integer.toString(occupant.getPopulationCount()));
         }
         return view;
     }

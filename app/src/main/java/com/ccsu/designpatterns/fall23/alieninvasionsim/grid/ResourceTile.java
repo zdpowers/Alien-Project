@@ -5,7 +5,7 @@ import java.util.Random;
  * A class to build a resource tile. This tile cannot be occupied.
  * This type of tile has a finite or infinite (water)amount of a resource.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-26
  */
@@ -40,6 +40,11 @@ public class ResourceTile extends Tile {
      */
     public String getResourceType() {
         return resourceType;
+    }
+
+    @Override
+    public void accept(TileVisitor visitor) {
+        visitor.visitResourceTile(this);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.List;
  * occupied by humans or a single race/species of aliens. The Class of
  * occupant must be homogenous at all times.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-29
  */
@@ -80,6 +80,11 @@ public class TerrainTile extends Tile {
         //VC - creates a new lifeform of the same type and adds it to this tile
         //occupant.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
 
+    }
+
+    @Override
+    public void accept(TileVisitor visitor) {
+        visitor.visitTerrainTile(this);
     }
 
     /**

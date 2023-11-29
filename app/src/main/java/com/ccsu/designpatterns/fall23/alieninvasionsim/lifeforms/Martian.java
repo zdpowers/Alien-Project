@@ -18,11 +18,12 @@ public class Martian extends LifeForm {
     /**
      * Prototype constructor. This constructor is used when using the clone method to create a copy of a LifeForm object
      * @param source the source object which is to be cloned. The new object is initialized with the parameters of the source object.
+     * @param residence the new TerrainTile that the LifeForm will be cloned to
      * @author Zack Powers
      * @since 2023-12-11
      */
-    Martian(Martian source) {
-        super(source);
+    Martian(Martian source, TerrainTile residence) {
+        super(source, residence);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Martian extends LifeForm {
     }
 
     @Override
-    public LifeForm clone() {
-        return new Martian(this);
+    public LifeForm clone(TerrainTile residence) {
+        return new Martian(this, residence);
     }
 }

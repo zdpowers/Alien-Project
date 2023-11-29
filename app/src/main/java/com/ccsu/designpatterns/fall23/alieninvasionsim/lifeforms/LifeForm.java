@@ -70,8 +70,8 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-12-11
      */
-    public LifeForm(LifeForm source) {
-        this.tileOfResidence = source.tileOfResidence;
+    public LifeForm(LifeForm source, TerrainTile residence) {
+        this.tileOfResidence = residence;
         this.amountOf_Water = source.amountOf_Water;
         this.amountOf_Uranium = source.amountOf_Uranium;
         this.amountOf_Oil = source.amountOf_Oil;
@@ -205,12 +205,13 @@ public abstract class LifeForm
     /**
      * Abstract clone method for the prototype creational pattern.
      * Called to create a copy of lifeForm object to populate neighboring tiles.
+     * @param residence the new TerrainTile that the LifeForm will be cloned to
      * @return a copy of the LifeForm object that the method is called on.
      * @author Zack Powers
      * @version 1.0
      * @since 2023-12-11
      */
-    public abstract LifeForm clone();
+    public abstract LifeForm clone(TerrainTile residence);
 
     @Override
     public void update(String data) {}

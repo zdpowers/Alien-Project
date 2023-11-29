@@ -6,7 +6,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
  * Abstract data class which holds references to shared
  * data between different tile types in the simulation.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-26
  */
@@ -33,6 +33,14 @@ public abstract class Tile {
     public void setOccupant(LifeForm occupant) {
         this.occupant = occupant;
     }
+
+    /**
+     * Method to accept visitor objects.
+     * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
+     * @author Zack Powers
+     * @version 1.o
+     */
+    public abstract void accept(TileVisitor visitor);
 
     /**
      * Construct a proper toString method for the class

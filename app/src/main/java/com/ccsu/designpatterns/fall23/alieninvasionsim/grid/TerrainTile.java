@@ -83,19 +83,6 @@ public class TerrainTile extends Tile {
     }
 
     /**
-     * Construct a proper toString method for the class
-     *
-     * @author Vincent Capra
-     * @return String indicating the tile description
-     * @version 1.0
-     * @since 2023-11-6
-     */
-    @Override
-    public String toString() {
-        return "Column: " + this.mColumnPosition +  ", Row: " + this.mRowPosition;
-    }
-
-    /**
      * Construct a proper equals method for the class
      *
      * @author Vincent Capra

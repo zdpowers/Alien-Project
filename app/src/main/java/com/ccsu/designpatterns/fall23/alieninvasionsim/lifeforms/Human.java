@@ -25,11 +25,13 @@ public class Human extends LifeForm {
         super(source);
     }
 
+/*
     @Override
     protected void gather() {
         int[] currentCoordinates = super.getTileOfResidence().getTileCoordinates();
 
     }
+*/
 
     /**
      * method to possibly add another human to the tile that this

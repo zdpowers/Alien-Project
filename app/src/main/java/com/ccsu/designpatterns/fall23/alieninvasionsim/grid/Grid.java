@@ -231,7 +231,7 @@ public class Grid {
      * @since 2023-11-2
      */
     private int[] mutateCoordinatePointer(int[] origin) throws NoAvailableTilesException {
-        List<int[]> permutations = getNeighboringTiles(origin);
+        List<int[]> permutations = getNeighboringTerrainTiles(origin);
 
         // Choose a random result
         if (!permutations.isEmpty()) { // Check that arraylist is not null
@@ -286,7 +286,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 5) {
+        while (humanTileCount < 3) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -305,7 +305,7 @@ public class Grid {
             }
         }
 
-        while (alienTileCount < 3) {
+        while (alienTileCount < 1) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -385,7 +385,7 @@ public class Grid {
             return 0;
         } else {
             // y * mGridAxisLength, add in the x value, and subtract 1 because arrays start at 0
-            return (coords[1] * mGridAxisLength) + coords[0] - 1;
+            return (coords[1] * mGridAxisLength) + coords[0]; // - 1;
         }
     }
 
@@ -482,7 +482,7 @@ public class Grid {
 
     /**
      * Checks all neighboring tiles for the input and returns a List of available
-     * neighboring tiles.
+     * neighboring Terrain tiles.
      *
      * @param origin Coordinates of the tile index to retrieve as (x, y).
      * @return List of available tiles that neighbor the passed in tile
@@ -491,8 +491,9 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-28
      */
-    public List<int[]> getNeighboringTiles(int[] origin) {
+    public List<int[]> getNeighboringTerrainTiles(int[] origin) {
         List<int[]> neighboringTiles = new ArrayList<>();
+
 
         // Check above this tile
         try {
@@ -528,6 +529,64 @@ public class Grid {
         try {
             int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
             if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        return neighboringTiles;
+    }
+
+    /**
+     * Checks all neighboring tiles for the input and returns a List of available
+     * coordinates of neighboring Resource tiles.
+     *
+     * @param origin Coordinates of the tile index to retrieve as (x, y).
+     * @return List of available tiles that neighbor the passed in tile
+     * @throws NoAvailableTilesException If a tile is out of bounds and not found.
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public List<int[]> getNeighboringResourceTiles(int[] origin) {
+        List<int[]> neighboringTiles = new ArrayList<>();
+
+
+        // Check above this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the right of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check below this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the left of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
+            if (mTiles.get(index) instanceof ResourceTile) {
                 neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {

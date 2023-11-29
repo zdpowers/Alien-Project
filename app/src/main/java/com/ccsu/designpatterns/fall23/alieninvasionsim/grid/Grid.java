@@ -2,6 +2,8 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Human;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
@@ -27,14 +29,17 @@ public class Grid {
      * number of elements along the same horizontal or vertical line.
      */
     private int mGridAxisLength;
+
     /**
      * A list of all LifeForms in the grid
      */
     private List<LifeForm> mLifeForms = new ArrayList<>();
+
     /**
      * A list of all tiles in the grid
      */
     private List<Tile> mTiles = new ArrayList<>();
+
     /**
      * VC - the instance variable for Singleton implementation
      */
@@ -44,10 +49,17 @@ public class Grid {
      * An instance of EventManager which is used to maintain and update EventListeners
      */
     private EventManager manager = new EventManager();
+
     /**
      * An instance of GridCaretaker, which is used to store GridMementos
      */
     private GridCaretaker gridCaretaker = new GridCaretaker();
+
+    /**
+     * The current year for the simulation.
+     */
+    private MutableLiveData<Integer> mYear = new MutableLiveData<>();
+
 
     /**
      * Constructs the grid layout based on a given
@@ -71,6 +83,8 @@ public class Grid {
                 mTiles.add(new TerrainTile(column, row));
             }
         }
+        // Initialize the year
+        mYear.setValue(0);
         // Overwrite the default tiles to place some water and resource tiles
         placeWaterTiles();
         placeResourceTiles();
@@ -87,7 +101,7 @@ public class Grid {
      * @since 2023-11-11
      */
 
-    public static Grid getInstance(int gridAxisLength){
+    public static Grid getInstance(int gridAxisLength) {
 
         //VC - Adding this for robustness, should handle any threading issues
         // in the event that we need to add them later.
@@ -330,12 +344,31 @@ public class Grid {
      *
      * @author Rocky Trinh
      * @version 1.0
-     * @since 2023-29-10
+     * @since 2023-10-29
      */
-    public void progressLifeForms() {
+    private void progressLifeForms() {
         for (LifeForm i : mLifeForms) {
             i.progress(this);
         }
+    }
+
+    /**
+     * Handle presses for simulation progression.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public void progressSimulation() {
+        int year = mYear.getValue() + 1;
+        // If progressing further than the current year
+        if (year > gridCaretaker.getLength() - 1) {
+            // Generate the progression and save it into a new memento
+            progressLifeForms();
+            //TODO Lastly in this statement, take a memento
+        }
+        // Set the value and allow the observer to load the memento for display
+        mYear.setValue(year);
     }
 
     /**
@@ -536,5 +569,17 @@ public class Grid {
 
         return neighboringTiles;
     }
-}
 
+    /**
+     * Get the simulation year observable.
+     *
+     * @return mYear   - Simulation year observable.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public MutableLiveData<Integer> getYear() {
+        return mYear;
+    }
+}

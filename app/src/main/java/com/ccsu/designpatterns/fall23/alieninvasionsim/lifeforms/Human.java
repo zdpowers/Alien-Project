@@ -25,10 +25,13 @@ public class Human extends LifeForm {
         super(source);
     }
 
+/*
     @Override
     protected void gather() {
+        int[] currentCoordinates = super.getTileOfResidence().getTileCoordinates();
 
     }
+*/
 
     /**
      * method to possibly add another human to the tile that this
@@ -40,9 +43,11 @@ public class Human extends LifeForm {
     @Override
     protected void reproduce() {
         Random randomNum = new Random();
+
+        //VC - if there are 2 humans and some RNG to increase the population
         if (super.getPopulationCount() > 2
                 && randomNum.nextInt(5) == 3){
-
+            super.setPopulationCount(1);
         }
 
     }

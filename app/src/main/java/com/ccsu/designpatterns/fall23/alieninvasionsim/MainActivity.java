@@ -6,9 +6,13 @@ import androidx.lifecycle.Observer;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.GridAdapter;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private Grid mSimulationGrid;
@@ -52,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
      * @since
      */
     private void updateDisplay(int year) {
+        TextView tvYear = findViewById(R.id.tvYear);
+        tvYear.setText(String.format(Locale.US, "Year: %d", year));
         //TODO add code to iterate and print logs to the console here
         //findViewById(R.id.tvConsole);
     }

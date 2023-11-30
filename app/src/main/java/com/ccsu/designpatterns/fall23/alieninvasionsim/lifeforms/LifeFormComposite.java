@@ -84,7 +84,7 @@ public class LifeFormComposite extends LifeForm {
      * @return null because this class is not to be cloned
      */
     @Override
-    public LifeForm clone() {
+    public LifeForm clone(TerrainTile residence) {
         return null;
     }
 }

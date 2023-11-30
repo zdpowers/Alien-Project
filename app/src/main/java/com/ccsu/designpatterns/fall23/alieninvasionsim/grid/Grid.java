@@ -341,16 +341,42 @@ public class Grid {
     }
 
     /**
-     * NOTE: NEED TO EDIT THIS TO MAKE DEEP COPY OF THE GRID
+     * Get an iterator for the Grid
+     * @return GridTileIterator object
+     * @author Zack Powers
+     * @since 2023-30-11
+     */
+    public Iterator iterator() {
+        return this.new GridTileIterator();
+    }
+
+    /**
+     * Creates a deep copy of the mTiles ArrayList
+     * @return returns a List of Tiles identical to mTiles
+     * @author Zack Powers
+     * @since 2023-30-11
+     */
+    private List<Tile> deepCopyGrid() {
+        List<Tile> deepcopy = new ArrayList<>(); // New ArrayList to populate
+        Iterator iter = this.iterator(); // Iterator for the current Grid
+        CloneTileVisitor visitor = new CloneTileVisitor(); // Visitor to deep copy each tile
+        while (iter.hasNext()) {
+            Tile next = (Tile) iter.next();
+            deepcopy.add(next);
+        }
+        return deepcopy;
+    }
+
+    /**
      * Method to create memento object to save the grid's state
-     *
      * @return returns a memento object representing the grid's state
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10
      */
     public GridMemento save() {
-        GridMemento state = new GridMemento((ArrayList) mTiles);
+        List<Tile> gridCopy = deepCopyGrid();
+        GridMemento state = new GridMemento((ArrayList) gridCopy);
         gridCaretaker.add(state);
         return state;
     }

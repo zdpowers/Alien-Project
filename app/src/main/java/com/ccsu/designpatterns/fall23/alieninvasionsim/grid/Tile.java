@@ -37,10 +37,11 @@ public abstract class Tile {
     /**
      * Method to accept visitor objects.
      * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
+     * @return Tile because the visitor is making a clone of the tile.
      * @author Zack Powers
      * @version 1.o
      */
-    public abstract void accept(TileVisitor visitor);
+    public abstract Tile accept(TileVisitor visitor);
 
     /**
      * Construct a proper toString method for the class

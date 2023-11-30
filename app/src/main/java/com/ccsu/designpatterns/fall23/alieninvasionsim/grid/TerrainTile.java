@@ -83,8 +83,8 @@ public class TerrainTile extends Tile {
     }
 
     @Override
-    public void accept(TileVisitor visitor) {
-        visitor.visitTerrainTile(this);
+    public TerrainTile accept(TileVisitor visitor) {
+        return visitor.visitTerrainTile(this);
     }
 
     /**

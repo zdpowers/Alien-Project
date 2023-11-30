@@ -43,8 +43,8 @@ public class ResourceTile extends Tile {
     }
 
     @Override
-    public void accept(TileVisitor visitor) {
-        visitor.visitResourceTile(this);
+    public ResourceTile accept(TileVisitor visitor) {
+        return visitor.visitResourceTile(this);
     }
 
     /**

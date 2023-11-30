@@ -5,6 +5,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -140,23 +141,23 @@ public abstract class LifeForm
             move();
         else{
             for(ResourceTile neighboringResourceTile : neighboringResources){
-                if (neighboringResourceTile.getResourceType().equals("water"))
+                if (neighboringResourceTile.getResourceType() == WATER)
                     amountOf_Water += 1;
-                else if (neighboringResourceTile.getResourceType().equals("iron")) {
+                else if (neighboringResourceTile.getResourceType() == IRON) {
                     amountOf_Iron += 1;
                 }
-                else if (neighboringResourceTile.getResourceType().equals("oil")) {
+                else if (neighboringResourceTile.getResourceType() == OIL) {
                     amountOf_Oil += 1;
                 }
-                else if (neighboringResourceTile.getResourceType().equals("uranium")) {
+                else if (neighboringResourceTile.getResourceType() == URANIUM) {
                     amountOf_Uranium += 1;
                 }
             }
             System.out.println("Life at column: " + currentCoordinates[0]
-                    + "; and row: " + currentCoordinates[1] + " has uranium: " + amountOf_Uranium +
-                    " has water: " + amountOf_Water +
-                    " has oil: " + amountOf_Oil +
-                    " has iron: " + amountOf_Iron);
+                    + "; and row: " + currentCoordinates[1] + " has uranium: "+ amountOf_Uranium +
+                    ", has water: " + amountOf_Water +
+                    ", has oil: " + amountOf_Oil +
+                    ", has iron: " + amountOf_Iron);
         }
     }
 

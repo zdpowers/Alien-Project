@@ -1,5 +1,7 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType;
 import android.util.Log;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Human;
@@ -141,19 +143,19 @@ public class Grid {
 
 
         try {
-            mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+            mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
             Log.e("Grid", e.getMessage());
         }
         try {
-            mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+            mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
             Log.e("Grid", e.getMessage());
         }
         try {
-            mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+            mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
             Log.e("Grid", e.getMessage());
@@ -171,7 +173,7 @@ public class Grid {
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
                 Log.e("Grid", e.getMessage());
@@ -183,7 +185,7 @@ public class Grid {
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
                 Log.e("Grid", e.getMessage());
@@ -195,7 +197,7 @@ public class Grid {
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
                 Log.e("Grid", e.getMessage());
@@ -250,8 +252,8 @@ public class Grid {
      * @since 2023-11-2
      */
     private void placeResourceTiles() {
-        String[] resources = {"uranium", "iron", "oil"};
-        for (String resource : resources) {
+        resourceType[] resources = {URANIUM, IRON, OIL };
+        for (resourceType resource : resources) {
             int resourceTileCount = 0;
             //VC - This loop places 4 tiles per resource type on the grid
             while (resourceTileCount < 4) {

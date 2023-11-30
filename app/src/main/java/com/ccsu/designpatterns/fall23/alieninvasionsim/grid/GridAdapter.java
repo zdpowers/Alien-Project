@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
 import androidx.cardview.widget.CardView;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
@@ -48,18 +48,18 @@ public class GridAdapter extends BaseAdapter {
         ImageView iv = view.findViewById(R.id.ivGridItemImage);
 
         CardView cardView = view.findViewById(R.id.cvTile);
-        if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("water")) {
+        if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType() == WATER) {
             cardView.setBackgroundColor(Color.rgb(0, 161, 255));
         }
-        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("iron")) {
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType() == IRON) {
             cardView.setBackgroundColor(Color.GRAY);
             iv.setImageResource(R.drawable.iron);
         }
-        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("uranium")) {
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType() == URANIUM) {
             cardView.setBackgroundColor(Color.GRAY);
             iv.setImageResource(R.drawable.uranium);
         }
-        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType().equals("oil")) {
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType() == OIL) {
             cardView.setBackgroundColor(Color.GRAY);
             iv.setImageResource(R.drawable.oil_barrel);
         }

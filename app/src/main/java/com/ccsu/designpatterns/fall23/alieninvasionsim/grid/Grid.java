@@ -357,14 +357,13 @@ public class Grid {
      * @since 2023-30-11
      */
     private List<Tile> deepCopyGrid() {
-        List<Tile> deepcopy = new ArrayList<>(); // New ArrayList to populate
         Iterator iter = this.iterator(); // Iterator for the current Grid
         CloneTileVisitor visitor = new CloneTileVisitor(); // Visitor to deep copy each tile
         while (iter.hasNext()) {
             Tile next = (Tile) iter.next();
-            deepcopy.add(next);
+            next.accept(visitor);
         }
-        return deepcopy;
+        return visitor.getGridClone();
     }
 
     /**

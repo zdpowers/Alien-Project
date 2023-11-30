@@ -41,7 +41,7 @@ public abstract class Tile {
      * @author Zack Powers
      * @version 1.o
      */
-    public abstract Tile accept(TileVisitor visitor);
+    public abstract void accept(TileVisitor visitor);
 
     /**
      * Construct a proper toString method for the class

@@ -13,7 +13,7 @@ public interface TileVisitor {
      * @author Zack Powers
      * @since 2023-29-11
      */
-    TerrainTile visitTerrainTile(TerrainTile tile);
+    void visitTerrainTile(TerrainTile tile);
 
     /**
      * Method to visit Resource Tiles
@@ -21,5 +21,5 @@ public interface TileVisitor {
      * @author Zack Powers
      * @since 2023-29-11
      */
-    ResourceTile visitResourceTile(ResourceTile tile);
+    void visitResourceTile(ResourceTile tile);
 }

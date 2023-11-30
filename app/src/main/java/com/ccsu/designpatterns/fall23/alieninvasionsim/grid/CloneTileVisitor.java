@@ -2,9 +2,14 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CloneTileVisitor implements TileVisitor {
 
-    public CloneTileVisitor() {}
+    private List<Tile> gridClone;
+
+    public CloneTileVisitor() { gridClone = new ArrayList<>(); }
 
     /**
      * This method is used to visit and create a deep copy of a TerrainTile
@@ -12,18 +17,28 @@ public class CloneTileVisitor implements TileVisitor {
      * @return returns a copy of the tile that is visited
      */
     @Override
-    public TerrainTile visitTerrainTile(TerrainTile tile) {
+    public void visitTerrainTile(TerrainTile tile) {
         if(tile.tileIsOccupied()) {
             TerrainTile tileCopy = new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
             tileCopy.setOccupant(tile.getOccupant().clone(tileCopy));
-            return tileCopy;
+            gridClone.add(tileCopy);
         } else {
-            return new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
+            TerrainTile tileCopy = new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
+            gridClone.add(tileCopy);
         }
     }
 
     @Override
-    public ResourceTile visitResourceTile(ResourceTile tile) {
-        return new ResourceTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1], tile.getResourceType());
+    public void visitResourceTile(ResourceTile tile) {
+        ResourceTile tileCopy = new ResourceTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1], tile.getResourceType());
+        gridClone.add(tileCopy);
+    }
+
+    /**
+     * Returns the cloned grid
+     * @return List of the cloned tiles
+     */
+    public List<Tile> getGridClone() {
+        return gridClone;
     }
 }

@@ -7,10 +7,12 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -594,6 +596,31 @@ public class Grid {
         } // Index most likely out of bounds
 
         return neighboringTiles;
+    }
+
+    /**
+     * Private inner class that provides iteration functionality for the Grid Tile of outer class
+     * @author Zack Powers
+     * @version 1.0
+     * @since 2023-30-11
+     */
+    private class GridTileIterator implements Iterator {
+        private int currentIndex = 0;
+        @Override
+        public boolean hasNext() {
+            return (currentIndex < Grid.this.mTiles.size());
+        }
+
+        @Override
+        public Tile next() {
+            if(!hasNext()) {
+                throw new NoSuchElementException();
+            } else {
+                Tile nextTile = Grid.this.mTiles.get(currentIndex);
+                currentIndex++;
+                return nextTile;
+            }
+        }
     }
 }
 

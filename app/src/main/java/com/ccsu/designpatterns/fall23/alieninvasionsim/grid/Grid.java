@@ -108,24 +108,60 @@ public class Grid {
         }
     }
 
+    public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
+        //Clear existing water tiles
+        clearWaterTiles();
+
+        // Place water tiles based on the current weather
+        placeWaterTiles(weatherStrategy);
+    }
+
+    private void clearWaterTiles() {
+        //Remove existing water tiles from grid
+        for (Tile tile : mTiles) {
+            if (tile instanceof ResourceTile) {
+                ResourceTile resourceTile = (ResourceTile) tile;
+                if (resourceTile.getResourceType().equals("water")) {
+
+                }
+            }
+        }
+    }
+
+    private void placeWatertiles(WeatherStrategy weatherStrategy) {
+        //Adjust the number of water tiles based on the current weather strategy
+        int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3;
+        if (weatherStrategy instanceof DroughtWeatherStrategy) {
+            maxNumOfWaterTiles /= 2;
+        }
+        if (weatherStrategy instanceof FloodingWeatherStrategy) {
+            maxNumOfWaterTiles *= 2;
+        }
+        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+
+        }
+    }
+
+}
+
     /**
      * Implements the Singleton pattern for the Grid class
      *
-     * @return a new Grid instance.
      * @param gridAxisLength is the private constructor parameter
+     * @return a new Grid instance.
      * @author Vincent Capra
      * @version 1.0
      * @since 2023-11-11
      */
 
-    public static Grid getInstance(int gridAxisLength){
+    public static Grid getInstance(int gridAxisLength) {
 
         //VC - Adding this for robustness, should handle any threading issues
         // in the event that we need to add them later.
         //synchronized (Grid.class) {
-            if (instance == null) {
-                instance = new Grid(gridAxisLength);
-            }
+        if (instance == null) {
+            instance = new Grid(gridAxisLength);
+        }
         //}
         return instance;
     }
@@ -197,8 +233,8 @@ public class Grid {
             maxNumOfWaterTiles /= 2; //This line will reduce the max number of water tiles by half during a Drought
         }
 
-        if(weatherStrategy instanceof FloodingWeatherStrategy) {
-            maxNumOfWaterTiles  *= 2; //This line will increase the max number of water tiles by 2 during a flood
+        if (weatherStrategy instanceof FloodingWeatherStrategy) {
+            maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
         }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
@@ -369,10 +405,10 @@ public class Grid {
         }
 
         LifeFormFactory lff = new LifeFormFactory();
-        tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) tile));
+        tile.setOccupant(lff.makeLifeForm(Human.class.toString(), (TerrainTile) tile));
         mLifeForms.add(tile.getOccupant());
         tile = mTiles.get(index + 1);
-        tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) tile));
+        tile.setOccupant(lff.makeLifeForm(Martian.class.toString(), (TerrainTile) tile));
         mLifeForms.add(tile.getOccupant());
     }
 
@@ -441,6 +477,7 @@ public class Grid {
     public ArrayList<Tile> getTiles() {
         return (ArrayList) mTiles;
     }
+
     /**
      * Uses the tile class to apply and get the buff and debuff values
      *

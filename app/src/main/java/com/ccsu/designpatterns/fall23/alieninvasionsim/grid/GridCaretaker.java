@@ -36,4 +36,17 @@ public class GridCaretaker {
     public Grid.GridMemento get() {
         return mementoList.pop();
     }
+
+    /**
+     * Get the size of the memento list.
+     *
+     * @return length   - The length of the memento list.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public int getLength() {
+        return mementoList.capacity();
+    }
 }

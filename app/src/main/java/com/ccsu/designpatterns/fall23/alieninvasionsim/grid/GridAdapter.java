@@ -80,6 +80,7 @@ public class GridAdapter extends BaseAdapter {
             TextView tv = view.findViewById(R.id.tilePopulation);
             tv.setText(Integer.toString(occupant.getPopulationCount()));
         }
+        //TODO add code to resume animations here?
         return view;
     }
 }

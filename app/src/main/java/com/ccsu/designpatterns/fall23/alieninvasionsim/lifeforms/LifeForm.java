@@ -56,6 +56,7 @@ public abstract class LifeForm
     }
     public void setPopulationCount(int population){
         populationCount = population;
+
     }
 
     public TerrainTile getTileOfResidence() {

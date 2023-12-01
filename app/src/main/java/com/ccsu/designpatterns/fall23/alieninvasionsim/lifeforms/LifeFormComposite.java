@@ -79,11 +79,6 @@ public class LifeFormComposite extends LifeForm {
     @Override
     protected void defend(int damage) {}
 
-    @Override
-    public LifeForm clone(TerrainTile residence) {
-        return null;
-    }
-
     /**
      * Abstract clone method for the prototype creational pattern.
      * @return null because this class is not to be cloned

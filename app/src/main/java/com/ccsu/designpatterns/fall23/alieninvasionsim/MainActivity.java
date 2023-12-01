@@ -15,7 +15,15 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.GridAdapter;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    /** Grid which holds all data related to the simulation. */
     private Grid mSimulationGrid;
+
+    /**
+     * Observer to watch for changes to the simulation
+     * year and update what is displayed to the users on the UI thread.
+     */
+    private Observer<Integer> mYearObserver = this::updateDisplay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(adapter);
 
         // Begin observing changes to the simulation year to refresh the UI
-        Observer<Integer> yearObserver = this::updateDisplay;
-        mSimulationGrid.getYear().observeForever(yearObserver);
+        mSimulationGrid.getYear().observeForever(mYearObserver);
 
         // Setup the Reverse Button
         findViewById(R.id.ibRvs).setOnClickListener(view -> {

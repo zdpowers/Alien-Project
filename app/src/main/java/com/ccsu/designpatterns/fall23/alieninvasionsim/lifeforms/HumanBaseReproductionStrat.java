@@ -20,7 +20,7 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
             if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
         }
 
-/*        // VC - if the current tile population is over 5 and spawn a new person, spawn them
+        // VC - if the current tile population is over 5 and spawn a new person, spawn them
         //  into an adjacent tile.
         if(starting_population >= 5 && !(neighboring_tiles.isEmpty()) ){ // and there is an unoccupied neighboring terrain tile
             //&& randomNum.nextInt(5) == 3 &&
@@ -31,7 +31,7 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
             temp_tile.setOccupant(temp_human);
             Grid temp_grid = Grid.getInstance(10);
             temp_grid.addToGridLifeForms(temp_human); //mLifeForms.add(temp_tile.getOccupant());
-        }*/
+        }
 
 
         // VC - if there are 2 humans and some RNG to increase the population

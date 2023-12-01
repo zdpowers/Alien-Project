@@ -337,8 +337,9 @@ public class Grid {
      * @since 2023-29-10
      */
     public void progressLifeForms() {
-        for (LifeForm i : mLifeForms) {
-            i.progress(this);
+        int amountOfCurrentLifeforms = mLifeForms.size();
+        for (int i = 0; i < amountOfCurrentLifeforms; i++) {
+            mLifeForms.get(i).progress(this);
         }
     }
 

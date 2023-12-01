@@ -68,6 +68,9 @@ public abstract class LifeForm
     public List<ResourceTile> getNeighboringResources() {
         return neighboringResources;
     }
+    public List<TerrainTile> getNeighboringTerrain() {
+        return neighboringTerrain;
+    }
 
     /**
      * Prototype constructor. This constructor is used when using the clone method to create a copy of a LifeForm object

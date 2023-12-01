@@ -288,7 +288,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 3) {
+        while (humanTileCount < 1) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -340,6 +340,9 @@ public class Grid {
         }
     }
 
+    public void addToGridLifeForms(LifeForm lifeform_to_add){
+        mLifeForms.add(lifeform_to_add);
+    }
     /**
      * NOTE: NEED TO EDIT THIS TO MAKE DEEP COPY OF THE GRID
      * Method to create memento object to save the grid's state

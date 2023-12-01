@@ -85,7 +85,7 @@ public class Human extends LifeForm {
     @Override
     protected void reproduce() {
         int temp_population =
-                reproduceStrategy.reproduceStratMethod(getPopulationCount());
+                reproduceStrategy.reproduceStratMethod(getPopulationCount(), this);
         setPopulationCount(temp_population);
     }
 

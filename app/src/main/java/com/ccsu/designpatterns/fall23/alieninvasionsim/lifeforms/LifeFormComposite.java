@@ -34,7 +34,7 @@ public class LifeFormComposite extends LifeForm {
      * @version 1.0
      * @since 2023-7-11
      */
-    public void addLifeForm(LifeForm input_lifeForm){
+    public void add(LifeForm input_lifeForm){
         if(input_lifeForm != null){
             tribeMembers.add((input_lifeForm));
         }
@@ -84,7 +84,7 @@ public class LifeFormComposite extends LifeForm {
      * @return null because this class is not to be cloned
      */
     @Override
-    public LifeForm clone() {
+    public LifeForm clone(TerrainTile residence) {
         return null;
     }
 }

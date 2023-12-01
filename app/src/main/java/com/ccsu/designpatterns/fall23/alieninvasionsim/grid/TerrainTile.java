@@ -4,19 +4,21 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
  * occupied by humans or a single race/species of aliens. The Class of
  * occupant must be homogenous at all times.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-29
  */
 public class TerrainTile extends Tile {
-    //VC - not sure if this being an arraylist is the best choice
-    private ArrayList<LifeForm> mOccupants;
+    //VC - 11/25/23 getting rid of this and placing a single population variable instead
+    //private List<LifeForm> mOccupants = new ArrayList<>();
+    private LifeForm mOccupant;
     private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
     public TerrainTile(int column, int row) {
@@ -34,9 +36,7 @@ public class TerrainTile extends Tile {
      * @since 2023-10-29
      */
     public boolean tileIsOccupied() {
-        if (mOccupants == null)
-            return false;
-        return true;
+        return (mOccupant != null);
     }
 
     /**
@@ -76,22 +76,15 @@ public class TerrainTile extends Tile {
      */
     public void generateLifeform() {
         //VC - gets the class of the lifeforms in this tile
-        String class_of_current_occupants = mOccupants.get(0).getClass().toString();
+        String class_of_current_occupants = occupant.getClass().toString();
         //VC - creates a new lifeform of the same type and adds it to this tile
-        mOccupants.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
+        //occupant.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
+
     }
 
-    /**
-     * Construct a proper toString method for the class
-     *
-     * @author Vincent Capra
-     * @return String indicating the tile description
-     * @version 1.0
-     * @since 2023-11-6
-     */
     @Override
-    public String toString() {
-        return "Column: " + this.mColumnPosition +  ", Row: " + this.mRowPosition;
+    public void accept(TileVisitor visitor) {
+        visitor.visitTerrainTile(this);
     }
 
     /**

@@ -72,6 +72,7 @@ public class EventLogger {
         // Try opening the file to be read
         try (FileOutputStream fos = context.openFileOutput(eventFile.getName(), Context.MODE_APPEND)) {
             fos.write(event.getBytes(StandardCharsets.UTF_8));
+            fos.close(); // Close the FileOutputStream
         } catch (FileNotFoundException e) {
             //throw new RuntimeException(e);
             System.out.println("File not found when trying to write to EventLog");
@@ -107,7 +108,8 @@ public class EventLogger {
             } finally {
                 contents = stringBuilder.toString();
             }
-        } catch (FileNotFoundException e) {
+            fis.close(); // Close th FileInputStream
+        } catch (IOException e) {
             System.out.println("Event log not found when attempting to read.");
         }
         return contents;

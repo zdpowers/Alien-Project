@@ -9,7 +9,7 @@ import java.util.Map;
  * Abstract data class which holds references to shared
  * data between different tile types in the simulation.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-26
  */
@@ -25,6 +25,10 @@ public abstract class Tile {
         mColumnPosition = column;
         mRowPosition = row;
         this.buffsDebuffs = new HashMap<>();
+    }
+
+    public int[] getTileCoordinates(){
+        return new int[]{mColumnPosition, mRowPosition};
     }
 
     public LifeForm getOccupant() {
@@ -60,4 +64,25 @@ public abstract class Tile {
         return mWeatherFlag;
     }
 
+    /**
+     * Method to accept visitor objects.
+     * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
+     * @return Tile because the visitor is making a clone of the tile.
+     * @author Zack Powers
+     * @version 1.o
+     */
+    public abstract void accept(TileVisitor visitor);
+
+    /**
+     * Construct a proper toString method for the class
+     *
+     * @author Vincent Capra
+     * @return String indicating the tile description
+     * @version 1.0
+     * @since 2023-11-6
+     */
+    @Override
+    public String toString() {
+        return "Column: " + this.mColumnPosition +  ", Row: " + this.mRowPosition;
+    }
 }

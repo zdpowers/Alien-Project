@@ -2,6 +2,8 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -16,7 +18,7 @@ public class EventManager {
     /**
      * Hashmap containing an ArrayList of EventListeners as a value associated with an eventType as a key
      */
-    private HashMap<String, ArrayList<EventListener>> listeners = new HashMap<>();
+    private Map<String, List<EventListener>> listeners = new HashMap<>();
 
     /**
      * Constructor.

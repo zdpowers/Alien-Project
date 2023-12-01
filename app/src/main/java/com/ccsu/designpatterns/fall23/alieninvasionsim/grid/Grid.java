@@ -67,12 +67,11 @@ public class Grid {
                 TerrainTile tile = new TerrainTile(column, row);
                 // tODO determine if tile changes due to the weather change
 
-
                 mTiles.add(tile);
             }
         }
         // Overwrite the default tiles to place some water and resource tiles
-        placeWaterTiles();
+        placeWaterTiles(new ClearWeatherStrategy());
         placeResourceTiles();
         placeLifeFormCluster();
     }
@@ -91,7 +90,6 @@ public class Grid {
             if (tile instanceof ResourceTile) {
                 ResourceTile resourceTile = (ResourceTile) tile;
                 if (resourceTile.getResourceType().equals("water")) {
-
                 }
             }
         }

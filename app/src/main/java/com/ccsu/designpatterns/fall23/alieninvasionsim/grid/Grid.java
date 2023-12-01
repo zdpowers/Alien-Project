@@ -76,37 +76,6 @@ public class Grid {
         placeResourceTiles();
         placeLifeFormCluster();
     }
-        public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
-            //Clear existing water tiles
-            clearWaterTiles();
-
-            // Place water tiles based on the current weather
-            placeWaterTiles(weatherStrategy);
-        }
-
-        private void clearWaterTiles() {
-        //Remove existing water tiles from grid
-            for(Tile tile : mTiles ) {
-                    if (tile instanceof ResourceTile && (ResourceTile) tile.getResourceType().equals("water")) {
-
-                    }
-            }
-        }
-
-        private void placeWatertiles(WeatherStrategy weatherStrategy) {
-            //Adjust the number of water tiles based on the current weather strategy
-            int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3;
-            if (weatherStrategy instanceof DroughtWeatherStrategy) {
-                maxNumOfWaterTiles /= 2;
-            }
-            if (weatherStrategy instanceof FloodingWeatherStrategy) {
-                maxNumOfWaterTiles *= 2;
-            }
-            if (weatherStrategy instanceof BlizzardWeatherStrategy) {
-
-            }
-        }
-    }
 
     public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
         //Clear existing water tiles
@@ -127,22 +96,6 @@ public class Grid {
             }
         }
     }
-
-    private void placeWatertiles(WeatherStrategy weatherStrategy) {
-        //Adjust the number of water tiles based on the current weather strategy
-        int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3;
-        if (weatherStrategy instanceof DroughtWeatherStrategy) {
-            maxNumOfWaterTiles /= 2;
-        }
-        if (weatherStrategy instanceof FloodingWeatherStrategy) {
-            maxNumOfWaterTiles *= 2;
-        }
-        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
-
-        }
-    }
-
-}
 
     /**
      * Implements the Singleton pattern for the Grid class
@@ -232,9 +185,11 @@ public class Grid {
         if (weatherStrategy instanceof DroughtWeatherStrategy) {
             maxNumOfWaterTiles /= 2; //This line will reduce the max number of water tiles by half during a Drought
         }
-
         if (weatherStrategy instanceof FloodingWeatherStrategy) {
             maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
+        }
+        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+
         }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {

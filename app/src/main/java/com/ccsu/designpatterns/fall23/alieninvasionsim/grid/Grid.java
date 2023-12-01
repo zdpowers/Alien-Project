@@ -64,13 +64,48 @@ public class Grid {
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
-                mTiles.add(new TerrainTile(column, row));
+                TerrainTile tile = new TerrainTile(column, row);
+                // tODO determine if tile changes due to the weather change
+
+
+                mTiles.add(tile);
             }
         }
         // Overwrite the default tiles to place some water and resource tiles
         placeWaterTiles();
         placeResourceTiles();
         placeLifeFormCluster();
+    }
+        public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
+            //Clear existing water tiles
+            clearWaterTiles();
+
+            // Place water tiles based on the current weather
+            placeWaterTiles(weatherStrategy);
+        }
+
+        private void clearWaterTiles() {
+        //Remove existing water tiles from grid
+            for(Tile tile : mTiles ) {
+                    if (tile instanceof ResourceTile && (ResourceTile) tile.getResourceType().equals("water")) {
+
+                    }
+            }
+        }
+
+        private void placeWatertiles(WeatherStrategy weatherStrategy) {
+            //Adjust the number of water tiles based on the current weather strategy
+            int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3;
+            if (weatherStrategy instanceof DroughtWeatherStrategy) {
+                maxNumOfWaterTiles /= 2;
+            }
+            if (weatherStrategy instanceof FloodingWeatherStrategy) {
+                maxNumOfWaterTiles *= 2;
+            }
+            if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+
+            }
+        }
     }
 
     /**
@@ -124,6 +159,7 @@ public class Grid {
         int[] pointer1 = createRandomCoordinate();
         int[] pointer2;
         int[] pointer3;
+
 
         //VC - setting pointer 2 and 3 until they are all unique
         do {

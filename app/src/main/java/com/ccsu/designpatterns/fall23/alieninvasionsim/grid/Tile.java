@@ -17,6 +17,7 @@ public abstract class Tile {
     int mColumnPosition;
     int mRowPosition;
 
+    private boolean mWeatherFlag;
     LifeForm occupant;
 
     public Tile(int column, int row) {
@@ -36,6 +37,7 @@ public abstract class Tile {
 
 
     //These are the buff and debuff methods
+
     private Map<BuffDebuffTypes, Integer> buffsDebuffs;
 
     public void applyBuffDebuff(BuffDebuffTypes type, int value) {
@@ -49,4 +51,13 @@ public abstract class Tile {
     public int getBuffDebuffValue(BuffDebuffTypes type) {
         return buffsDebuffs.getOrDefault(type, 0);
     }
+
+    public void setWeatherFlag(boolean weatherFlag) {
+        mWeatherFlag = weatherFlag;
+    }
+
+    public boolean getWeatherFlag() {
+        return mWeatherFlag;
+    }
+
 }

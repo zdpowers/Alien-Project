@@ -100,7 +100,6 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-11
      */
-
     public static Grid getInstance(int gridAxisLength) {
 
         //VC - Adding this for robustness, should handle any threading issues

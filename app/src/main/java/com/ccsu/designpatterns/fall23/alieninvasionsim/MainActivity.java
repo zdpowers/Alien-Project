@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param year  - Current year in the simulation.
      *
-     * @author
-     * @version
-     * @since
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 11-29-2023
      */
     private void updateDisplay(int year) {
         TextView tvYear = findViewById(R.id.tvYear);

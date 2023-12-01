@@ -79,14 +79,14 @@ public class Grid {
     public Grid(int gridAxisLength) {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
-
+        WeatherContext weatherContext = new WeatherContext();
         // VC - Initially construct the Grid with Terrain Tiles
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
                 TerrainTile tile = new TerrainTile(column, row);
                 // tODO determine if tile changes due to the weather change
-
+                weatherContext.applyWeather(tile);
                 mTiles.add(tile);
             }
         }
@@ -432,6 +432,25 @@ public class Grid {
         if (year > gridCaretaker.getLength() - 1) {
             // Generate the progression and save it into a new memento
             progressLifeForms();
+/*
+            // Should we start a weather event?
+            Random rand = new Random();
+            int generateWeatherEvent = rand.nextInt(6);
+            if (generateWeatherEvent == 1) {
+                // Generate the weather
+                generateWeatherEvent = rand.nextInt(3 );
+                if(generateWeatherEvent == 0) {
+                    weatherContext.applyWeather(cell);
+                }
+                if(generateWeatherEvent == 1) {
+
+                }
+                if(generateWeatherEvent == 2) {
+
+                }
+
+            }*/
+
             //TODO Lastly in this statement, take a memento
         }
         // Set the value and allow the observer to load the memento for display

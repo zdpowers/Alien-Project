@@ -4,4 +4,6 @@ public interface WeatherStrategy {
     static void applyWeatherEffect(Tile cell) {
 
     }
+
+    void applyWeatherEffect(Tile cell);
 }

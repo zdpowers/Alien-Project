@@ -1,6 +1,14 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms;
 
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.IRON;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.OIL;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.ONEUP;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.URANIUM;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.WATER;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 import java.util.Random;
 
@@ -13,6 +21,7 @@ public class Human extends LifeForm {
 
     Human(TerrainTile spawn_tile) {
         super(spawn_tile);
+        reproduceStrategy = new HumanBaseReproductionStrat();
     }
 
     /**
@@ -26,14 +35,46 @@ public class Human extends LifeForm {
         super(source, residence);
     }
 
-/*
-    @Override
+/*    @Override
     protected void gather() {
         int[] currentCoordinates = super.getTileOfResidence().getTileCoordinates();
 
-    }
-*/
+    }*/
 
+    /**
+     * This is the default behavior for a template pattern to extract adjacent tile resources.
+     * This will be overridden in the Human Subclass implementation
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-12-1
+     */
+
+    @Override
+    protected void mine(int[] current_coordinates){
+        for(ResourceTile neighboringResourceTile : getNeighboringResources()){
+            if (neighboringResourceTile.getResourceType() == WATER)
+                setAmountOf_Water(getAmountOf_Water()+1);
+            else if (neighboringResourceTile.getResourceType() == IRON) {
+                setAmountOf_Iron(getAmountOf_Iron()+1);
+            }
+            else if (neighboringResourceTile.getResourceType() == OIL) {
+                setAmountOf_Oil(getAmountOf_Oil()+1);
+            }
+            else if (neighboringResourceTile.getResourceType() == URANIUM) {
+                setAmountOf_Uranium(getAmountOf_Uranium()+1);
+            }
+            //VC - if next to a one-up mushroom the human reproduction strategy will change.
+            else if (neighboringResourceTile.getResourceType() == ONEUP) {
+                reproduceStrategy = new OneUpReproductionStrat();
+            }
+        }
+        System.out.println("Human at column: " + current_coordinates[0]
+                + "; and row: " + current_coordinates[1] + " has uranium: "+ getAmountOf_Uranium() +
+                ", has water: " + getAmountOf_Water() +
+                ", has oil: " + getAmountOf_Oil() +
+                ", has iron: " + getAmountOf_Iron());
+    }
     /**
      * method to possibly add another human to the tile that this
      * human currently inhabits
@@ -43,19 +84,9 @@ public class Human extends LifeForm {
      */
     @Override
     protected void reproduce() {
-        Random randomNum = new Random();
-
-        //VC - if there are 2 humans and some RNG to increase the population
-        if (super.getPopulationCount() > 2
-                && randomNum.nextInt(5) == 3){
-            super.setPopulationCount(1);
-        }
-
-    }
-
-    @Override
-    protected void move() {
-
+        int temp_population =
+                reproduceStrategy.reproduceStratMethod(getPopulationCount(), this);
+        setPopulationCount(temp_population);
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
-
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +41,7 @@ public abstract class LifeForm
     private boolean haveNeighboringTiles = false;
 
     private int populationCount= 1;
+    protected ReproduceStrategy reproduceStrategy;
 
     /**
      * Constructor.
@@ -53,8 +54,8 @@ public abstract class LifeForm
     public int getPopulationCount(){
         return populationCount;
     }
-    public void setPopulationCount(int populationIncrement){
-        populationCount += populationIncrement;
+    public void setPopulationCount(int population){
+        populationCount = population;
     }
 
     public TerrainTile getTileOfResidence() {
@@ -62,6 +63,13 @@ public abstract class LifeForm
     }
     public void setTileOfResidence(TerrainTile inputTile){
         tileOfResidence = inputTile;
+    }
+
+    public List<ResourceTile> getNeighboringResources() {
+        return neighboringResources;
+    }
+    public List<TerrainTile> getNeighboringTerrain() {
+        return neighboringTerrain;
     }
 
     /**
@@ -84,7 +92,9 @@ public abstract class LifeForm
         gather();
         reproduce();
         //TODO do lifeforms move? or just reproduce into new tiles?
-        move();
+        //VC - I implemented such that humans move only when they are not next to a resource.
+        // Otherwise, they stay where they are to continue collecting resources. Even water.
+        //move();
         attack(grid);
     }
 
@@ -107,7 +117,7 @@ public abstract class LifeForm
      *
      * @author Vincent Capra
      * @version 1.0
-     * @since 2023-26-10
+     * @since 2023-11-30
      */
     protected void gather() {
 
@@ -137,28 +147,75 @@ public abstract class LifeForm
                     neighboringResources.toString());
         }
 
-        if(neighboringResources == null)
+        if(neighboringResources.isEmpty())
             move();
         else{
-            for(ResourceTile neighboringResourceTile : neighboringResources){
-                if (neighboringResourceTile.getResourceType() == WATER)
-                    amountOf_Water += 1;
-                else if (neighboringResourceTile.getResourceType() == IRON) {
-                    amountOf_Iron += 1;
-                }
-                else if (neighboringResourceTile.getResourceType() == OIL) {
-                    amountOf_Oil += 1;
-                }
-                else if (neighboringResourceTile.getResourceType() == URANIUM) {
-                    amountOf_Uranium += 1;
-                }
-            }
-            System.out.println("Life at column: " + currentCoordinates[0]
-                    + "; and row: " + currentCoordinates[1] + " has uranium: "+ amountOf_Uranium +
-                    ", has water: " + amountOf_Water +
-                    ", has oil: " + amountOf_Oil +
-                    ", has iron: " + amountOf_Iron);
+            mine(currentCoordinates);
         }
+    }
+
+    /**
+     * A method to move this LifeForm to an unoccupied adjacent tile.
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-26-10
+     */
+    protected void move(){
+
+        if (neighboringTerrain.isEmpty()) return;
+        Random rand = new Random();
+        TerrainTile randomTile = null;
+
+        while(randomTile == null) {
+            int randomIndex = rand.nextInt(neighboringTerrain.size());
+            randomTile = neighboringTerrain.get(randomIndex);
+            if(randomTile.getOccupant() != null){ // VC - meaning tile is occupied
+                neighboringTerrain.remove(randomIndex);
+                if (neighboringTerrain.isEmpty()) return;
+                randomTile = null;
+            }
+            //moves this Lifeform to the new tile
+            else {
+                tileOfResidence.setOccupant(null);
+                randomTile.setOccupant(this);
+                this.tileOfResidence = randomTile;
+                System.out.println("Lifeform moved to: " +  this.tileOfResidence.getTileCoordinates().toString());
+            }
+        }
+        //VC - somewhere in here need to set after have moved to a new tile
+        haveNeighboringTiles = false;
+        neighboringTerrain.clear();
+        neighboringResources.clear();
+    };
+
+    /**
+     * This is the default behavior for a template pattern to extract adjacent tile resources.
+     * This will be overridden in the Human Subclass implementation
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-12-1
+     */
+    protected void mine(int[] current_coordinates){
+        for(ResourceTile neighboringResourceTile : neighboringResources){
+            if (neighboringResourceTile.getResourceType() == WATER)
+                amountOf_Water += 1;
+            else if (neighboringResourceTile.getResourceType() == IRON) {
+                amountOf_Iron += 1;
+            }
+            else if (neighboringResourceTile.getResourceType() == OIL) {
+                amountOf_Oil += 1;
+            }
+            else if (neighboringResourceTile.getResourceType() == URANIUM) {
+                amountOf_Uranium += 1;
+            }
+        }
+        System.out.println("Life at column: " + current_coordinates[0]
+                + "; and row: " + current_coordinates[1] + " has uranium: "+ amountOf_Uranium +
+                ", has water: " + amountOf_Water +
+                ", has oil: " + amountOf_Oil +
+                ", has iron: " + amountOf_Iron);
     }
 
     /**
@@ -169,18 +226,6 @@ public abstract class LifeForm
      * @since 2023-26-10
      */
     protected abstract void reproduce();
-
-    /**
-     * A method to move this LifeForm.
-     *
-     * @author Vincent Capra
-     * @version 1.0
-     * @since 2023-26-10
-     */
-    protected void move(){
-        //VC - somewhere in here need to set after have moved to a new tile
-        haveNeighboringTiles = false;
-    };
 
     /**
      * A method to attack with this LifeForm.
@@ -265,5 +310,30 @@ public abstract class LifeForm
             }
         }
         return returnTileReferences;
+    }
+
+    public int getAmountOf_Water() {
+        return amountOf_Water;
+    }
+    public void setAmountOf_Water(int amountOf_Water) {
+        this.amountOf_Water = amountOf_Water;
+    }
+    public int getAmountOf_Uranium() {
+        return amountOf_Uranium;
+    }
+    public void setAmountOf_Uranium(int amountOf_Uranium) {
+        this.amountOf_Uranium = amountOf_Uranium;
+    }
+    public int getAmountOf_Oil() {
+        return amountOf_Oil;
+    }
+    public void setAmountOf_Oil(int amountOf_Oil) {
+        this.amountOf_Oil = amountOf_Oil;
+    }
+    public int getAmountOf_Iron() {
+        return amountOf_Iron;
+    }
+    public void setAmountOf_Iron(int amountOf_Iron) {
+        this.amountOf_Iron = amountOf_Iron;
     }
 }

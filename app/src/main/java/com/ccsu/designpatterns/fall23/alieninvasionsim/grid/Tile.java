@@ -37,6 +37,7 @@ public abstract class Tile {
     /**
      * Method to accept visitor objects.
      * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
+     * @return Tile because the visitor is making a clone of the tile.
      * @author Zack Powers
      * @version 1.o
      */

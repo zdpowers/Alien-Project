@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
             mSimulationGrid.progressLifeForms();
+            adapter.notifyDataSetChanged();
         });
     }
 }

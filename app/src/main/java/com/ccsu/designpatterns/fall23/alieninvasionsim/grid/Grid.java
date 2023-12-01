@@ -252,11 +252,11 @@ public class Grid {
      * @since 2023-11-2
      */
     private void placeResourceTiles() {
-        resourceType[] resources = {URANIUM, IRON, OIL };
+        resourceType[] resources = {URANIUM, IRON, OIL, ONEUP };
         for (resourceType resource : resources) {
             int resourceTileCount = 0;
             //VC - This loop places 4 tiles per resource type on the grid
-            while (resourceTileCount < 4) {
+            while (resourceTileCount < 3) {
                 int[] coord = createRandomCoordinate(); // Coordinate to check
                 try {
                     int index = getTileIndex(coord);

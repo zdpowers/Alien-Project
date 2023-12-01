@@ -63,6 +63,10 @@ public class GridAdapter extends BaseAdapter {
             cardView.setBackgroundColor(Color.GRAY);
             iv.setImageResource(R.drawable.oil_barrel);
         }
+        else if (mTiles.get(i) instanceof ResourceTile && ((ResourceTile) mTiles.get(i)).getResourceType() == ONEUP) {
+            cardView.setBackgroundColor(Color.GRAY);
+            iv.setImageResource(R.drawable.one_up);
+        }
         else {
             cardView.setBackgroundColor(Color.rgb(149, 246, 121));
         }

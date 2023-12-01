@@ -14,10 +14,11 @@ public class ResourceTile extends Tile {
     private int unitsOfResource;
     private resourceType mResourceType;
     public enum resourceType {
-        WATER ("water"), 
+        WATER ("water"),
         OIL ("oil"),
         IRON ("iron"),
-        URANIUM("uranium");
+        URANIUM("uranium"),
+        ONEUP("oneup");
         private final String name;
 
         resourceType(String name) {

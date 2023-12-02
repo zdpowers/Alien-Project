@@ -354,7 +354,7 @@ public class Grid {
                 temp_tile = mTiles.get(index);
                 // If this tile is terrain and unoccupied
                 if (temp_tile instanceof TerrainTile &&
-                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                        temp_tile.getOccupant() != null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(3);
@@ -374,7 +374,7 @@ public class Grid {
                 temp_tile = mTiles.get(index);
                 // If this tile is not already a ResourceTile
                 if (temp_tile instanceof TerrainTile &&
-                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                        temp_tile.getOccupant() != null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(2);

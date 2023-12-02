@@ -406,14 +406,32 @@ public class Grid {
      */
     public void progressSimulation() {
         int year = mYear.getValue() + 1;
-        // If progressing further than the current year
+        // If progressing further into the simulation
         if (year > gridCaretaker.getLength() - 1) {
             // Generate the progression and save it into a new memento
             progressLifeForms();
             //TODO Lastly in this statement, take a memento
+        } else { // Else load the next year
+
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);
+    }
+
+    /**
+     * Handle presses for simulation regression.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-12-2
+     */
+    public void regressSimulation() {
+        int year = mYear.getValue() - 1;
+        if (year >= 0) {
+            
+            // Update the UI
+            mYear.setValue(year);
+        }
     }
 
     /**

@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the Reverse Button
         findViewById(R.id.ibRvs).setOnClickListener(view -> {
-            //TODO Implement reverse functionality here
+            mSimulationGrid.regressSimulation();
+            adapter.notifyDataSetChanged();
         });
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
-            mSimulationGrid.progressLifeForms();
-            adapter.notifyDataSetChanged();
             mSimulationGrid.progressSimulation();
+            adapter.notifyDataSetChanged();
         });
     }
 

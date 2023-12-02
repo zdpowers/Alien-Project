@@ -161,18 +161,21 @@ public class Grid {
             mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
         try {
             mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
         try {
             mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
 
@@ -185,36 +188,42 @@ public class Grid {
             try {
                 pointer1 = mutateCoordinatePointer(pointer1);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer2 = mutateCoordinatePointer(pointer2);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer3 = mutateCoordinatePointer(pointer3);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
                 mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
         }
@@ -281,6 +290,7 @@ public class Grid {
                         resourceTileCount++;
                     }
                 } catch (NoAvailableTilesException e) {
+                    // No handling, just logging and proceeding
                     Log.e("Grid", e.getMessage());
                 }
             }
@@ -303,7 +313,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 1) {
+        while (humanTileCount < 3) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -318,6 +328,7 @@ public class Grid {
                     humanTileCount++;
                 }
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
         }
@@ -337,6 +348,7 @@ public class Grid {
                     alienTileCount++;
                 }
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
         }
@@ -568,6 +580,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -578,6 +591,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -588,6 +602,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -598,6 +613,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -626,6 +642,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -636,6 +653,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -646,6 +664,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 
@@ -656,6 +675,7 @@ public class Grid {
                 neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
             }
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         } // Index most likely out of bounds
 

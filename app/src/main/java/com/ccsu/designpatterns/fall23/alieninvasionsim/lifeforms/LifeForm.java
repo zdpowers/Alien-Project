@@ -114,10 +114,11 @@ public abstract class LifeForm
     }
 
     /**
-     * A method to gather resources for this LifeForm.
+     * A method to gather resources for this LifeForm if adjacent to a resource tile.
+     * The Lifeform will move
      *
      * @author Vincent Capra
-     * @version 1.0
+     * @version 1.1
      * @since 2023-11-30
      */
     protected void gather() {

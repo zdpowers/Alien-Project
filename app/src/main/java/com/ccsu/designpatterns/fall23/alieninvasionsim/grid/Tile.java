@@ -11,10 +11,10 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
  * @since 2023-10-26
  */
 public abstract class Tile {
-    int mColumnPosition;
-    int mRowPosition;
+    private int mColumnPosition;
+    private int mRowPosition;
 
-    LifeForm occupant;
+    private LifeForm occupant;
 
     public Tile(int column, int row) {
         // Need to place the tile in the layout visually
@@ -43,6 +43,22 @@ public abstract class Tile {
      */
     public abstract void accept(TileVisitor visitor);
 
+
+    public int getmColumnPosition() {
+        return mColumnPosition;
+    }
+
+    public int getmRowPosition() {
+        return mRowPosition;
+    }
+
+    public void setmColumnPosition(int mColumnPosition) {
+        this.mColumnPosition = mColumnPosition;
+    }
+
+    public void setmRowPosition(int mRowPosition) {
+        this.mRowPosition = mRowPosition;
+    }
     /**
      * Construct a proper toString method for the class
      *

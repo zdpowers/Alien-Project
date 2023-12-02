@@ -13,6 +13,16 @@ public class ResourceTile extends Tile {
 
     private int unitsOfResource;
     private resourceType mResourceType;
+
+    /**
+     *
+     * This is the enum strategy that was a refactoring of a simple string input
+     * that makes the resource tile types more robust and extensible.
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-12-1
+     */
     public enum resourceType {
         WATER ("water"),
         OIL ("oil"),
@@ -71,8 +81,8 @@ public class ResourceTile extends Tile {
         if(obj == null){return false;}
         ResourceTile checkEqualResourceTile = (ResourceTile)obj;
 
-        if(this.mColumnPosition == checkEqualResourceTile.mColumnPosition
-                && this.mRowPosition == checkEqualResourceTile.mRowPosition
+        if(this.getmColumnPosition() == checkEqualResourceTile.getmColumnPosition()
+                && this.getmRowPosition() == checkEqualResourceTile.getmRowPosition()
                 && this.mResourceType.equals(checkEqualResourceTile.getResourceType()))
             return true;
         else return false;
@@ -87,9 +97,9 @@ public class ResourceTile extends Tile {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(mColumnPosition, 2);
-        hash += Math.pow(mRowPosition, 2);
-        hash += Math.pow((mColumnPosition + mRowPosition), 3);
+        hash += Math.pow(getmColumnPosition(), 2);
+        hash += Math.pow(getmRowPosition(), 2);
+        hash += Math.pow((getmColumnPosition() + getmRowPosition()), 3);
         hash += mResourceType.hashCode();
         return hash;
     }

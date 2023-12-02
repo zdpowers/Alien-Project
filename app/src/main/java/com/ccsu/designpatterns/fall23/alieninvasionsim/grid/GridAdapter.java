@@ -10,18 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
 import androidx.cardview.widget.CardView;
-
+import java.util.List;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.R;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
-
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
-    Context mContext;
-    ArrayList<Tile> mTiles;
+    private Context mContext;
+    private List<Tile> mTiles = new ArrayList<>();
 
-    public GridAdapter(Context context, ArrayList<Tile> tiles) {
+    public GridAdapter(Context context, List<Tile> tiles) {
         mContext = context;
         mTiles = tiles;
     }

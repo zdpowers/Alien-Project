@@ -11,6 +11,18 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
     private LifeFormFactory lff = new LifeFormFactory();
 
 
+    /**
+     *
+     * This is a concrete strategy method for the ReproduceStrategy interface. For humans,
+     * 20% chance each year that the population will increase by 1 / tile. If population is
+     * at the tile max (5) will randomly spawn a new human lifeform with population = 1 in an
+     * unoccupied adjacent tile
+     *
+     * @return int signifying the updated population value of the tile.
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-11-28
+     */
     public int reproduceStratMethod(int starting_population, LifeForm current_lifeform) {
         Random randomNum = new Random();
         List<TerrainTile> neighboring_tiles = current_lifeform.getNeighboringTerrain();
@@ -35,7 +47,7 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
 
 
         // VC - if there are 2 humans and some RNG to increase the population
-        if (starting_population > 2 && randomNum.nextInt(5) == 3){
+        if (randomNum.nextInt(5) == 3){
             return starting_population + 1;
         }
         else return starting_population;

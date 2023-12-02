@@ -76,7 +76,7 @@ public class TerrainTile extends Tile {
      */
     public void generateLifeform() {
         //VC - gets the class of the lifeforms in this tile
-        String class_of_current_occupants = occupant.getClass().toString();
+        String class_of_current_occupants = getOccupant().getClass().toString();
         //VC - creates a new lifeform of the same type and adds it to this tile
         //occupant.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
 
@@ -100,8 +100,8 @@ public class TerrainTile extends Tile {
         if(obj == null) { return false; }
         TerrainTile checkEqualTerrainTile = (TerrainTile)obj;
 
-        if(this.mColumnPosition == checkEqualTerrainTile.mColumnPosition
-                && this.mRowPosition == checkEqualTerrainTile.mRowPosition)
+        if(this.getmColumnPosition() == checkEqualTerrainTile.getmColumnPosition()
+                && this.getmRowPosition() == checkEqualTerrainTile.getmRowPosition())
             return true;
         else
             return false;
@@ -116,9 +116,9 @@ public class TerrainTile extends Tile {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(mColumnPosition, 2);
-        hash += Math.pow(mRowPosition, 2);
-        hash += Math.pow((mColumnPosition + mRowPosition), 3);
+        hash += Math.pow(getmColumnPosition(), 2);
+        hash += Math.pow(getmRowPosition(), 2);
+        hash += Math.pow((getmColumnPosition() + getmRowPosition()), 3);
         return hash;
     }
 }

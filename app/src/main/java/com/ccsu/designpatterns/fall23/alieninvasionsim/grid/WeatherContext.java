@@ -12,7 +12,7 @@ public class WeatherContext {
     // Assuming cell is a single tile
     public void applyWeather(Tile cell) {
         if (weatherStrategy != null) {
-            WeatherStrategy.applyWeatherEffect(cell);
+            weatherStrategy.applyWeatherEffect(cell);
         }
     }
 
@@ -21,7 +21,7 @@ public class WeatherContext {
         if (weatherStrategy != null) {
             // Iterate through all tiles in the grid and apply the weather effect
             for (Tile cell : tiles) {
-                WeatherStrategy.applyWeatherEffect(cell);
+                weatherStrategy.applyWeatherEffect(cell);
             }
         }
     }

@@ -18,5 +18,4 @@ public enum BuffDebuffTypes {
     SPEED_DEBUFF,
     DEFENSE_DEBUFF,
     HP_DEBUFF
-
 }

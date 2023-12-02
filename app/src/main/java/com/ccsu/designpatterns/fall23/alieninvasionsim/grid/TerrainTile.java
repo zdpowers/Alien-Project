@@ -16,27 +16,11 @@ import java.util.List;
  * @since 2023-10-29
  */
 public class TerrainTile extends Tile {
-    //VC - 11/25/23 getting rid of this and placing a single population variable instead
-    //private List<LifeForm> mOccupants = new ArrayList<>();
-    private LifeForm mOccupant;
     private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
     public TerrainTile(int column, int row) {
         super(column, row);
         // Need to place the tile on the board
-    }
-
-    /**
-     * Method to indicate if the tile is occupied
-     *
-     * @return boolean true if occupied
-     *
-     * @author Vincent Capra
-     * @version 1.0
-     * @since 2023-10-29
-     */
-    public boolean tileIsOccupied() {
-        return (mOccupant != null);
     }
 
     /**

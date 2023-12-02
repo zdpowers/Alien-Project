@@ -25,4 +25,10 @@ public class WeatherContext {
             }
         }
     }
+
+    //returns the current weather strategy
+     public WeatherStrategy getWeather() {
+        return weatherStrategy;
+     }
+
 }

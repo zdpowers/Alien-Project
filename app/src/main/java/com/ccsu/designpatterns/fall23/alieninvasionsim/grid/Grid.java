@@ -12,6 +12,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,13 +81,14 @@ public class Grid {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
         WeatherContext weatherContext = new WeatherContext();
+        weatherContext.setWeatherStrategy(new ClearWeatherStrategy());
         // VC - Initially construct the Grid with Terrain Tiles
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
                 TerrainTile tile = new TerrainTile(column, row);
                 // tODO determine if tile changes due to the weather change
-                weatherContext.applyWeather(tile);
+                weatherContext.applyWeather((Tile) mTiles);
                 mTiles.add(tile);
             }
         }
@@ -201,9 +203,6 @@ public class Grid {
 
         //Adjust the number of water tiles based on the weather strategy
 
-        if (weatherStrategy instanceof DroughtWeatherStrategy) {
-            maxNumOfWaterTiles /= 2; //This line will reduce the max number of water tiles by half during a Drought
-        }
         if (weatherStrategy instanceof FloodingWeatherStrategy) {
             maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
         }
@@ -426,32 +425,51 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-28
      */
-    public void progressSimulation() {
+    public void progressSimulation(List<Tile> grid) {
         int year = mYear.getValue() + 1;
         // If progressing further than the current year
         if (year > gridCaretaker.getLength() - 1) {
             // Generate the progression and save it into a new memento
             progressLifeForms();
-/*
-            // Should we start a weather event?
             Random rand = new Random();
-            int generateWeatherEvent = rand.nextInt(6);
-            if (generateWeatherEvent == 1) {
-                // Generate the weather
-                generateWeatherEvent = rand.nextInt(3 );
-                if(generateWeatherEvent == 0) {
-                    weatherContext.applyWeather(cell);
-                }
-                if(generateWeatherEvent == 1) {
+            WeatherContext weatherContext = new WeatherContext();
+            weatherContext.setWeatherStrategy(new ClearWeatherStrategy());
+            //Apply the weather effect to the grid
+            weatherContext.applyWeatherToGrid(grid);
+            // Should we start a weather event?
+            // checking if the current weather strategy is not null and the duration is not done
+            if (weatherContext.getWeather() != null && weatherContext.getWeather().getDuration() > 0) {
+                //Do not start another weather event, but decrement the duration of the current by one
+                weatherContext.getWeather().setDuration(weatherContext.getWeather().getDuration() -1);
 
-                }
-                if(generateWeatherEvent == 2) {
+            } else {
+                //start a new weather event with probability 1/4
+                int generateWeatherEvent = rand.nextInt(6);
+                if (generateWeatherEvent == 1) {
+                    //generate a weather event
+                    generateWeatherEvent = rand.nextInt(3);
+                    if(generateWeatherEvent == 0) {
+                        //apply the first weather strategy
+                        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
 
+                    }
+                    if(generateWeatherEvent == 1) {
+                        //apply the second weather strategy
+                        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+                    }
+                    if(generateWeatherEvent == 2) {
+                        //apply the third weather strategy
+                        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+                    }
+                    // set duration of the weather events to a random number between 1 and x in years
+                    int x = 10;
+                    weatherContext.getWeather().setDuration(rand.nextInt(x) +1);
                 }
-
-            }*/
+            }
 
             //TODO Lastly in this statement, take a memento
+            GridMemento memento = new GridMemento(grid);
+            gridCaretaker.add(memento);
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);

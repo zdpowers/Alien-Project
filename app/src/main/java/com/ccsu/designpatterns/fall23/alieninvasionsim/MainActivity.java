@@ -1,21 +1,30 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.BlizzardWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ClearWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.DroughtWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.FloodingWeatherStrategy;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.GridAdapter;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    /** Grid which holds all data related to the simulation. */
+    /**
+     * Grid which holds all data related to the simulation.
+     */
     private Grid mSimulationGrid;
 
     /**
@@ -49,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
-            mSimulationGrid.progressSimulation();
+            mSimulationGrid.progressSimulation(mSimulationGrid.getTiles());
             adapter.notifyDataSetChanged();
         });
     }
@@ -57,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Update what is displayed to the user on screen.
      *
-     * @param year  - Current year in the simulation.
-     *
+     * @param year - Current year in the simulation.
      * @author Joseph Lumpkin
      * @version 1.0
      * @since 11-29-2023
@@ -66,7 +74,24 @@ public class MainActivity extends AppCompatActivity {
     private void updateDisplay(int year) {
         TextView tvYear = findViewById(R.id.tvYear);
         tvYear.setText(String.format(Locale.US, "Year: %d", year));
+
+        // Apply the weather graphics
+        ConstraintLayout gridStatusEffect = findViewById(R.id.clGridStatusEffect);
+        WeatherContext weatherContext = mSimulationGrid.getWeatherContext();
+        if (weatherContext != null && weatherContext.getWeather() != null) {
+            if (weatherContext.getWeather() instanceof ClearWeatherStrategy ||
+                    weatherContext.getWeather() == null) {
+                gridStatusEffect.setBackground(getDrawable(R.drawable.rounded_white_background));
+            } else if (weatherContext.getWeather() instanceof BlizzardWeatherStrategy) {
+                gridStatusEffect.setBackground(getDrawable(R.drawable.rounded_blizzard_background));
+            } else if (weatherContext.getWeather() instanceof DroughtWeatherStrategy) {
+                gridStatusEffect.setBackground(getDrawable(R.drawable.rounded_drought_background));
+            } else if (weatherContext.getWeather() instanceof FloodingWeatherStrategy) {
+                gridStatusEffect.setBackground(getDrawable(R.drawable.rounded_flooded_background));
+            }
+        }
+
         //TODO add code to iterate and print logs to the console here
-        //findViewById(R.id.tvConsole);
+        findViewById(R.id.tvConsole);
     }
 }

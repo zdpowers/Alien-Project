@@ -19,8 +19,6 @@ public abstract class Tile {
 
 //    /** Flag to tell if this tile is susceptible to current weather events */
 //    private boolean mWeatherFlag;
-    /** Weather context for this tile */
-    private WeatherContext mWeatherContext;
 
     LifeForm occupant;
 
@@ -67,14 +65,6 @@ public abstract class Tile {
 //    public boolean getWeatherFlag() {
 //        return mWeatherFlag;
 //    }
-
-    public void setWeatherContext(WeatherContext weatherContext) {
-        mWeatherContext = weatherContext;
-    }
-
-    public WeatherContext getWeatherContext() {
-        return mWeatherContext;
-    }
 
     /**
      * Method to accept visitor objects.

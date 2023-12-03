@@ -65,6 +65,9 @@ public class Grid {
      */
     private MutableLiveData<Integer> mYear = new MutableLiveData<>();
 
+    /** Weather context for this tile */
+    private WeatherContext mWeatherContext;
+
 
     /**
      * Constructs the grid layout based on a given
@@ -431,37 +434,42 @@ public class Grid {
             // Generate the progression and save it into a new memento
             progressLifeForms();
             Random rand = new Random();
-            // Should we start a weather event?
-            // checking if the current weather strategy is not null and the duration is not done
-            if ((mTiles.get(0).getWeatherContext() != null) && mTiles.get(0).getWeatherContext().getWeather().getDuration() > 0) {
-                for (Tile tile : mTiles) {
-                    // Do not start another weather event, but decrement the duration of the current by one
-                    tile.getWeatherContext().getWeather().setDuration(tile.getWeatherContext().getWeather().getDuration() -1);
+            // Should we start a weather event
+            // Checking if the current weather strategy is not null and the duration is not done
+            if (mWeatherContext != null &&
+                    mWeatherContext.getWeather() != null &&
+                    !(mWeatherContext.getWeather() instanceof ClearWeatherStrategy)
+            ) {
+                int duration = mWeatherContext.getWeather().getDuration();
+                Log.d("Grid", "progressSimulation(), duration = " + duration);
+                if ( duration > 0) {
+                    mWeatherContext.getWeather().setDuration(duration - 1);
+                } else { // When the duration expires, clear the weather from the grid
+                    mWeatherContext.setWeatherStrategy(new ClearWeatherStrategy());
                 }
             } else { // Start a new weather event with probability 20%
-                WeatherContext weatherContext = new WeatherContext();
-                weatherContext.setWeatherStrategy(null);
+                mWeatherContext = new WeatherContext();
                 int generateWeatherEvent = rand.nextInt(6);
                 if (generateWeatherEvent == 1) {
                     //generate a weather event
                     generateWeatherEvent = rand.nextInt(3);
                     if(generateWeatherEvent == 0) {
                         //apply the first weather strategy
-                        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+                        mWeatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
                     }
                     if(generateWeatherEvent == 1) {
                         //apply the second weather strategy
-                        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+                        mWeatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
                     }
                     if(generateWeatherEvent == 2) {
                         //apply the third weather strategy
-                        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+                        mWeatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
                     }
                     // set duration of the weather events to a random number between 1 and x in years
                     int x = 10;
-                    weatherContext.getWeather().setDuration(rand.nextInt(x) +1);
+                    mWeatherContext.getWeather().setDuration(rand.nextInt(x) + 1);
                     //Apply the weather effect to the grid
-                    weatherContext.applyWeatherToGrid(grid, weatherContext);
+                    mWeatherContext.applyWeatherToGrid(grid, mWeatherContext);
                 }
             }
 
@@ -770,6 +778,14 @@ public class Grid {
                 return nextTile;
             }
         }
+    }
+
+    public void setWeatherContext(WeatherContext weatherContext) {
+        mWeatherContext = weatherContext;
+    }
+
+    public WeatherContext getWeatherContext() {
+        return mWeatherContext;
     }
 
     /**

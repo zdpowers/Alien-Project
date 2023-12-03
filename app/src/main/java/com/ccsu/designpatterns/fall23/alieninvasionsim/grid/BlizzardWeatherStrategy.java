@@ -17,6 +17,5 @@ public class BlizzardWeatherStrategy implements WeatherStrategy {
     public void applyWeatherEffect(Tile cell, WeatherContext weatherContext) {
         cell.applyBuffDebuff(BuffDebuffTypes.HP_DEBUFF,-2);
         cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -2);
-        cell.setWeatherContext(weatherContext);
     }
 }

@@ -37,12 +37,6 @@ public class Human extends LifeForm {
         super(source, residence);
     }
 
-/*    @Override
-    protected void gather() {
-        int[] currentCoordinates = super.getTileOfResidence().getTileCoordinates();
-
-    }*/
-
     /**
      * This is the default behavior for a template pattern to extract adjacent tile resources.
      *
@@ -59,10 +53,10 @@ public class Human extends LifeForm {
                 reproduceStrategy = new OneUpReproductionStrat();
             }
         }
-        System.out.println("Human at column: " + current_coordinates[0]
+/*        System.out.println("Human at column: " + current_coordinates[0]
                 + "; and row: " + current_coordinates[1] + " has uranium: "+ getAmountOf_Uranium() +
                 ", has oil: " + getAmountOf_Oil() +
-                ", has iron: " + getAmountOf_Iron());
+                ", has iron: " + getAmountOf_Iron());*/
     }
     /**
      * method to possibly add another human to the tile that this
@@ -80,8 +74,12 @@ public class Human extends LifeForm {
 
     @Override
     protected void checkForApplicableResources() {
-        if(getNeighboringResources().contains(ONEUP))
-            mine(getTileOfResidence().getTileCoordinates());
+        boolean dontMoveFlag = false;
+        for(ResourceTile neighboringResourceTile : getNeighboringResources()) {
+            if (neighboringResourceTile.getResourceType() == ONEUP)
+                dontMoveFlag = true;
+        }
+        if(dontMoveFlag) mine(getTileOfResidence().getTileCoordinates());
         else move();
     }
 
@@ -116,13 +114,13 @@ public class Human extends LifeForm {
                 getTileOfResidence().setOccupant(null);
                 randomTile.setOccupant(this);
                 setTileOfResidence(randomTile);
-                System.out.println("Lifeform moved to: " +  getTileOfResidence().getTileCoordinates().toString());
+                System.out.println("Human moved to: " +  getTileOfResidence().getTileCoordinates().toString());
             }
         }
         //VC - somewhere in here need to set after have moved to a new tile
         setHaveNeighboringTiles(false);
-        setNeighboringTerrain(null);
-        setNeighboringResources(null);
+        //setNeighboringTerrain(null);
+        //setNeighboringResources(null);
     }
 
     @Override

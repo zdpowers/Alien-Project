@@ -368,7 +368,7 @@ public class Grid {
             }
         }
 
-        while (alienTileCount < 1) {
+        while (alienTileCount < 5) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);

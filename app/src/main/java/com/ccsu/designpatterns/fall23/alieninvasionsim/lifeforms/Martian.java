@@ -42,10 +42,14 @@ public class Martian extends LifeForm {
 
     @Override
     protected void checkForApplicableResources() {
-        if(getNeighboringResources().contains(URANIUM) ||
-                getNeighboringResources().contains(IRON) ||
-                getNeighboringResources().contains(OIL))
-            mine(getTileOfResidence().getTileCoordinates());
+        boolean dontMoveFlag = false;
+        for(ResourceTile neighboringResourceTile : getNeighboringResources()) {
+            if (neighboringResourceTile.getResourceType() == URANIUM ||
+                    neighboringResourceTile.getResourceType()== IRON ||
+                    neighboringResourceTile.getResourceType() == OIL)
+                dontMoveFlag = true;
+        }
+        if(dontMoveFlag) mine(getTileOfResidence().getTileCoordinates());
         else move();
     }
 
@@ -99,13 +103,13 @@ public class Martian extends LifeForm {
                 getTileOfResidence().setOccupant(null);
                 randomTile.setOccupant(this);
                 setTileOfResidence(randomTile);
-                System.out.println("Lifeform moved to: " +  getTileOfResidence().getTileCoordinates().toString());
+                System.out.println("Martian moved to: " +  getTileOfResidence().getTileCoordinates().toString());
             }
         }
         //VC - somewhere in here need to set after have moved to a new tile
         setHaveNeighboringTiles(false);
-        setNeighboringTerrain(null);
-        setNeighboringResources(null);
+        //setNeighboringTerrain(null);
+        //setNeighboringResources(null);
     }
 
     @Override

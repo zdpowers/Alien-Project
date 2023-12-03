@@ -36,8 +36,8 @@ public abstract class LifeForm
     private static int miningRating;
 
     private TerrainTile tileOfResidence;
-    private List<TerrainTile> neighboringTerrain;
-    private List<ResourceTile> neighboringResources;
+    private List<TerrainTile> neighboringTerrain = new ArrayList<>();
+    private List<ResourceTile> neighboringResources = new ArrayList<>();
     private boolean haveNeighboringTiles = false;
 
     private int populationCount= 1;
@@ -117,11 +117,12 @@ public abstract class LifeForm
     protected void gather() {
 
         int[] currentCoordinates = tileOfResidence.getTileCoordinates();
-        String adjoining_resources;
 
         //VC - This gets/sets all neighboring tiles. It's called on initial loop and then again
         // if and when the lifeform moves to a new terrain tile.
         if(!haveNeighboringTiles) {
+            neighboringTerrain.clear();
+            neighboringResources.clear();
             try {
                 neighboringTerrain =
                         getNeighboringTerrainTileReferences(currentCoordinates);
@@ -142,17 +143,7 @@ public abstract class LifeForm
                     neighboringResources.toString());
         }
 
-        // Need to write an override method to check for humans and martians. write an abstract
-        // version below. But only move humans if NOT neighboring ONEUP. Only move Martians if
-        // NOT neighboring oil, uranium, or iron.
         checkForApplicableResources();
-        if (neighboringResources != null) {
-            if (neighboringResources.isEmpty())
-                move();
-            else {
-                mine(currentCoordinates);
-            }
-        }
     }
 
     /**
@@ -162,33 +153,7 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-26-10
      */
-    protected void move(){
-
-        if (neighboringTerrain.isEmpty()) return;
-        Random rand = new Random();
-        TerrainTile randomTile = null;
-
-        while(randomTile == null) {
-            int randomIndex = rand.nextInt(neighboringTerrain.size());
-            randomTile = neighboringTerrain.get(randomIndex);
-            if(randomTile.getOccupant() != null){ // VC - meaning tile is occupied
-                neighboringTerrain.remove(randomIndex);
-                if (neighboringTerrain.isEmpty()) return;
-                randomTile = null;
-            }
-            //moves this Lifeform to the new tile
-            else {
-                tileOfResidence.setOccupant(null);
-                randomTile.setOccupant(this);
-                this.tileOfResidence = randomTile;
-                System.out.println("Lifeform moved to: " +  this.tileOfResidence.getTileCoordinates().toString());
-            }
-        }
-        //VC - somewhere in here need to set after have moved to a new tile
-        haveNeighboringTiles = false;
-        neighboringTerrain.clear();
-        neighboringResources.clear();
-    };
+    protected abstract void move();
 
     /**
      * This is the default behavior for a template pattern to extract adjacent tile resources.

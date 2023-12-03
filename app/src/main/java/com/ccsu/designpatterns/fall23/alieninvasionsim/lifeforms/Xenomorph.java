@@ -28,11 +28,6 @@ public class Xenomorph extends LifeForm {
     private TerrainTile tileOfResidence;
 
     @Override
-    protected void gather() {
-
-    }
-
-    @Override
     protected void reproduce() {
 
     }

@@ -28,13 +28,17 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
         List<TerrainTile> neighboring_tiles = current_lifeform.getNeighboringTerrain();
 
         // VC - if a neighboring tile is occupied, remove it
-        if(neighboring_tiles != null) {
-            for (TerrainTile tile : neighboring_tiles) {
+        if(!neighboring_tiles.isEmpty()) {
+/*            for (TerrainTile tile : neighboring_tiles) {
                 //if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
                 if (tile.getOccupant() != null) neighboring_tiles.remove(tile);
-                if(neighboring_tiles == null) return starting_population;
-            }
+                if(neighboring_tiles.isEmpty()) return starting_population;
+            }*/
 
+            for (int i = 0; i < neighboring_tiles.size(); i++){
+                if(neighboring_tiles.get(i).getOccupant() != null) neighboring_tiles.remove(i);
+                if(neighboring_tiles.isEmpty()) return starting_population;
+            }
 
             // VC - if the current tile population is over 5 and spawn a new person, spawn them
             //  into an adjacent tile.

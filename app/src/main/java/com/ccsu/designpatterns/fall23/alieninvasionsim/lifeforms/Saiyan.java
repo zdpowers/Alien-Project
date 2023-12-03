@@ -27,11 +27,6 @@ public class Saiyan extends LifeForm {
     }
 
     @Override
-    protected void gather() {
-
-    }
-
-    @Override
     protected void reproduce() {
 
     }

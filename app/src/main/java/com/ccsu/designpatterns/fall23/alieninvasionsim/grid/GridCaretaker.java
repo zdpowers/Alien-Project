@@ -47,6 +47,6 @@ public class GridCaretaker {
      * @since 2023-11-28
      */
     public int getLength() {
-        return mementoList.capacity();
+        return mementoList.size();
     }
 }

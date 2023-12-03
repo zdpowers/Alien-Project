@@ -12,6 +12,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +65,9 @@ public class Grid {
      */
     private MutableLiveData<Integer> mYear = new MutableLiveData<>();
 
+    /** Weather context for this tile */
+    private WeatherContext mWeatherContext;
+
 
     /**
      * Constructs the grid layout based on a given
@@ -79,27 +83,49 @@ public class Grid {
     public Grid(int gridAxisLength) {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
-
+        WeatherContext weatherContext = new WeatherContext();
+        weatherContext.setWeatherStrategy(new ClearWeatherStrategy());
         // VC - Initially construct the Grid with Terrain Tiles
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
-                mTiles.add(new TerrainTile(column, row));
+                TerrainTile tile = new TerrainTile(column, row);
+                weatherContext.applyWeather(tile);
+                mTiles.add(tile);
             }
         }
         // Initialize the year
         mYear.setValue(0);
         // Overwrite the default tiles to place some water and resource tiles
-        placeWaterTiles();
+        placeWaterTiles(new ClearWeatherStrategy());
         placeResourceTiles();
         placeLifeFormCluster();
+    }
+
+    public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
+        //Clear existing water tiles
+        clearWaterTiles();
+
+        // Place water tiles based on the current weather
+        placeWaterTiles(weatherStrategy);
+    }
+
+    private void clearWaterTiles() {
+        //Remove existing water tiles from grid
+        for (Tile tile : mTiles) {
+            if (tile instanceof ResourceTile) {
+                ResourceTile resourceTile = (ResourceTile) tile;
+                if (resourceTile.getResourceType().equals("water")) {
+                }
+            }
+        }
     }
 
     /**
      * Implements the Singleton pattern for the Grid class
      *
-     * @return a new Grid instance.
      * @param gridAxisLength is the private constructor parameter
+     * @return a new Grid instance.
      * @author Vincent Capra
      * @version 1.0
      * @since 2023-11-11
@@ -109,9 +135,9 @@ public class Grid {
         //VC - Adding this for robustness, should handle any threading issues
         // in the event that we need to add them later.
         //synchronized (Grid.class) {
-            if (instance == null) {
-                instance = new Grid(gridAxisLength);
-            }
+        if (instance == null) {
+            instance = new Grid(gridAxisLength);
+        }
         //}
         return instance;
     }
@@ -137,7 +163,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-10-26
      */
-    private void placeWaterTiles() {
+    private void placeWaterTiles(WeatherStrategy weatherStrategy) {
         int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3; // Allowed amount of water
         int currentNumOfWaterTiles = 0; // Amount of water tiles accumulator
 
@@ -145,6 +171,7 @@ public class Grid {
         int[] pointer1 = createRandomCoordinate();
         int[] pointer2;
         int[] pointer3;
+
 
         //VC - setting pointer 2 and 3 until they are all unique
         do {
@@ -179,6 +206,14 @@ public class Grid {
             Log.e("Grid", e.getMessage());
         }
 
+        //Adjust the number of water tiles based on the weather strategy
+
+        if (weatherStrategy instanceof FloodingWeatherStrategy) {
+            maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
+        }
+        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+
+        }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
@@ -404,15 +439,55 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-28
      */
-    public void progressSimulation() {
+    public void progressSimulation(List<Tile> grid) {
         int year = mYear.getValue() + 1;
         // If progressing further into the simulation
         if (year > gridCaretaker.getLength() - 1) {
             // Generate the progression and save it into a new memento
             progressLifeForms();
-            //TODO Lastly in this statement, take a memento
-        } else { // Else load the next year
+            Random rand = new Random();
+            // Should we start a weather event
+            // Checking if the current weather strategy is not null and the duration is not done
+            if (mWeatherContext != null &&
+                    mWeatherContext.getWeather() != null &&
+                    !(mWeatherContext.getWeather() instanceof ClearWeatherStrategy)
+            ) {
+                int duration = mWeatherContext.getWeather().getDuration();
+                Log.d("Grid", "progressSimulation(), duration = " + duration);
+                if ( duration > 0) {
+                    mWeatherContext.getWeather().setDuration(duration - 1);
+                } else { // When the duration expires, clear the weather from the grid
+                    mWeatherContext.setWeatherStrategy(new ClearWeatherStrategy());
+                }
+            } else { // Start a new weather event with probability 20%
+                mWeatherContext = new WeatherContext();
+                int generateWeatherEvent = rand.nextInt(6);
+                if (generateWeatherEvent == 1) {
+                    //generate a weather event
+                    generateWeatherEvent = rand.nextInt(3);
+                    if(generateWeatherEvent == 0) {
+                        //apply the first weather strategy
+                        mWeatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+                    }
+                    if(generateWeatherEvent == 1) {
+                        //apply the second weather strategy
+                        mWeatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+                    }
+                    if(generateWeatherEvent == 2) {
+                        //apply the third weather strategy
+                        mWeatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+                    }
+                    // set duration of the weather events to a random number between 1 and x in years
+                    int x = 10;
+                    mWeatherContext.getWeather().setDuration(rand.nextInt(x) + 1);
+                    //Apply the weather effect to the grid
+                    mWeatherContext.applyWeatherToGrid(grid, mWeatherContext);
+                }
+            }
 
+            //TODO Lastly in this statement, take a memento
+            GridMemento memento = new GridMemento(grid);
+            gridCaretaker.add(memento);
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);
@@ -488,15 +563,16 @@ public class Grid {
     public ArrayList<Tile> getTiles() {
         return (ArrayList) mTiles;
     }
+
     /**
-     * Uses the GridCell class to apply and get the buff and debuff values
+     * Uses the tile class to apply and get the buff and debuff values
      *
      * @author Rocky Trinh
      * @version 1.0
      * @since 2023-12-11
      */
     public void getBuffs(String[] args) {
-        GridCell cell = new GridCell();
+        Tile cell = mTiles.get(0);
 
         //Apply the buffs/debuffs
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
@@ -544,6 +620,20 @@ public class Grid {
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
+
+//        // Apply the weather effects using the strategy pattern
+//        WeatherContext weatherContext = new WeatherContext();
+//
+//        // Set the Sunny weather strategy
+//        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
+//        // Set the Drought weather strategy
+//        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+//        // Set the Flooding weather strategy
+//        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+//        // Set the Blizzard weather strategy
+//        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+//        // Apply the weather effect to the cells
+//        weatherContext.applyWeather(cell);
     }
 
     /**
@@ -724,6 +814,14 @@ public class Grid {
                 return nextTile;
             }
         }
+    }
+
+    public void setWeatherContext(WeatherContext weatherContext) {
+        mWeatherContext = weatherContext;
+    }
+
+    public WeatherContext getWeatherContext() {
+        return mWeatherContext;
     }
 
     /**

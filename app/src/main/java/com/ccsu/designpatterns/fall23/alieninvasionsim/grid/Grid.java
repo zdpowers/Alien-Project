@@ -355,7 +355,7 @@ public class Grid {
                 temp_tile = mTiles.get(index);
                 // If this tile is terrain and unoccupied
                 if (temp_tile instanceof TerrainTile &&
-                        temp_tile.getOccupant() != null) {
+                        temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(3);
@@ -375,7 +375,7 @@ public class Grid {
                 temp_tile = mTiles.get(index);
                 // If this tile is not already a ResourceTile
                 if (temp_tile instanceof TerrainTile &&
-                        temp_tile.getOccupant() != null) {
+                        temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(2);
@@ -486,8 +486,8 @@ public class Grid {
             }
 
             //TODO Lastly in this statement, take a memento
-            GridMemento memento = new GridMemento(grid);
-            gridCaretaker.add(memento);
+            //GridMemento memento = new GridMemento(grid);
+            //gridCaretaker.add(memento);
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);

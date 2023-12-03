@@ -20,7 +20,8 @@ public abstract class Tile {
 //    /** Flag to tell if this tile is susceptible to current weather events */
 //    private boolean mWeatherFlag;
 
-    LifeForm occupant;
+    private LifeForm occupant;
+    private boolean isOccupied = false;
 
     public Tile(int column, int row) {
         // Need to place the tile in the layout visually

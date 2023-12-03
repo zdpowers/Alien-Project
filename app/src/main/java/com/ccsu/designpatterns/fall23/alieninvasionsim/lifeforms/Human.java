@@ -81,7 +81,7 @@ public class Human extends LifeForm {
     @Override
     protected void checkForApplicableResources() {
         if(getNeighboringResources().contains(ONEUP))
-            mine();
+            mine(getTileOfResidence().getTileCoordinates());
         else move();
     }
 

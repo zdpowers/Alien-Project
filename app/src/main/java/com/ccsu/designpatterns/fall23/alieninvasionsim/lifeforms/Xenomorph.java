@@ -38,7 +38,17 @@ public class Xenomorph extends LifeForm {
     }
 
     @Override
+    protected void checkForApplicableResources() {
+
+    }
+
+    @Override
     protected void move() {
+
+    }
+
+    @Override
+    protected void mine(int[] current_coordinates) {
 
     }
 

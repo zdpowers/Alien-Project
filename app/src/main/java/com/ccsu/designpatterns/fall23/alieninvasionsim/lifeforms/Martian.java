@@ -45,7 +45,7 @@ public class Martian extends LifeForm {
         if(getNeighboringResources().contains(URANIUM) ||
                 getNeighboringResources().contains(IRON) ||
                 getNeighboringResources().contains(OIL))
-            mine();
+            mine(getTileOfResidence().getTileCoordinates());
         else move();
     }
 

@@ -29,7 +29,8 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
 
         // VC - if a neighboring tile is occupied, remove it
         for(TerrainTile tile : neighboring_tiles){
-            if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
+            //if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
+            if (tile.getOccupant() != null) neighboring_tiles.remove(tile);
         }
 
         // VC - if the current tile population is over 5 and spawn a new person, spawn them

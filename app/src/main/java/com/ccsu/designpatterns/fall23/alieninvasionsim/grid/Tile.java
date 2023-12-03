@@ -17,7 +17,9 @@ public abstract class Tile {
     private int mColumnPosition;
     private int mRowPosition;
 
-    private boolean mWeatherFlag;
+//    /** Flag to tell if this tile is susceptible to current weather events */
+//    private boolean mWeatherFlag;
+
     LifeForm occupant;
 
     public Tile(int column, int row) {
@@ -56,13 +58,13 @@ public abstract class Tile {
         return buffsDebuffs.getOrDefault(type, 0);
     }
 
-    public void setWeatherFlag(boolean weatherFlag) {
-        mWeatherFlag = weatherFlag;
-    }
-
-    public boolean getWeatherFlag() {
-        return mWeatherFlag;
-    }
+//    public void setWeatherFlag(boolean weatherFlag) {
+//        mWeatherFlag = weatherFlag;
+//    }
+//
+//    public boolean getWeatherFlag() {
+//        return mWeatherFlag;
+//    }
 
     /**
      * Method to accept visitor objects.

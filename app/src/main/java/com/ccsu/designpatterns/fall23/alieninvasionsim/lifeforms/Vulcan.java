@@ -18,11 +18,12 @@ public class Vulcan extends LifeForm {
     /**
      * Prototype constructor. This constructor is used when using the clone method to create a copy of a LifeForm object
      * @param source the source object which is to be cloned. The new object is initialized with the parameters of the source object.
+     * @param residence the new TerrainTile that the LifeForm will be cloned to.
      * @author Zack Powers
      * @since 2023-12-11
      */
-    Vulcan(Vulcan source) {
-        super(source);
+    Vulcan(Vulcan source, TerrainTile residence) {
+        super(source, residence);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Vulcan extends LifeForm {
     }
 
     @Override
-    public LifeForm clone() {
-        return new Vulcan(this);
+    public LifeForm clone(TerrainTile residence) {
+        return new Vulcan(this, residence);
     }
 }

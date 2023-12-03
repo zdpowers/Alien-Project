@@ -4,39 +4,23 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
 import java.lang.Math;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class to build single terrain tiles. These are tiles that can be
  * occupied by humans or a single race/species of aliens. The Class of
  * occupant must be homogenous at all times.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-29
  */
 public class TerrainTile extends Tile {
-    //VC - not sure if this being an arraylist is the best choice
-    private ArrayList<LifeForm> mOccupants;
     private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
     public TerrainTile(int column, int row) {
         super(column, row);
         // Need to place the tile on the board
-    }
-
-    /**
-     * Method to indicate if the tile is occupied
-     *
-     * @return boolean true if occupied
-     *
-     * @author Vincent Capra
-     * @version 1.0
-     * @since 2023-10-29
-     */
-    public boolean tileIsOccupied() {
-        if (mOccupants == null)
-            return false;
-        return true;
     }
 
     /**
@@ -76,22 +60,15 @@ public class TerrainTile extends Tile {
      */
     public void generateLifeform() {
         //VC - gets the class of the lifeforms in this tile
-        String class_of_current_occupants = mOccupants.get(0).getClass().toString();
+        String class_of_current_occupants = getOccupant().getClass().toString();
         //VC - creates a new lifeform of the same type and adds it to this tile
-        mOccupants.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
+        //occupant.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
+
     }
 
-    /**
-     * Construct a proper toString method for the class
-     *
-     * @author Vincent Capra
-     * @return String indicating the tile description
-     * @version 1.0
-     * @since 2023-11-6
-     */
     @Override
-    public String toString() {
-        return "Column: " + this.mColumnPosition +  ", Row: " + this.mRowPosition;
+    public void accept(TileVisitor visitor) {
+        visitor.visitTerrainTile(this);
     }
 
     /**
@@ -107,8 +84,8 @@ public class TerrainTile extends Tile {
         if(obj == null) { return false; }
         TerrainTile checkEqualTerrainTile = (TerrainTile)obj;
 
-        if(this.mColumnPosition == checkEqualTerrainTile.mColumnPosition
-                && this.mRowPosition == checkEqualTerrainTile.mRowPosition)
+        if(this.getmColumnPosition() == checkEqualTerrainTile.getmColumnPosition()
+                && this.getmRowPosition() == checkEqualTerrainTile.getmRowPosition())
             return true;
         else
             return false;
@@ -123,9 +100,9 @@ public class TerrainTile extends Tile {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(mColumnPosition, 2);
-        hash += Math.pow(mRowPosition, 2);
-        hash += Math.pow((mColumnPosition + mRowPosition), 3);
+        hash += Math.pow(getmColumnPosition(), 2);
+        hash += Math.pow(getmRowPosition(), 2);
+        hash += Math.pow((getmColumnPosition() + getmRowPosition()), 3);
         return hash;
     }
 }

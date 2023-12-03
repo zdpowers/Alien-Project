@@ -5,16 +5,37 @@ import java.util.Random;
  * A class to build a resource tile. This tile cannot be occupied.
  * This type of tile has a finite or infinite (water)amount of a resource.
  *
- * @author Vincent Capra
+ * @author Vincent Capra, Zack Powers
  * @version 1.0
  * @since 2023-10-26
  */
 public class ResourceTile extends Tile {
 
     private int unitsOfResource;
-    private String resourceType;
+    private resourceType mResourceType;
 
-    public ResourceTile(int column_pos, int row_pos, String resource_type) {
+    /**
+     *
+     * This is the enum strategy that was a refactoring of a simple string input
+     * that makes the resource tile types more robust and extensible.
+     *
+     * @author Vincent Capra
+     * @version 1.0
+     * @since 2023-12-1
+     */
+    public enum resourceType {
+        WATER ("water"),
+        OIL ("oil"),
+        IRON ("iron"),
+        URANIUM("uranium"),
+        ONEUP("oneup");
+        private final String name;
+
+        resourceType(String name) {
+            this.name = name;
+        }
+    }
+    public ResourceTile(int column_pos, int row_pos, resourceType resource_type) {
         super(column_pos, row_pos);
         Random randomizedResourceValue = new Random();
         //VC - assuming that a resource is boarded on all sides for max occupancy
@@ -24,7 +45,7 @@ public class ResourceTile extends Tile {
 
         //VC - need to check if resource_type string is valid,
         // else throw an error before setting
-        resourceType = resource_type;
+        mResourceType = resource_type;
 
         //VC - NEED TO ADD TO THE HASHSET
     }
@@ -38,8 +59,13 @@ public class ResourceTile extends Tile {
      * @version 1.0
      * @since 2023-10-29
      */
-    public String getResourceType() {
-        return resourceType;
+    public resourceType getResourceType() {
+        return mResourceType;
+    }
+
+    @Override
+    public void accept(TileVisitor visitor) {
+        visitor.visitResourceTile(this);
     }
 
     /**
@@ -55,9 +81,9 @@ public class ResourceTile extends Tile {
         if(obj == null){return false;}
         ResourceTile checkEqualResourceTile = (ResourceTile)obj;
 
-        if(this.mColumnPosition == checkEqualResourceTile.mColumnPosition
-                && this.mRowPosition == checkEqualResourceTile.mRowPosition
-                && this.resourceType.equals(checkEqualResourceTile.getResourceType()))
+        if(this.getmColumnPosition() == checkEqualResourceTile.getmColumnPosition()
+                && this.getmRowPosition() == checkEqualResourceTile.getmRowPosition()
+                && this.mResourceType.equals(checkEqualResourceTile.getResourceType()))
             return true;
         else return false;
     }
@@ -71,10 +97,10 @@ public class ResourceTile extends Tile {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += Math.pow(mColumnPosition, 2);
-        hash += Math.pow(mRowPosition, 2);
-        hash += Math.pow((mColumnPosition + mRowPosition), 3);
-        hash += resourceType.hashCode();
+        hash += Math.pow(getmColumnPosition(), 2);
+        hash += Math.pow(getmRowPosition(), 2);
+        hash += Math.pow((getmColumnPosition() + getmRowPosition()), 3);
+        hash += mResourceType.hashCode();
         return hash;
     }
 }

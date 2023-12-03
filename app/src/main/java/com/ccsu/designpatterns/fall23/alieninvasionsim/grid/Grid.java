@@ -1,13 +1,22 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType;
 import android.util.Log;
 
-import com.ccsu.designpatterns.fall23.alieninvasionsim.Utilities.EventManager;
+import androidx.lifecycle.MutableLiveData;
+
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Human;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeFormFactory;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -24,14 +33,17 @@ public class Grid {
      * number of elements along the same horizontal or vertical line.
      */
     private int mGridAxisLength;
+
     /**
      * A list of all LifeForms in the grid
      */
     private List<LifeForm> mLifeForms = new ArrayList<>();
+
     /**
      * A list of all tiles in the grid
      */
     private List<Tile> mTiles = new ArrayList<>();
+
     /**
      * VC - the instance variable for Singleton implementation
      */
@@ -41,6 +53,17 @@ public class Grid {
      * An instance of EventManager which is used to maintain and update EventListeners
      */
     private EventManager manager = new EventManager();
+
+    /**
+     * An instance of GridCaretaker, which is used to store GridMementos
+     */
+    private GridCaretaker gridCaretaker = new GridCaretaker();
+
+    /**
+     * The current year for the simulation.
+     */
+    private MutableLiveData<Integer> mYear = new MutableLiveData<>();
+
 
     /**
      * Constructs the grid layout based on a given
@@ -56,37 +79,61 @@ public class Grid {
     public Grid(int gridAxisLength) {
         // Initialize the grid parameters and the grid itself
         mGridAxisLength = gridAxisLength;
-
+        WeatherContext weatherContext = new WeatherContext();
         // VC - Initially construct the Grid with Terrain Tiles
         for (int row = 0; row < gridAxisLength; row++) {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
-                mTiles.add(new TerrainTile(column, row));
+                TerrainTile tile = new TerrainTile(column, row);
+                // tODO determine if tile changes due to the weather change
+                weatherContext.applyWeather(tile);
+                mTiles.add(tile);
             }
         }
+        // Initialize the year
+        mYear.setValue(0);
         // Overwrite the default tiles to place some water and resource tiles
-        placeWaterTiles();
+        placeWaterTiles(new ClearWeatherStrategy());
         placeResourceTiles();
+        placeLifeFormCluster();
+    }
+
+    public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
+        //Clear existing water tiles
+        clearWaterTiles();
+
+        // Place water tiles based on the current weather
+        placeWaterTiles(weatherStrategy);
+    }
+
+    private void clearWaterTiles() {
+        //Remove existing water tiles from grid
+        for (Tile tile : mTiles) {
+            if (tile instanceof ResourceTile) {
+                ResourceTile resourceTile = (ResourceTile) tile;
+                if (resourceTile.getResourceType().equals("water")) {
+                }
+            }
+        }
     }
 
     /**
      * Implements the Singleton pattern for the Grid class
      *
-     * @return a new Grid instance.
      * @param gridAxisLength is the private constructor parameter
+     * @return a new Grid instance.
      * @author Vincent Capra
      * @version 1.0
      * @since 2023-11-11
      */
-
-    public static Grid getInstance(int gridAxisLength){
+    public static Grid getInstance(int gridAxisLength) {
 
         //VC - Adding this for robustness, should handle any threading issues
         // in the event that we need to add them later.
         //synchronized (Grid.class) {
-            if (instance == null) {
-                instance = new Grid(gridAxisLength);
-            }
+        if (instance == null) {
+            instance = new Grid(gridAxisLength);
+        }
         //}
         return instance;
     }
@@ -112,7 +159,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-10-26
      */
-    private void placeWaterTiles() {
+    private void placeWaterTiles(WeatherStrategy weatherStrategy) {
         int maxNumOfWaterTiles = (mGridAxisLength * mGridAxisLength) / 3; // Allowed amount of water
         int currentNumOfWaterTiles = 0; // Amount of water tiles accumulator
 
@@ -120,6 +167,7 @@ public class Grid {
         int[] pointer1 = createRandomCoordinate();
         int[] pointer2;
         int[] pointer3;
+
 
         //VC - setting pointer 2 and 3 until they are all unique
         do {
@@ -133,24 +181,38 @@ public class Grid {
 
 
         try {
-            mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+            mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
         try {
-            mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+            mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
         try {
-            mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+            mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
             currentNumOfWaterTiles += 1;
         } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
             Log.e("Grid", e.getMessage());
         }
 
+        //Adjust the number of water tiles based on the weather strategy
+
+        if (weatherStrategy instanceof DroughtWeatherStrategy) {
+            maxNumOfWaterTiles /= 2; //This line will reduce the max number of water tiles by half during a Drought
+        }
+        if (weatherStrategy instanceof FloodingWeatherStrategy) {
+            maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
+        }
+        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+
+        }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
@@ -160,36 +222,42 @@ public class Grid {
             try {
                 pointer1 = mutateCoordinatePointer(pointer1);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], "water"));
+                mTiles.set(getTileIndex(pointer1), new ResourceTile(pointer1[0], pointer1[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer2 = mutateCoordinatePointer(pointer2);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], "water"));
+                mTiles.set(getTileIndex(pointer2), new ResourceTile(pointer2[0], pointer2[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
 
             try {
                 pointer3 = mutateCoordinatePointer(pointer3);
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
             try {
-                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], "water"));
+                mTiles.set(getTileIndex(pointer3), new ResourceTile(pointer3[0], pointer3[1], WATER));
                 currentNumOfWaterTiles += 1;
             } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
                 Log.e("Grid", e.getMessage());
             }
         }
@@ -223,47 +291,7 @@ public class Grid {
      * @since 2023-11-2
      */
     private int[] mutateCoordinatePointer(int[] origin) throws NoAvailableTilesException {
-        ArrayList<int[]> permutations = new ArrayList<>();
-
-        // Check above this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0], origin[1] - 1});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check to the right of this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0] + 1, origin[1]});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check below this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0], origin[1] + 1});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
-
-        // Check to the left of this tile
-        try {
-            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
-            if (mTiles.get(index) instanceof TerrainTile) {
-                permutations.add(new int[]{origin[0] - 1, origin[1]});
-            }
-        } catch (NoAvailableTilesException e) {
-            Log.e("Grid", e.getMessage());
-        } // Index most likely out of bounds
+        List<int[]> permutations = getNeighboringTerrainTiles(origin);
 
         // Choose a random result
         if (!permutations.isEmpty()) { // Check that arraylist is not null
@@ -282,11 +310,11 @@ public class Grid {
      * @since 2023-11-2
      */
     private void placeResourceTiles() {
-        String[] resources = {"uranium", "iron", "oil"};
-        for (String resource : resources) {
+        resourceType[] resources = {URANIUM, IRON, OIL, ONEUP };
+        for (resourceType resource : resources) {
             int resourceTileCount = 0;
             //VC - This loop places 4 tiles per resource type on the grid
-            while (resourceTileCount < 4) {
+            while (resourceTileCount < 3) {
                 int[] coord = createRandomCoordinate(); // Coordinate to check
                 try {
                     int index = getTileIndex(coord);
@@ -296,6 +324,7 @@ public class Grid {
                         resourceTileCount++;
                     }
                 } catch (NoAvailableTilesException e) {
+                    // No handling, just logging and proceeding
                     Log.e("Grid", e.getMessage());
                 }
             }
@@ -307,13 +336,56 @@ public class Grid {
      * This method places an initial population
      * of LifeForms at a random location.
      *
-     * @param lifeForms Array of LifeForms to be
-     *                  placed in a clustered area.
-     * @author N/A
+     * @author Joseph Lumpkin
      * @version 1.0
-     * @since N/A
+     * @since 2023-11-16
      */
-    private void placeLifeFormCluster(ArrayList<LifeForm> lifeForms) {
+    private void placeLifeFormCluster() {
+        int index = 0;
+        LifeFormFactory lff = new LifeFormFactory();
+        int humanTileCount = 0, alienTileCount = 0;
+        Tile temp_tile;
+        int[] coord;
+        //VC - This loop places 4 tiles per resource type on the grid
+        while (humanTileCount < 3) {
+            coord = createRandomCoordinate(); // Coordinate to check
+            try {
+                index = getTileIndex(coord);
+                temp_tile = mTiles.get(index);
+                // If this tile is terrain and unoccupied
+                if (temp_tile instanceof TerrainTile &&
+                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                    temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
+                    mLifeForms.add(temp_tile.getOccupant());
+                    temp_tile.getOccupant().setPopulationCount(3);
+
+                    humanTileCount++;
+                }
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
+        }
+
+        while (alienTileCount < 1) {
+            coord = createRandomCoordinate(); // Coordinate to check
+            try {
+                index = getTileIndex(coord);
+                temp_tile = mTiles.get(index);
+                // If this tile is not already a ResourceTile
+                if (temp_tile instanceof TerrainTile &&
+                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                    temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
+                    mLifeForms.add(temp_tile.getOccupant());
+                    temp_tile.getOccupant().setPopulationCount(2);
+
+                    alienTileCount++;
+                }
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
+        }
     }
 
     /**
@@ -321,31 +393,101 @@ public class Grid {
      *
      * @author Rocky Trinh
      * @version 1.0
-     * @since 2023-29-10
+     * @since 2023-10-29
      */
     public void progressLifeForms() {
-        for (LifeForm i : mLifeForms) {
-            i.progress(this);
+        int amountOfCurrentLifeforms = mLifeForms.size();
+        for (int i = 0; i < amountOfCurrentLifeforms; i++) {
+            mLifeForms.get(i).progress(this);
         }
+    }
+
+    public void addToGridLifeForms(LifeForm lifeform_to_add){
+        mLifeForms.add(lifeform_to_add);
+    }
+    /**
+     * Get an iterator for the Grid
+     * @return GridTileIterator object
+     * @author Zack Powers
+     * @since 2023-30-11
+     */
+    public Iterator iterator() {
+        return this.new GridTileIterator();
+    }
+
+    /**
+     * Creates a deep copy of the mTiles ArrayList
+     * @return returns a List of Tiles identical to mTiles
+     * @author Zack Powers
+     * @since 2023-30-11
+     */
+    private List<Tile> deepCopyGrid() {
+        Iterator iter = this.iterator(); // Iterator for the current Grid
+        CloneTileVisitor visitor = new CloneTileVisitor(); // Visitor to deep copy each tile
+        while (iter.hasNext()) {
+            Tile next = (Tile) iter.next();
+            next.accept(visitor);
+        }
+        return visitor.getGridClone();
+    }
+
+    /**
+     * Handle presses for simulation progression.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public void progressSimulation() {
+        int year = mYear.getValue() + 1;
+        // If progressing further than the current year
+        if (year > gridCaretaker.getLength() - 1) {
+            // Generate the progression and save it into a new memento
+            progressLifeForms();
+/*
+            // Should we start a weather event?
+            Random rand = new Random();
+            int generateWeatherEvent = rand.nextInt(6);
+            if (generateWeatherEvent == 1) {
+                // Generate the weather
+                generateWeatherEvent = rand.nextInt(3 );
+                if(generateWeatherEvent == 0) {
+                    weatherContext.applyWeather(cell);
+                }
+                if(generateWeatherEvent == 1) {
+
+                }
+                if(generateWeatherEvent == 2) {
+
+                }
+
+            }*/
+
+            //TODO Lastly in this statement, take a memento
+        }
+        // Set the value and allow the observer to load the memento for display
+        mYear.setValue(year);
     }
 
     /**
      * NOTE: NEED TO EDIT THIS TO MAKE DEEP COPY OF THE GRID
      * Method to create memento object to save the grid's state
-     *
      * @return returns a memento object representing the grid's state
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10
      */
     public GridMemento save() {
-        return new GridMemento((ArrayList) mTiles);
+        List<Tile> gridCopy = deepCopyGrid();
+        GridMemento state = new GridMemento((ArrayList) gridCopy);
+        gridCaretaker.add(state);
+        return state;
     }
 
     /**
      * Method to restore the grid to a previous state from a memento object
      *
-     * @param state a memento object containing a grid state
+     * @param state a memento object containing a grid statez
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10
@@ -364,7 +506,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-11-2
      */
-    private int getTileIndex(int[] coords) throws NoAvailableTilesException {
+    public int getTileIndex(int[] coords) throws NoAvailableTilesException {
         // Check for invalid coordinates
         if (coords[0] < 0 || coords[1] < 0 || // Negative value coordinates
                 coords[0] >= mGridAxisLength || coords[1] >= mGridAxisLength) { // Exceeding grid bounds
@@ -374,22 +516,23 @@ public class Grid {
             return 0;
         } else {
             // y * mGridAxisLength, add in the x value, and subtract 1 because arrays start at 0
-            return (coords[1] * mGridAxisLength) + coords[0] - 1;
+            return (coords[1] * mGridAxisLength) + coords[0]; // - 1;
         }
     }
 
     public ArrayList<Tile> getTiles() {
         return (ArrayList) mTiles;
     }
+
     /**
-     * Uses the GridCell class to apply and get the buff and debuff values
+     * Uses the tile class to apply and get the buff and debuff values
      *
      * @author Rocky Trinh
      * @version 1.0
      * @since 2023-12-11
      */
     public void getBuffs(String[] args) {
-        GridCell cell = new GridCell();
+        Tile cell = mTiles.get(0);
 
         //Apply the buffs/debuffs
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
@@ -437,6 +580,212 @@ public class Grid {
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
+
+        // Apply the weather effects using the strategy pattern
+        WeatherContext weatherContext = new WeatherContext();
+
+        // Set the Sunny weather strategy
+        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
+        // Set the Drought weather strategy
+        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+        // Set the Flooding weather strategy
+        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+        // Set the Blizzard weather strategy
+        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+        // Apply the weather effect to the cells
+        weatherContext.applyWeather(cell);
+    }
+
+    /**
+     * Nested Static Grid memento class
+     * @author Zack Powers
+     * @version 1.1
+     * @since 2023-29-10
+     */
+    public static class GridMemento {
+        private List<Tile> gridState;
+
+        /**
+         * Constructor
+         * @param gridState the state of the grid that is to be saved in the snapshot
+         * @author Zack Powers
+         * @since 2023-29-10
+         */
+        private GridMemento(List<Tile> gridState) {
+            this.gridState = gridState;
+        }
+
+        /**
+         * Method to get the grid state.
+         * @return returns the grid state as 2D array
+         * @author Zack Powers
+         * @since 2023-29-10
+         */
+        private List<Tile> getGridState() {
+            return gridState;
+        }
+    }
+
+    /**
+     * Checks all neighboring tiles for the input and returns a List of available
+     * neighboring Terrain tiles.
+     *
+     * @param origin Coordinates of the tile index to retrieve as (x, y).
+     * @return List of available tiles that neighbor the passed in tile
+     * @throws NoAvailableTilesException If a tile is out of bounds and not found.
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public List<int[]> getNeighboringTerrainTiles(int[] origin) {
+        List<int[]> neighboringTiles = new ArrayList<>();
+
+
+        // Check above this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the right of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check below this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the left of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
+            if (mTiles.get(index) instanceof TerrainTile) {
+                neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        return neighboringTiles;
+    }
+
+    /**
+     * Checks all neighboring tiles for the input and returns a List of available
+     * coordinates of neighboring Resource tiles.
+     *
+     * @param origin Coordinates of the tile index to retrieve as (x, y).
+     * @return List of available tiles that neighbor the passed in tile
+     * @throws NoAvailableTilesException If a tile is out of bounds and not found.
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public List<int[]> getNeighboringResourceTiles(int[] origin) {
+        List<int[]> neighboringTiles = new ArrayList<>();
+
+
+        // Check above this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] - 1});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] - 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the right of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] + 1, origin[1]});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0] + 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check below this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0], origin[1] + 1});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0], origin[1] + 1});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        // Check to the left of this tile
+        try {
+            int index = getTileIndex(new int[]{origin[0] - 1, origin[1]});
+            if (mTiles.get(index) instanceof ResourceTile) {
+                neighboringTiles.add(new int[]{origin[0] - 1, origin[1]});
+            }
+        } catch (NoAvailableTilesException e) {
+            // No handling, just logging and proceeding
+            Log.e("Grid", e.getMessage());
+        } // Index most likely out of bounds
+
+        return neighboringTiles;
+    }
+
+    /**
+     * Private inner class that provides iteration functionality for the Grid Tile of outer class
+     * @author Zack Powers
+     * @version 1.0
+     * @since 2023-30-11
+     */
+    private class GridTileIterator implements Iterator {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return (currentIndex < Grid.this.mTiles.size());
+        }
+
+        @Override
+        public Tile next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            } else {
+                Tile nextTile = Grid.this.mTiles.get(currentIndex);
+                currentIndex++;
+                return nextTile;
+            }
+        }
+    }
+
+    /**
+     * Get the simulation year observable.
+     *
+     * @return mYear   - Simulation year observable.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-11-28
+     */
+    public MutableLiveData<Integer> getYear() {
+        return mYear;
     }
 }
-

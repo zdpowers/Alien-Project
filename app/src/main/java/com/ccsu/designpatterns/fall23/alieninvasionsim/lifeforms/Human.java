@@ -10,6 +10,8 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,15 +37,8 @@ public class Human extends LifeForm {
         super(source, residence);
     }
 
-/*    @Override
-    protected void gather() {
-        int[] currentCoordinates = super.getTileOfResidence().getTileCoordinates();
-
-    }*/
-
     /**
      * This is the default behavior for a template pattern to extract adjacent tile resources.
-     * This will be overridden in the Human Subclass implementation
      *
      * @author Vincent Capra
      * @version 1.0
@@ -53,27 +48,15 @@ public class Human extends LifeForm {
     @Override
     protected void mine(int[] current_coordinates){
         for(ResourceTile neighboringResourceTile : getNeighboringResources()){
-            if (neighboringResourceTile.getResourceType() == WATER)
-                setAmountOf_Water(getAmountOf_Water()+1);
-            else if (neighboringResourceTile.getResourceType() == IRON) {
-                setAmountOf_Iron(getAmountOf_Iron()+1);
-            }
-            else if (neighboringResourceTile.getResourceType() == OIL) {
-                setAmountOf_Oil(getAmountOf_Oil()+1);
-            }
-            else if (neighboringResourceTile.getResourceType() == URANIUM) {
-                setAmountOf_Uranium(getAmountOf_Uranium()+1);
-            }
             //VC - if next to a one-up mushroom the human reproduction strategy will change.
-            else if (neighboringResourceTile.getResourceType() == ONEUP) {
+            if (neighboringResourceTile.getResourceType() == ONEUP) {
                 reproduceStrategy = new OneUpReproductionStrat();
             }
         }
-        System.out.println("Human at column: " + current_coordinates[0]
+/*        System.out.println("Human at column: " + current_coordinates[0]
                 + "; and row: " + current_coordinates[1] + " has uranium: "+ getAmountOf_Uranium() +
-                ", has water: " + getAmountOf_Water() +
                 ", has oil: " + getAmountOf_Oil() +
-                ", has iron: " + getAmountOf_Iron());
+                ", has iron: " + getAmountOf_Iron());*/
     }
     /**
      * method to possibly add another human to the tile that this
@@ -87,6 +70,57 @@ public class Human extends LifeForm {
         int temp_population =
                 reproduceStrategy.reproduceStratMethod(getPopulationCount(), this);
         setPopulationCount(temp_population);
+    }
+
+    @Override
+    protected void checkForApplicableResources() {
+        boolean dontMoveFlag = false;
+        for(ResourceTile neighboringResourceTile : getNeighboringResources()) {
+            if (neighboringResourceTile.getResourceType() == ONEUP)
+                dontMoveFlag = true;
+        }
+        if(dontMoveFlag) mine(getTileOfResidence().getTileCoordinates());
+        else move();
+    }
+
+    @Override
+    protected void move() {
+        List<TerrainTile> temp_neighboring_tiles = getNeighboringTerrain();
+        if (temp_neighboring_tiles.isEmpty()) return; // if there are no tiles to move to
+
+        //check all neighboring tiles for an Alien, if found, don't move
+        for(TerrainTile check_tile : temp_neighboring_tiles){
+            if(check_tile.getOccupant() instanceof Martian){
+                return;
+            }
+        }
+
+        Random rand = new Random();
+        TerrainTile randomTile = null;
+
+        while(randomTile == null) {
+            //pick a random available neighboring tile
+            int randomIndex = rand.nextInt(getNeighboringTerrain().size());
+            randomTile = getNeighboringTerrain().get(randomIndex);
+
+            //if tile is unavailable remove it from the list we are checking
+            if(randomTile.getOccupant() != null){
+                getNeighboringTerrain().remove(randomIndex);
+                if (getNeighboringTerrain().isEmpty()) return;
+                randomTile = null;
+            }
+            //moves this Lifeform to the new tile
+            else {
+                getTileOfResidence().setOccupant(null);
+                randomTile.setOccupant(this);
+                setTileOfResidence(randomTile);
+                System.out.println("Human moved to: " +  getTileOfResidence().getTileCoordinates().toString());
+            }
+        }
+        //VC - somewhere in here need to set after have moved to a new tile
+        setHaveNeighboringTiles(false);
+        //setNeighboringTerrain(null);
+        //setNeighboringResources(null);
     }
 
     @Override

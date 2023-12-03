@@ -36,8 +36,8 @@ public abstract class LifeForm
     private static int miningRating;
 
     private TerrainTile tileOfResidence;
-    private List<TerrainTile> neighboringTerrain;
-    private List<ResourceTile> neighboringResources;
+    private List<TerrainTile> neighboringTerrain = new ArrayList<>();
+    private List<ResourceTile> neighboringResources = new ArrayList<>();
     private boolean haveNeighboringTiles = false;
 
     private int populationCount= 1;
@@ -64,13 +64,6 @@ public abstract class LifeForm
     }
     public void setTileOfResidence(TerrainTile inputTile){
         tileOfResidence = inputTile;
-    }
-
-    public List<ResourceTile> getNeighboringResources() {
-        return neighboringResources;
-    }
-    public List<TerrainTile> getNeighboringTerrain() {
-        return neighboringTerrain;
     }
 
     /**
@@ -124,11 +117,12 @@ public abstract class LifeForm
     protected void gather() {
 
         int[] currentCoordinates = tileOfResidence.getTileCoordinates();
-        String adjoining_resources;
 
         //VC - This gets/sets all neighboring tiles. It's called on initial loop and then again
         // if and when the lifeform moves to a new terrain tile.
         if(!haveNeighboringTiles) {
+            neighboringTerrain.clear();
+            neighboringResources.clear();
             try {
                 neighboringTerrain =
                         getNeighboringTerrainTileReferences(currentCoordinates);
@@ -149,11 +143,7 @@ public abstract class LifeForm
                     neighboringResources.toString());
         }
 
-        if(neighboringResources.isEmpty())
-            move();
-        else{
-            mine(currentCoordinates);
-        }
+        checkForApplicableResources();
     }
 
     /**
@@ -163,33 +153,7 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-26-10
      */
-    protected void move(){
-
-        if (neighboringTerrain.isEmpty()) return;
-        Random rand = new Random();
-        TerrainTile randomTile = null;
-
-        while(randomTile == null) {
-            int randomIndex = rand.nextInt(neighboringTerrain.size());
-            randomTile = neighboringTerrain.get(randomIndex);
-            if(randomTile.getOccupant() != null){ // VC - meaning tile is occupied
-                neighboringTerrain.remove(randomIndex);
-                if (neighboringTerrain.isEmpty()) return;
-                randomTile = null;
-            }
-            //moves this Lifeform to the new tile
-            else {
-                tileOfResidence.setOccupant(null);
-                randomTile.setOccupant(this);
-                this.tileOfResidence = randomTile;
-                System.out.println("Lifeform moved to: " +  this.tileOfResidence.getTileCoordinates().toString());
-            }
-        }
-        //VC - somewhere in here need to set after have moved to a new tile
-        haveNeighboringTiles = false;
-        neighboringTerrain.clear();
-        neighboringResources.clear();
-    };
+    protected abstract void move();
 
     /**
      * This is the default behavior for a template pattern to extract adjacent tile resources.
@@ -199,26 +163,7 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-12-1
      */
-    protected void mine(int[] current_coordinates){
-        for(ResourceTile neighboringResourceTile : neighboringResources){
-            if (neighboringResourceTile.getResourceType() == WATER)
-                amountOf_Water += 1;
-            else if (neighboringResourceTile.getResourceType() == IRON) {
-                amountOf_Iron += 1;
-            }
-            else if (neighboringResourceTile.getResourceType() == OIL) {
-                amountOf_Oil += 1;
-            }
-            else if (neighboringResourceTile.getResourceType() == URANIUM) {
-                amountOf_Uranium += 1;
-            }
-        }
-        System.out.println("Life at column: " + current_coordinates[0]
-                + "; and row: " + current_coordinates[1] + " has uranium: "+ amountOf_Uranium +
-                ", has water: " + amountOf_Water +
-                ", has oil: " + amountOf_Oil +
-                ", has iron: " + amountOf_Iron);
-    }
+    protected abstract void mine(int[] current_coordinates);
 
     /**
      * A method to create more LifeForms via reproduction.
@@ -228,6 +173,8 @@ public abstract class LifeForm
      * @since 2023-26-10
      */
     protected abstract void reproduce();
+
+    protected abstract void checkForApplicableResources();
 
     /**
      * A method to attack with this LifeForm.
@@ -338,4 +285,27 @@ public abstract class LifeForm
     public void setAmountOf_Iron(int amountOf_Iron) {
         this.amountOf_Iron = amountOf_Iron;
     }
+
+    public boolean isHaveNeighboringTiles() {
+        return haveNeighboringTiles;
+    }
+
+    public void setHaveNeighboringTiles(boolean haveNeighboringTiles) {
+        this.haveNeighboringTiles = haveNeighboringTiles;
+    }
+
+    public List<ResourceTile> getNeighboringResources() {
+        return neighboringResources;
+    }
+    public List<TerrainTile> getNeighboringTerrain() {
+        return neighboringTerrain;
+    }
+    public void setNeighboringTerrain(List<TerrainTile> neighboringTerrain) {
+        this.neighboringTerrain = neighboringTerrain;
+    }
+
+    public void setNeighboringResources(List<ResourceTile> neighboringResources) {
+        this.neighboringResources = neighboringResources;
+    }
+
 }

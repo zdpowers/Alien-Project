@@ -146,10 +146,12 @@ public abstract class LifeForm
         // version below. But only move humans if NOT neighboring ONEUP. Only move Martians if
         // NOT neighboring oil, uranium, or iron.
         checkForApplicableResources();
-        if(neighboringResources.isEmpty())
-            move();
-        else{
-            mine(currentCoordinates);
+        if (neighboringResources != null) {
+            if (neighboringResources.isEmpty())
+                move();
+            else {
+                mine(currentCoordinates);
+            }
         }
     }
 

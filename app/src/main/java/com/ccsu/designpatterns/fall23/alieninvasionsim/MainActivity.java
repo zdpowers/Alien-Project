@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
-            mSimulationGrid.progressSimulation();
+            mSimulationGrid.progressSimulation(mSimulationGrid.getTiles());
             adapter.notifyDataSetChanged();
         });
     }
@@ -67,6 +67,6 @@ public class MainActivity extends AppCompatActivity {
         TextView tvYear = findViewById(R.id.tvYear);
         tvYear.setText(String.format(Locale.US, "Year: %d", year));
         //TODO add code to iterate and print logs to the console here
-        //findViewById(R.id.tvConsole);
+        findViewById(R.id.tvConsole);
     }
 }

@@ -87,8 +87,7 @@ public class Grid {
             for (int column = 0; column < gridAxisLength; column++) {
                 // Default value = TerrainTile
                 TerrainTile tile = new TerrainTile(column, row);
-                // tODO determine if tile changes due to the weather change
-                weatherContext.applyWeather((Tile) mTiles);
+                weatherContext.applyWeather(tile);
                 mTiles.add(tile);
             }
         }
@@ -432,18 +431,16 @@ public class Grid {
             // Generate the progression and save it into a new memento
             progressLifeForms();
             Random rand = new Random();
-            WeatherContext weatherContext = new WeatherContext();
-            weatherContext.setWeatherStrategy(new ClearWeatherStrategy());
-            //Apply the weather effect to the grid
-            weatherContext.applyWeatherToGrid(grid);
             // Should we start a weather event?
             // checking if the current weather strategy is not null and the duration is not done
-            if (weatherContext.getWeather() != null && weatherContext.getWeather().getDuration() > 0) {
-                //Do not start another weather event, but decrement the duration of the current by one
-                weatherContext.getWeather().setDuration(weatherContext.getWeather().getDuration() -1);
-
-            } else {
-                //start a new weather event with probability 1/4
+            if ((mTiles.get(0).getWeatherContext() != null) && mTiles.get(0).getWeatherContext().getWeather().getDuration() > 0) {
+                for (Tile tile : mTiles) {
+                    // Do not start another weather event, but decrement the duration of the current by one
+                    tile.getWeatherContext().getWeather().setDuration(tile.getWeatherContext().getWeather().getDuration() -1);
+                }
+            } else { // Start a new weather event with probability 20%
+                WeatherContext weatherContext = new WeatherContext();
+                weatherContext.setWeatherStrategy(null);
                 int generateWeatherEvent = rand.nextInt(6);
                 if (generateWeatherEvent == 1) {
                     //generate a weather event
@@ -451,7 +448,6 @@ public class Grid {
                     if(generateWeatherEvent == 0) {
                         //apply the first weather strategy
                         weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
-
                     }
                     if(generateWeatherEvent == 1) {
                         //apply the second weather strategy
@@ -464,6 +460,8 @@ public class Grid {
                     // set duration of the weather events to a random number between 1 and x in years
                     int x = 10;
                     weatherContext.getWeather().setDuration(rand.nextInt(x) +1);
+                    //Apply the weather effect to the grid
+                    weatherContext.applyWeatherToGrid(grid, weatherContext);
                 }
             }
 
@@ -587,19 +585,19 @@ public class Grid {
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
 
-        // Apply the weather effects using the strategy pattern
-        WeatherContext weatherContext = new WeatherContext();
-
-        // Set the Sunny weather strategy
-        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
-        // Set the Drought weather strategy
-        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
-        // Set the Flooding weather strategy
-        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
-        // Set the Blizzard weather strategy
-        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
-        // Apply the weather effect to the cells
-        weatherContext.applyWeather(cell);
+//        // Apply the weather effects using the strategy pattern
+//        WeatherContext weatherContext = new WeatherContext();
+//
+//        // Set the Sunny weather strategy
+//        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
+//        // Set the Drought weather strategy
+//        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
+//        // Set the Flooding weather strategy
+//        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
+//        // Set the Blizzard weather strategy
+//        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
+//        // Apply the weather effect to the cells
+//        weatherContext.applyWeather(cell);
     }
 
     /**

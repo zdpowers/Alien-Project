@@ -14,8 +14,9 @@ public class FloodingWeatherStrategy implements WeatherStrategy {
     }
 
     @Override
-    public void applyWeatherEffect(Tile cell) {
+    public void applyWeatherEffect(Tile cell, WeatherContext weatherContext) {
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF, -2);
         cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -2);
+        cell.setWeatherContext(weatherContext);
     }
 }

@@ -14,7 +14,7 @@ public class ClearWeatherStrategy implements WeatherStrategy{
     }
 
     @Override
-    public void applyWeatherEffect(Tile cell) {
+    public void applyWeatherEffect(Tile cell, WeatherContext weatherContext) {
 
     }
 }

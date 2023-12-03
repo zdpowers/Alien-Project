@@ -13,7 +13,7 @@ import java.util.Map;
  * @version 1.0
  * @since 2023-10-26
  */
-public abstract class Tile {
+public abstract class Tile implements TileVisitable {
     private int mColumnPosition;
     private int mRowPosition;
 
@@ -67,13 +67,7 @@ public abstract class Tile {
 //        return mWeatherFlag;
 //    }
 
-    /**
-     * Method to accept visitor objects.
-     * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
-     * @return Tile because the visitor is making a clone of the tile.
-     * @author Zack Powers
-     * @version 1.o
-     */
+    @Override
     public abstract void accept(TileVisitor visitor);
 
 

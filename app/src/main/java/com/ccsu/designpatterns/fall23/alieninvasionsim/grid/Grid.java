@@ -780,7 +780,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-30-11
      */
-    private class GridTileIterator implements Iterator {
+    private class GridTileIterator implements Iterator<Tile> {
         private int currentIndex = 0;
 
         @Override

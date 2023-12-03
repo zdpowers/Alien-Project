@@ -6,7 +6,7 @@ package com.ccsu.designpatterns.fall23.alieninvasionsim.utilities;
  * @version 1.0
  * @since 2023-30-11
  */
-public interface Iterator {
+public interface Iterator<E> {
     /**
      * Returns True/false based on if there is another element in collection
      * @return true is there is another element in the collection, else false
@@ -18,5 +18,5 @@ public interface Iterator {
      * @return the next object in the collection
      * @throws 'NoSuchElementException' if there is not another element
      */
-    Object next();
+    E next();
 }

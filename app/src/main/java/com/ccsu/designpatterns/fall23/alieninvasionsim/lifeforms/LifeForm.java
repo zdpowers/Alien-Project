@@ -66,13 +66,6 @@ public abstract class LifeForm
         tileOfResidence = inputTile;
     }
 
-    public List<ResourceTile> getNeighboringResources() {
-        return neighboringResources;
-    }
-    public List<TerrainTile> getNeighboringTerrain() {
-        return neighboringTerrain;
-    }
-
     /**
      * Prototype constructor. This constructor is used when using the clone method to create a copy of a LifeForm object
      * @param source the source object which is to be cloned. The new object is initialized with the parameters of the source object.
@@ -149,6 +142,10 @@ public abstract class LifeForm
                     neighboringResources.toString());
         }
 
+        // Need to write an override method to check for humans and martians. write an abstract
+        // version below. But only move humans if NOT neighboring ONEUP. Only move Martians if
+        // NOT neighboring oil, uranium, or iron.
+        checkForApplicableResources();
         if(neighboringResources.isEmpty())
             move();
         else{
@@ -199,26 +196,7 @@ public abstract class LifeForm
      * @version 1.0
      * @since 2023-12-1
      */
-    protected void mine(int[] current_coordinates){
-        for(ResourceTile neighboringResourceTile : neighboringResources){
-            if (neighboringResourceTile.getResourceType() == WATER)
-                amountOf_Water += 1;
-            else if (neighboringResourceTile.getResourceType() == IRON) {
-                amountOf_Iron += 1;
-            }
-            else if (neighboringResourceTile.getResourceType() == OIL) {
-                amountOf_Oil += 1;
-            }
-            else if (neighboringResourceTile.getResourceType() == URANIUM) {
-                amountOf_Uranium += 1;
-            }
-        }
-        System.out.println("Life at column: " + current_coordinates[0]
-                + "; and row: " + current_coordinates[1] + " has uranium: "+ amountOf_Uranium +
-                ", has water: " + amountOf_Water +
-                ", has oil: " + amountOf_Oil +
-                ", has iron: " + amountOf_Iron);
-    }
+    protected abstract void mine(int[] current_coordinates);
 
     /**
      * A method to create more LifeForms via reproduction.
@@ -228,6 +206,8 @@ public abstract class LifeForm
      * @since 2023-26-10
      */
     protected abstract void reproduce();
+
+    protected abstract void checkForApplicableResources();
 
     /**
      * A method to attack with this LifeForm.
@@ -338,4 +318,27 @@ public abstract class LifeForm
     public void setAmountOf_Iron(int amountOf_Iron) {
         this.amountOf_Iron = amountOf_Iron;
     }
+
+    public boolean isHaveNeighboringTiles() {
+        return haveNeighboringTiles;
+    }
+
+    public void setHaveNeighboringTiles(boolean haveNeighboringTiles) {
+        this.haveNeighboringTiles = haveNeighboringTiles;
+    }
+
+    public List<ResourceTile> getNeighboringResources() {
+        return neighboringResources;
+    }
+    public List<TerrainTile> getNeighboringTerrain() {
+        return neighboringTerrain;
+    }
+    public void setNeighboringTerrain(List<TerrainTile> neighboringTerrain) {
+        this.neighboringTerrain = neighboringTerrain;
+    }
+
+    public void setNeighboringResources(List<ResourceTile> neighboringResources) {
+        this.neighboringResources = neighboringResources;
+    }
+
 }

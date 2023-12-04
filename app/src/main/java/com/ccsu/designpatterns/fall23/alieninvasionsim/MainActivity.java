@@ -55,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
         // Setup the Reverse Button
         findViewById(R.id.ibRvs).setOnClickListener(view -> {
             mSimulationGrid.regressSimulation();
-            adapter.notifyDataSetChanged();
+            gridView.setAdapter(new GridAdapter(this, mSimulationGrid.getTiles()));
         });
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
             mSimulationGrid.progressSimulation(mSimulationGrid.getTiles());
-            adapter.notifyDataSetChanged();
+            gridView.setAdapter(new GridAdapter(this, mSimulationGrid.getTiles()));
         });
     }
 

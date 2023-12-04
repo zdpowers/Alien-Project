@@ -1,7 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import java.util.LinkedList;
-import java.util.Stack;
 
 /**
  * The object that keeps track of multiple memento. Like maintaining save-points.
@@ -25,7 +24,7 @@ public class GridCaretaker {
      * @since 2023-29-10
      */
     public void add(Grid.GridMemento state) {
-        mementoList.push(state);
+        mementoList.addLast(state);
     }
 
     /**
@@ -35,7 +34,8 @@ public class GridCaretaker {
      * @since 2023-29-10
      */
     public Grid.GridMemento get(int year) {
-        return mementoList.get(year);
+        Grid.GridMemento test = mementoList.get(year);
+        return test;
     }
 
     /**

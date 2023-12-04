@@ -127,6 +127,8 @@ public class Grid {
             if (temp_lf instanceof Human) totalHumanCount += temp_lf.getPopulationCount();
             else if (temp_lf instanceof Martian) totalMartianCount += temp_lf.getPopulationCount();
         }
+
+        this.save();
     }
 
     public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
@@ -525,6 +527,8 @@ public class Grid {
             }
             // Take a memento for this year
             this.save();
+        } else {
+            this.restore(gridCaretaker.get(year));
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);
@@ -556,7 +560,7 @@ public class Grid {
      */
     public GridMemento save() {
         List<Tile> gridCopy = deepCopyGrid();
-        GridMemento state = new GridMemento((ArrayList) gridCopy);
+        GridMemento state = new GridMemento(gridCopy);
         gridCaretaker.add(state);
         return state;
     }
@@ -571,6 +575,12 @@ public class Grid {
      */
     public void restore(GridMemento state) {
         mTiles = state.getGridState();
+        mLifeForms.clear();
+        for (Tile tile : mTiles) {
+            if (tile.getOccupant() != null) {
+                mLifeForms.add(tile.getOccupant());
+            }
+        }
     }
 
     /**

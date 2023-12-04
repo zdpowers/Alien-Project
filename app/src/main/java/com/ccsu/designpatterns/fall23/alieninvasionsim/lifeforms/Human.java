@@ -86,11 +86,15 @@ public class Human extends LifeForm {
     @Override
     protected void move() {
         List<TerrainTile> temp_neighboring_tiles = getNeighboringTerrain();
-        if (temp_neighboring_tiles.isEmpty()) return; // if there are no tiles to move to
+        if (temp_neighboring_tiles.isEmpty()) {
+            setHaveNeighboringTiles(false);
+            return; // if there are no tiles to move to
+        }
 
         //check all neighboring tiles for an Alien, if found, don't move
         for(TerrainTile check_tile : temp_neighboring_tiles){
             if(check_tile.getOccupant() instanceof Martian){
+                setHaveNeighboringTiles(false);
                 return;
             }
         }
@@ -106,7 +110,11 @@ public class Human extends LifeForm {
             //if tile is unavailable remove it from the list we are checking
             if(randomTile.getOccupant() != null){
                 getNeighboringTerrain().remove(randomIndex);
-                if (getNeighboringTerrain().isEmpty()) return;
+                if (getNeighboringTerrain().isEmpty()){
+                    setHaveNeighboringTiles(false);
+                    return;
+                }
+
                 randomTile = null;
             }
             //moves this Lifeform to the new tile

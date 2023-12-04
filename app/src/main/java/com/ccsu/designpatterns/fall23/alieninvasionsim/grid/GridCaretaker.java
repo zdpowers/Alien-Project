@@ -1,5 +1,6 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Stack;
  */
 public class GridCaretaker {
 
-    private Stack<Grid.GridMemento> mementoList = new Stack<>();
+    private LinkedList<Grid.GridMemento> mementoList = new LinkedList<>();
 
     /**
      * Constructor
@@ -33,8 +34,8 @@ public class GridCaretaker {
      * @author Zack Powers
      * @since 2023-29-10
      */
-    public Grid.GridMemento get() {
-        return mementoList.pop();
+    public Grid.GridMemento get(int year) {
+        return mementoList.get(year);
     }
 
     /**

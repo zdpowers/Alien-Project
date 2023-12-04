@@ -484,10 +484,8 @@ public class Grid {
                     mWeatherContext.applyWeatherToGrid(grid, mWeatherContext);
                 }
             }
-
-            //TODO Lastly in this statement, take a memento
-            GridMemento memento = new GridMemento(grid);
-            gridCaretaker.add(memento);
+            // Take a memento for this year
+            this.save();
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);
@@ -503,7 +501,7 @@ public class Grid {
     public void regressSimulation() {
         int year = mYear.getValue() - 1;
         if (year >= 0) {
-            
+            this.restore(gridCaretaker.get(year));
             // Update the UI
             mYear.setValue(year);
         }
@@ -527,7 +525,7 @@ public class Grid {
     /**
      * Method to restore the grid to a previous state from a memento object
      *
-     * @param state a memento object containing a grid statez
+     * @param state a memento object containing a grid state
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10

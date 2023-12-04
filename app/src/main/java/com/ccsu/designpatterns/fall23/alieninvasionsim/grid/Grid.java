@@ -36,6 +36,20 @@ public class Grid {
     private int mGridAxisLength;
     private int totalHumanCount;
     private int totalMartianCount;
+
+    public int getTotalMartianIron() {
+        return totalMartianIron;
+    }
+
+    public int getTotalMartianOil() {
+        return totalMartianOil;
+    }
+
+    public int getTotalMartianUranium() {
+        return totalMartianUranium;
+    }
+
+    private int totalMartianIron, totalMartianOil, totalMartianUranium;
     public int getTotalHumanCount() {
         return totalHumanCount;
     }
@@ -412,11 +426,19 @@ public class Grid {
     public void progressLifeForms() {
         totalHumanCount = 0;
         totalMartianCount = 0;
+        totalMartianIron = 0;
+        totalMartianOil = 0;
+        totalMartianUranium = 0;
         int amountOfCurrentLifeforms = mLifeForms.size();
         for (int i = 0; i < amountOfCurrentLifeforms; i++) {
             mLifeForms.get(i).progress(this);
             if (mLifeForms.get(i) instanceof Human) totalHumanCount += mLifeForms.get(i).getPopulationCount();
-            else if (mLifeForms.get(i) instanceof Martian) totalMartianCount += mLifeForms.get(i).getPopulationCount();
+            else if (mLifeForms.get(i) instanceof Martian){
+                totalMartianCount += mLifeForms.get(i).getPopulationCount();
+                totalMartianIron += mLifeForms.get(i).getAmountOf_Iron();
+                totalMartianOil += mLifeForms.get(i).getAmountOf_Oil();
+                totalMartianUranium += mLifeForms.get(i).getAmountOf_Uranium();
+            }
         }
     }
 

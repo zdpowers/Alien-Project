@@ -82,6 +82,39 @@
             tools:layout_editor_absoluteX="0dp" />
 
         <TextView
+            android:id="@+id/total_Martian_Iron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total amount of Martian Iron: "
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martians" />
+
+        <TextView
+            android:id="@+id/total_Martian_Uranium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total Amount of Martian Uranium"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martian_Oil" />
+
+        <TextView
+            android:id="@+id/total_Martian_Oil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total Amount of Martian Oil"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martian_Iron" />
+
+        <TextView
             android:id="@+id/total_humans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

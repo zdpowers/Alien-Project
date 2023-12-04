@@ -75,9 +75,16 @@ public class MainActivity extends AppCompatActivity {
         TextView tvYear = findViewById(R.id.tvYear);
         TextView humanPop = findViewById(R.id.total_humans);
         TextView martianPop = findViewById(R.id.total_Martians);
+        TextView martianIron = findViewById(R.id.total_Martian_Iron);
+        TextView martianOil = findViewById(R.id.total_Martian_Oil);
+        TextView martianUranium = findViewById(R.id.total_Martian_Uranium);
+
         tvYear.setText(String.format(Locale.US, "Year: %d", year));
         humanPop.setText("Total Number of Humans: " + mSimulationGrid.getTotalHumanCount());
         martianPop.setText("Total Number of Martians: " + mSimulationGrid.getTotalMartianCount());
+        martianIron.setText("Total amount of Martian Iron:  "+ mSimulationGrid.getTotalMartianIron());
+        martianOil.setText("Total amount of Martian Oil:  "+ mSimulationGrid.getTotalMartianOil());
+        martianUranium.setText("Total amount of Martian Uranium:  "+ mSimulationGrid.getTotalMartianUranium());
 
         // Apply the weather graphics
         ConstraintLayout gridStatusEffect = findViewById(R.id.clGridStatusEffect);

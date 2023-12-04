@@ -73,7 +73,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDisplay(int year) {
         TextView tvYear = findViewById(R.id.tvYear);
+        TextView humanPop = findViewById(R.id.total_humans);
+        TextView martianPop = findViewById(R.id.total_Martians);
         tvYear.setText(String.format(Locale.US, "Year: %d", year));
+        humanPop.setText("Total Number of Humans: " + mSimulationGrid.getTotalHumanCount());
+        martianPop.setText("Total Number of Martians: " + mSimulationGrid.getTotalMartianCount());
 
         // Apply the weather graphics
         ConstraintLayout gridStatusEffect = findViewById(R.id.clGridStatusEffect);

@@ -34,6 +34,14 @@ public class Grid {
      * number of elements along the same horizontal or vertical line.
      */
     private int mGridAxisLength;
+    private int totalHumanCount;
+    private int totalMartianCount;
+    public int getTotalHumanCount() {
+        return totalHumanCount;
+    }
+    public int getTotalMartianCount() {
+        return totalMartianCount;
+    }
 
     /**
      * A list of all LifeForms in the grid
@@ -100,6 +108,11 @@ public class Grid {
         placeWaterTiles(new ClearWeatherStrategy());
         placeResourceTiles();
         placeLifeFormCluster();
+
+        for (LifeForm temp_lf : mLifeForms){
+            if (temp_lf instanceof Human) totalHumanCount += temp_lf.getPopulationCount();
+            else if (temp_lf instanceof Martian) totalMartianCount += temp_lf.getPopulationCount();
+        }
     }
 
     public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
@@ -348,7 +361,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 3) {
+        while (humanTileCount < 1) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -368,7 +381,7 @@ public class Grid {
             }
         }
 
-        while (alienTileCount < 5) {
+        while (alienTileCount < 10) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -397,9 +410,13 @@ public class Grid {
      * @since 2023-10-29
      */
     public void progressLifeForms() {
+        totalHumanCount = 0;
+        totalMartianCount = 0;
         int amountOfCurrentLifeforms = mLifeForms.size();
         for (int i = 0; i < amountOfCurrentLifeforms; i++) {
             mLifeForms.get(i).progress(this);
+            if (mLifeForms.get(i) instanceof Human) totalHumanCount += mLifeForms.get(i).getPopulationCount();
+            else if (mLifeForms.get(i) instanceof Martian) totalMartianCount += mLifeForms.get(i).getPopulationCount();
         }
     }
 

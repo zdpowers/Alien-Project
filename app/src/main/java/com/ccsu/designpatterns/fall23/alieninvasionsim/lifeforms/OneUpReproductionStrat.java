@@ -25,6 +25,8 @@ public class OneUpReproductionStrat implements ReproduceStrategy{
         List<TerrainTile> neighboring_tiles = current_lifeform.getNeighboringTerrain();
 
         if (starting_population < 10 ){
+            System.out.println("Human at " + current_lifeform.getTileOfResidence() +
+                    "is reproducing with 1-up");
             return starting_population + 1;
         }
 

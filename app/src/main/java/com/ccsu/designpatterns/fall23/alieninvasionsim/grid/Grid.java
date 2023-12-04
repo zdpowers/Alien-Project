@@ -34,6 +34,28 @@ public class Grid {
      * number of elements along the same horizontal or vertical line.
      */
     private int mGridAxisLength;
+    private int totalHumanCount;
+    private int totalMartianCount;
+
+    public int getTotalMartianIron() {
+        return totalMartianIron;
+    }
+
+    public int getTotalMartianOil() {
+        return totalMartianOil;
+    }
+
+    public int getTotalMartianUranium() {
+        return totalMartianUranium;
+    }
+
+    private int totalMartianIron, totalMartianOil, totalMartianUranium;
+    public int getTotalHumanCount() {
+        return totalHumanCount;
+    }
+    public int getTotalMartianCount() {
+        return totalMartianCount;
+    }
 
     /**
      * A list of all LifeForms in the grid
@@ -100,6 +122,11 @@ public class Grid {
         placeWaterTiles(new ClearWeatherStrategy());
         placeResourceTiles();
         placeLifeFormCluster();
+
+        for (LifeForm temp_lf : mLifeForms){
+            if (temp_lf instanceof Human) totalHumanCount += temp_lf.getPopulationCount();
+            else if (temp_lf instanceof Martian) totalMartianCount += temp_lf.getPopulationCount();
+        }
     }
 
     public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
@@ -348,14 +375,14 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 3) {
+        while (humanTileCount < 1) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
                 temp_tile = mTiles.get(index);
                 // If this tile is terrain and unoccupied
                 if (temp_tile instanceof TerrainTile &&
-                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                        temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(3);
@@ -368,14 +395,14 @@ public class Grid {
             }
         }
 
-        while (alienTileCount < 1) {
+        while (alienTileCount < 10) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
                 temp_tile = mTiles.get(index);
                 // If this tile is not already a ResourceTile
                 if (temp_tile instanceof TerrainTile &&
-                        !((TerrainTile) temp_tile).tileIsOccupied()) {
+                        temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
                     temp_tile.getOccupant().setPopulationCount(2);
@@ -397,9 +424,21 @@ public class Grid {
      * @since 2023-10-29
      */
     public void progressLifeForms() {
+        totalHumanCount = 0;
+        totalMartianCount = 0;
+        totalMartianIron = 0;
+        totalMartianOil = 0;
+        totalMartianUranium = 0;
         int amountOfCurrentLifeforms = mLifeForms.size();
         for (int i = 0; i < amountOfCurrentLifeforms; i++) {
             mLifeForms.get(i).progress(this);
+            if (mLifeForms.get(i) instanceof Human) totalHumanCount += mLifeForms.get(i).getPopulationCount();
+            else if (mLifeForms.get(i) instanceof Martian){
+                totalMartianCount += mLifeForms.get(i).getPopulationCount();
+                totalMartianIron += mLifeForms.get(i).getAmountOf_Iron();
+                totalMartianOil += mLifeForms.get(i).getAmountOf_Oil();
+                totalMartianUranium += mLifeForms.get(i).getAmountOf_Uranium();
+            }
         }
     }
 
@@ -794,7 +833,7 @@ public class Grid {
      * @version 1.0
      * @since 2023-30-11
      */
-    private class GridTileIterator implements Iterator {
+    private class GridTileIterator implements Iterator<Tile> {
         private int currentIndex = 0;
 
         @Override

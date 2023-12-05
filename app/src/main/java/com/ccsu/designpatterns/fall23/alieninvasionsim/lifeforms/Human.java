@@ -10,7 +10,9 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -133,7 +135,25 @@ public class Human extends LifeForm {
 
     @Override
     protected void attack(Grid grid) {
+//        List<TerrainTile> neighboringTiles = getNeighboringTerrain();
+//        ArrayList<TerrainTile> neighboringTiles = new ArrayList<>();
+//        int[] coords = getTileOfResidence().getTileCoordinates();
+//        for
 
+        Tile tile = grid.getTileIndex([coords[0] - 1])
+        neighboringTiles.add()
+        for (TerrainTile tile : neighboringTiles) {
+            LifeForm lifeForm = tile.getOccupant();
+            if (tile.getOccupant() != null && lifeForm instanceof Martian) {
+                int newAlienPopulation = lifeForm.getPopulationCount() - 2;
+                if (newAlienPopulation <= 0) {
+                    lifeForm.setPopulationCount(newAlienPopulation);
+                    return;
+                } else {
+                    setPopulationCount(getPopulationCount() - 3);
+                }
+            }
+        }
     }
 
     @Override

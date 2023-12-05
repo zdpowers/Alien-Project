@@ -85,11 +85,11 @@ public abstract class LifeForm
     public final void progress(Grid grid) {
         gather();
         reproduce();
+        attack(grid);
         //TODO do lifeforms move? or just reproduce into new tiles?
         //VC - I implemented such that humans move only when they are not next to a resource.
         // Otherwise, they stay where they are to continue collecting resources. Even water.
         //move();
-        attack(grid);
     }
 
     /**
@@ -178,6 +178,8 @@ public abstract class LifeForm
 
     /**
      * A method to attack with this LifeForm.
+     *
+     * @return LifeForm to possibly remove from the list of LifeForms.
      *
      * @author Joseph Lumpkin
      * @version 1.0

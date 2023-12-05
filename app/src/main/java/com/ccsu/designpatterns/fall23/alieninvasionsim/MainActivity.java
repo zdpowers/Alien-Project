@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
             mSimulationGrid.progressSimulation(mSimulationGrid.getTiles());
-            adapter.notifyDataSetChanged();
+            gridView.setAdapter(new GridAdapter(this, mSimulationGrid.getTiles()));
         });
     }
 
@@ -82,9 +82,16 @@ public class MainActivity extends AppCompatActivity {
         tvYear.setText(String.format(Locale.US, "Year: %d", year));
         humanPop.setText("Total Number of Humans: " + mSimulationGrid.getTotalHumanCount());
         martianPop.setText("Total Number of Martians: " + mSimulationGrid.getTotalMartianCount());
-        martianIron.setText("Total amount of Martian Iron:  "+ mSimulationGrid.getTotalMartianIron());
-        martianOil.setText("Total amount of Martian Oil:  "+ mSimulationGrid.getTotalMartianOil());
-        martianUranium.setText("Total amount of Martian Uranium:  "+ mSimulationGrid.getTotalMartianUranium());
+
+        martianIron.setText(
+                String.format(Locale.US, "Total amount of Martian Iron: %d/50", mSimulationGrid.getTotalMartianIron())
+        );
+        martianOil.setText(
+                String.format(Locale.US, "Total amount of Martian Oil:  %d/50", mSimulationGrid.getTotalMartianOil())
+        );
+        martianUranium.setText(
+                String.format(Locale.US, "Total amount of Martian Uranium: %d/50", mSimulationGrid.getTotalMartianUranium())
+        );
 
         // Apply the weather graphics
         ConstraintLayout gridStatusEffect = findViewById(R.id.clGridStatusEffect);

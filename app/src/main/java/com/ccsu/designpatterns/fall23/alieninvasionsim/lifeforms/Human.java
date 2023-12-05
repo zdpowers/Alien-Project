@@ -6,6 +6,8 @@ import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.URANIUM;
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.WATER;
 
+import android.util.Log;
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
@@ -146,7 +148,10 @@ public class Human extends LifeForm {
                 if (tile instanceof TerrainTile) {
                     neighboringTiles.add((TerrainTile) tile);
                 }
-            } catch (NoAvailableTilesException e) {}
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
         }
         if (coords[1] < 9) { // Tile 1 down from origin
             try {
@@ -156,7 +161,10 @@ public class Human extends LifeForm {
                 if (tile instanceof TerrainTile) {
                     neighboringTiles.add((TerrainTile) tile);
                 }
-            } catch (NoAvailableTilesException e) {}
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
         }
         if (coords[0] > 0) { // Tile 1 left from origin
             try {
@@ -166,7 +174,10 @@ public class Human extends LifeForm {
                 if (tile instanceof TerrainTile) {
                     neighboringTiles.add((TerrainTile) tile);
                 }
-            } catch (NoAvailableTilesException e) {}
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
         }
         if (coords[0] < 9) { // Tile 1 right from origin
             try {
@@ -176,7 +187,10 @@ public class Human extends LifeForm {
                 if (tile instanceof TerrainTile) {
                     neighboringTiles.add((TerrainTile) tile);
                 }
-            } catch (NoAvailableTilesException e) {}
+            } catch (NoAvailableTilesException e) {
+                // No handling, just logging and proceeding
+                Log.e("Grid", e.getMessage());
+            }
         }
 
         for (TerrainTile tile : neighboringTiles) {

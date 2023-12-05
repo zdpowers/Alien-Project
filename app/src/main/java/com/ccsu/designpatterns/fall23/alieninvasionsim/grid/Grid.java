@@ -377,7 +377,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 1) {
+        while (humanTileCount < 3) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -387,7 +387,7 @@ public class Grid {
                         temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
-                    temp_tile.getOccupant().setPopulationCount(3);
+                    temp_tile.getOccupant().setPopulationCount(5);
 
                     humanTileCount++;
                 }
@@ -407,7 +407,7 @@ public class Grid {
                         temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
-                    temp_tile.getOccupant().setPopulationCount(2);
+                    temp_tile.getOccupant().setPopulationCount(10);
 
                     alienTileCount++;
                 }
@@ -433,13 +433,23 @@ public class Grid {
         totalMartianUranium = 0;
         int amountOfCurrentLifeforms = mLifeForms.size();
         for (int i = 0; i < amountOfCurrentLifeforms; i++) {
-            mLifeForms.get(i).progress(this);
-            if (mLifeForms.get(i) instanceof Human) totalHumanCount += mLifeForms.get(i).getPopulationCount();
-            else if (mLifeForms.get(i) instanceof Martian){
-                totalMartianCount += mLifeForms.get(i).getPopulationCount();
-                totalMartianIron += mLifeForms.get(i).getAmountOf_Iron();
-                totalMartianOil += mLifeForms.get(i).getAmountOf_Oil();
-                totalMartianUranium += mLifeForms.get(i).getAmountOf_Uranium();
+            LifeForm currentLifeForm = mLifeForms.get(i);
+            if (currentLifeForm != null) {
+                currentLifeForm.progress(this);
+                if (mLifeForms.get(i) instanceof Human) totalHumanCount += mLifeForms.get(i).getPopulationCount();
+                else if (mLifeForms.get(i) instanceof Martian){
+                    totalMartianCount += mLifeForms.get(i).getPopulationCount();
+                    totalMartianIron += mLifeForms.get(i).getAmountOf_Iron();
+                    totalMartianOil += mLifeForms.get(i).getAmountOf_Oil();
+                    totalMartianUranium += mLifeForms.get(i).getAmountOf_Uranium();
+                }
+            }
+        }
+        // Remove expired lifeforms
+        for (int index = mLifeForms.size() - 1; index >= 0; index--) {
+            if (mLifeForms.get(index).getPopulationCount() <= 0) {
+                mLifeForms.get(index).getTileOfResidence().setOccupant(null);
+                mLifeForms.remove(index);
             }
         }
     }
@@ -447,6 +457,31 @@ public class Grid {
     public void addToGridLifeForms(LifeForm lifeform_to_add){
         mLifeForms.add(lifeform_to_add);
     }
+
+    /**
+     * Remove a given LifeForm from the grid by supplying the Tile of residence's Coordinates
+     *
+     * @param locationOfLifeForm    - Location of LifeForm in the grid.
+     */
+    public void removeFromGridLifeForms(int[] locationOfLifeForm) {
+        for (int i = 0; i < mLifeForms.size(); i++) {
+            LifeForm lifeForm = mLifeForms.get(i);
+            int[] location = lifeForm.getTileOfResidence().getTileCoordinates();
+            // If we've located the lifeform to remove from the grid
+            if (location[0] == locationOfLifeForm[0] && location[1] == locationOfLifeForm[1]) {
+                lifeForm.getTileOfResidence().setOccupant(null);
+                mLifeForms.remove(i);
+                return;
+            }
+        }
+
+        Log.d(
+                "Grid",
+                "Cannot find LifeForm to remove with coordinates: [" +
+                        locationOfLifeForm[0] + ", " + locationOfLifeForm[1] + "]"
+        );
+    }
+
     /**
      * Get an iterator for the Grid
      * @return GridTileIterator object

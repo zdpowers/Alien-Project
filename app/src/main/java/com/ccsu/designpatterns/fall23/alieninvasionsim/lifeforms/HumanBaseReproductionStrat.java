@@ -47,10 +47,12 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
                 //VC -
                 int randomIndex = randomNum.nextInt(neighboring_tiles.size());
                 TerrainTile temp_tile = neighboring_tiles.get(randomIndex);
-                LifeForm temp_human = lff.makeLifeForm(Human.class.toString(), temp_tile);
-                temp_tile.setOccupant(temp_human);
-                Grid temp_grid = Grid.getInstance(10);
-                temp_grid.addToGridLifeForms(temp_human); //mLifeForms.add(temp_tile.getOccupant());
+                if (temp_tile.getOccupant() == null) {
+                    LifeForm temp_human = lff.makeLifeForm(Human.class.toString(), temp_tile);
+                    temp_tile.setOccupant(temp_human);
+                    Grid temp_grid = Grid.getInstance(10);
+                    temp_grid.addToGridLifeForms(temp_human); //mLifeForms.add(temp_tile.getOccupant());
+                }
             }
         }
 

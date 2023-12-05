@@ -5,7 +5,6 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
-import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,15 +24,6 @@ public abstract class LifeForm
     private int amountOf_Uranium = 0;
     private int amountOf_Oil = 0;
     private int amountOf_Iron = 0;
-
-    /** Rating modifiers for this life form. */
-    private static int defenseRating;   // Amount to reduce incoming damage by
-    private static int attackRating;    // Amount of true (unmodified) damage to attack with
-    private static int negotiationRating;   // How proficient this LifeForm is in negotiating
-    private static int technicalRating;
-    private static int movementRating;
-    private static int reproductionRating;
-    private static int miningRating;
 
     private TerrainTile tileOfResidence;
     private List<TerrainTile> neighboringTerrain = new ArrayList<>();

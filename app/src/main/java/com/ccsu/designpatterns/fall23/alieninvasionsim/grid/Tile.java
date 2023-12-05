@@ -17,9 +17,6 @@ public abstract class Tile implements TileVisitable {
     private int mColumnPosition;
     private int mRowPosition;
 
-//    /** Flag to tell if this tile is susceptible to current weather events */
-//    private boolean mWeatherFlag;
-
     private LifeForm occupant;
     private boolean isOccupied = false;
 
@@ -43,7 +40,15 @@ public abstract class Tile implements TileVisitable {
     }
 
 
-    //These are the buff and debuff methods
+    /**
+     * Relocated the gridCell methods into this class. These are the methods that apply and remove the buffs or debuffs.
+     *
+     *
+     *
+     * @author Rocky Trinh
+     * @version 1.0
+     * @since 2023-05-12
+     */
 
     private Map<BuffDebuffTypes, Integer> buffsDebuffs;
 
@@ -59,13 +64,6 @@ public abstract class Tile implements TileVisitable {
         return buffsDebuffs.getOrDefault(type, 0);
     }
 
-//    public void setWeatherFlag(boolean weatherFlag) {
-//        mWeatherFlag = weatherFlag;
-//    }
-//
-//    public boolean getWeatherFlag() {
-//        return mWeatherFlag;
-//    }
 
     @Override
     public abstract void accept(TileVisitor visitor);

@@ -30,7 +30,7 @@ public abstract class LifeForm
     private List<ResourceTile> neighboringResources = new ArrayList<>();
     private boolean haveNeighboringTiles = false;
 
-    private int populationCount= 1;
+    private int populationCount = 1;
     protected ReproduceStrategy reproduceStrategy;
 
     /**
@@ -65,6 +65,8 @@ public abstract class LifeForm
      */
     public LifeForm(LifeForm source, TerrainTile residence) {
         this.tileOfResidence = residence;
+        int testPop = source.getPopulationCount();
+        this.populationCount = source.getPopulationCount();
         this.amountOf_Water = source.amountOf_Water;
         this.amountOf_Uranium = source.amountOf_Uranium;
         this.amountOf_Oil = source.amountOf_Oil;

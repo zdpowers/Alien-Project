@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the Reverse Button
         findViewById(R.id.ibRvs).setOnClickListener(view -> {
-            //TODO Implement reverse functionality here
+            mSimulationGrid.regressSimulation();
+            gridView.setAdapter(new GridAdapter(this, mSimulationGrid.getTiles()));
         });
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {

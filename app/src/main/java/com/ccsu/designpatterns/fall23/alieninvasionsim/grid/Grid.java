@@ -16,7 +16,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -131,26 +131,10 @@ public class Grid {
             if (temp_lf instanceof Human) totalHumanCount += temp_lf.getPopulationCount();
             else if (temp_lf instanceof Martian) totalMartianCount += temp_lf.getPopulationCount();
         }
+
+        this.save();
     }
 
-    public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
-        //Clear existing water tiles
-        clearWaterTiles();
-
-        // Place water tiles based on the current weather
-        placeWaterTiles(weatherStrategy);
-    }
-
-    private void clearWaterTiles() {
-        //Remove existing water tiles from grid
-        for (Tile tile : mTiles) {
-            if (tile instanceof ResourceTile) {
-                ResourceTile resourceTile = (ResourceTile) tile;
-                if (resourceTile.getResourceType().equals("water")) {
-                }
-            }
-        }
-    }
 
     /**
      * Implements the Singleton pattern for the Grid class
@@ -237,14 +221,6 @@ public class Grid {
             Log.e("Grid", e.getMessage());
         }
 
-        //Adjust the number of water tiles based on the weather strategy
-
-        if (weatherStrategy instanceof FloodingWeatherStrategy) {
-            maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
-        }
-        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
-
-        }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
@@ -511,15 +487,16 @@ public class Grid {
     }
 
     /**
-     * Handle presses for simulation progression.
+     * Handle presses for simulation progression and this is where the random weather
+     * generation occurs.
      *
      * @author Joseph Lumpkin
      * @version 1.0
-     * @since 2023-11-28
+     * @since 2023-05-12
      */
     public void progressSimulation(List<Tile> grid) {
         int year = mYear.getValue() + 1;
-        // If progressing further than the current year
+        // If progressing further into the simulation
         if (year > gridCaretaker.getLength() - 1) {
             // Generate the progression and save it into a new memento
             progressLifeForms();
@@ -562,13 +539,29 @@ public class Grid {
                     mWeatherContext.applyWeatherToGrid(grid, mWeatherContext);
                 }
             }
-
-            //TODO Lastly in this statement, take a memento
-            //GridMemento memento = new GridMemento(grid);
-            //gridCaretaker.add(memento);
+            // Take a memento for this year
+            this.save();
+        } else {
+            this.restore(gridCaretaker.get(year));
         }
         // Set the value and allow the observer to load the memento for display
         mYear.setValue(year);
+    }
+
+    /**
+     * Handle presses for simulation regression.
+     *
+     * @author Joseph Lumpkin
+     * @version 1.0
+     * @since 2023-12-2
+     */
+    public void regressSimulation() {
+        int year = mYear.getValue() - 1;
+        if (year >= 0) {
+            this.restore(gridCaretaker.get(year));
+            // Update the UI
+            mYear.setValue(year);
+        }
     }
 
     /**
@@ -581,7 +574,7 @@ public class Grid {
      */
     public GridMemento save() {
         List<Tile> gridCopy = deepCopyGrid();
-        GridMemento state = new GridMemento((ArrayList) gridCopy);
+        GridMemento state = new GridMemento(gridCopy);
         gridCaretaker.add(state);
         return state;
     }
@@ -589,13 +582,19 @@ public class Grid {
     /**
      * Method to restore the grid to a previous state from a memento object
      *
-     * @param state a memento object containing a grid statez
+     * @param state a memento object containing a grid state
      * @author Zack Powers
      * @version 1.0
      * @since 2023-29-10
      */
     public void restore(GridMemento state) {
         mTiles = state.getGridState();
+        mLifeForms.clear();
+        for (Tile tile : mTiles) {
+            if (tile.getOccupant() != null) {
+                mLifeForms.add(tile.getOccupant());
+            }
+        }
     }
 
     /**
@@ -638,23 +637,23 @@ public class Grid {
 
         //Apply the buffs/debuffs
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
-        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
+/*        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
         cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF, 2);
         cell.applyBuffDebuff(BuffDebuffTypes.HP_BUFF, 1);
         cell.applyBuffDebuff(BuffDebuffTypes.HP_DEBUFF, -1);
         cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF, -1);
-        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -1);
+        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -1);*/
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF, -1);
 
         //Get value(s)
         int attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
-        int speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+/*        int speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
         int defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
-        int hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        int hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);*/
         int attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
-        int speedDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+/*        int speedDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
         int defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
-        int hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+        int hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);*/
 
         //display new stats to logger (not sure if we want to this)
 /*      System.out.println("Attack Buff Value: " + attackBuffValue);
@@ -662,40 +661,27 @@ public class Grid {
 
         //Remove buffs
         cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_BUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_BUFF);
+/*        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_BUFF);
         cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.HP_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_BUFF);*/
         cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF);
+/*        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF);
         cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.HP_DEBUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_DEBUFF);*/
 
         //Get values after removal
         attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
-        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+/*        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
         defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
-        hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);*/
         attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
-        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+/*        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
         defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
-        hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+        hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);*/
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
 
-//        // Apply the weather effects using the strategy pattern
-//        WeatherContext weatherContext = new WeatherContext();
-//
-//        // Set the Sunny weather strategy
-//        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
-//        // Set the Drought weather strategy
-//        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
-//        // Set the Flooding weather strategy
-//        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
-//        // Set the Blizzard weather strategy
-//        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
-//        // Apply the weather effect to the cells
-//        weatherContext.applyWeather(cell);
     }
 
     /**
@@ -878,10 +864,15 @@ public class Grid {
         }
     }
 
-    public void setWeatherContext(WeatherContext weatherContext) {
-        mWeatherContext = weatherContext;
-    }
-
+    /**
+     * Get the weather context.
+     *
+     * @return mWeatherContext   - weather context.
+     *
+     * @author Rocky Trinh
+     * @version 1.0
+     * @since 2023-05-12
+     */
     public WeatherContext getWeatherContext() {
         return mWeatherContext;
     }

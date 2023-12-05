@@ -1,7 +1,11 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
-import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.*;
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.IRON;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.OIL;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.ONEUP;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.URANIUM;
+import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.WATER;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;

@@ -22,7 +22,7 @@ import java.util.Random;
  * @author Vincent Capra, Joseph Lumpkin, Zack Powers
  */
 public class Human extends LifeForm {
-
+private ReproduceStrategy reproduceStrategy;
     Human(TerrainTile spawn_tile) {
         super(spawn_tile);
         reproduceStrategy = new HumanBaseReproductionStrat();

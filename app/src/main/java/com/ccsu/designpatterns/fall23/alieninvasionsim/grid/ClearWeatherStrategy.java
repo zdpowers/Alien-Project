@@ -15,6 +15,7 @@ public class ClearWeatherStrategy implements WeatherStrategy{
 
     @Override
     public void applyWeatherEffect(Tile cell, WeatherContext weatherContext) {
+        cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF,1);
 
     }
 }

@@ -15,7 +15,6 @@ public class DroughtWeatherStrategy implements WeatherStrategy {
 
     @Override
     public void applyWeatherEffect(Tile cell, WeatherContext weatherContext){
-        cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF,2);
-        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
+        cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF,4);
     }
 }

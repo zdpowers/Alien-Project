@@ -61,11 +61,11 @@ private ReproduceStrategy reproduceStrategy;
                 ", has iron: " + getAmountOf_Iron());*/
     }
     /**
-     * method to possibly add another human to the tile that this
-     * human currently inhabits
+     * method to possibly call the appropriate Reproduce Strategy and set the population of the
+     * Human at this tile.
      *
      * @author Vincent Capra
-     * @return boolean true if occupied
+     * @since 2023-12-1
      */
     @Override
     protected void reproduce() {
@@ -74,6 +74,13 @@ private ReproduceStrategy reproduceStrategy;
         setPopulationCount(temp_population);
     }
 
+    /**
+     * Template method that checks if a Human is neighboring a resource that it cares about and
+     * stays put if so, moves if not.
+     *
+     * @author Vincent Capra
+     * @since 2023-12-3
+     */
     @Override
     protected void checkForApplicableResources() {
         boolean dontMoveFlag = false;
@@ -84,7 +91,12 @@ private ReproduceStrategy reproduceStrategy;
         if(dontMoveFlag) mine(getTileOfResidence().getTileCoordinates());
         else move();
     }
-
+    /**
+     * Moves a human to an available, neighboring, unoccupied, random terrain tile.
+     *
+     * @author Vincent Capra, Joseph Lumpkin
+     * @since 2023-12-3
+     */
     @Override
     protected void move() {
         List<TerrainTile> temp_neighboring_tiles = getNeighboringTerrain();
@@ -132,7 +144,17 @@ private ReproduceStrategy reproduceStrategy;
         //setNeighboringTerrain(null);
         //setNeighboringResources(null);
     }
-
+    /**
+     * Humans can attack neighboring Martians. If they entirely deplete their population,
+     * removes Martian Object from the Grid. If Human is entirely depleted of their population,
+     * they are removed from the Grid. There was a bug in the
+     * LifeForm.getNeighboringTerrainTileReferences(), so for the sake of a functional project ,
+     * code was redundantly implemented here.
+     *
+     * @param grid the input grid which is
+     * @author  Joseph Lumpkin
+     * @since 2023-12-4
+     */
     @Override
     protected void attack(Grid grid) {
 //        List<TerrainTile> neighboringTiles = getNeighboringTerrain();

@@ -40,6 +40,13 @@ public class Martian extends LifeForm {
 
     }
 
+    /**
+     * Template method that checks if a Human is neighboring a resource that it cares about and
+     * stays put if so, moves if not.
+     *
+     * @author Vincent Capra
+     * @since 2023-12-3
+     */
     @Override
     protected void checkForApplicableResources() {
         boolean dontMoveFlag = false;
@@ -80,6 +87,12 @@ public class Martian extends LifeForm {
                 ", has iron: " + getAmountOf_Iron());
     }
 
+    /**
+     * Moves a Martian to an available, neighboring, unoccupied, random terrain tile.
+     *
+     * @author Vincent Capra, Joseph Lumpkin
+     * @since 2023-12-3
+     */
     @Override
     protected void move() {
 

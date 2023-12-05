@@ -44,6 +44,16 @@ public class GridAdapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Sets tiles to appropriate display and puts proper sprites on the tiles that they occupy.
+     *
+     * @author Joseph Lumpkin
+     * @param i tile ref for grid tile
+     * @param view the application view refernece
+     * @param viewGroup
+     * @return View what the application will render
+     * @since 2023-12-3
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = LayoutInflater.from(mContext);

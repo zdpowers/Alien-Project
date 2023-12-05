@@ -5,7 +5,6 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventListener;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

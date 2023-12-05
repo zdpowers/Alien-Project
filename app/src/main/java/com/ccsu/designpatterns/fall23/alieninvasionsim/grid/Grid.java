@@ -481,11 +481,12 @@ public class Grid {
     }
 
     /**
-     * Handle presses for simulation progression.
+     * Handle presses for simulation progression and this is where the random weather
+     * generation occurs.
      *
      * @author Joseph Lumpkin
      * @version 1.0
-     * @since 2023-11-28
+     * @since 2023-05-12
      */
     public void progressSimulation(List<Tile> grid) {
         int year = mYear.getValue() + 1;
@@ -653,19 +654,6 @@ public class Grid {
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/
 
-//        // Apply the weather effects using the strategy pattern
-//        WeatherContext weatherContext = new WeatherContext();
-//
-//        // Set the Sunny weather strategy
-//        weatherContext.setWeatherStrategy(new SunnyWeatherStrategy());
-//        // Set the Drought weather strategy
-//        weatherContext.setWeatherStrategy(new DroughtWeatherStrategy());
-//        // Set the Flooding weather strategy
-//        weatherContext.setWeatherStrategy(new FloodingWeatherStrategy());
-//        // Set the Blizzard weather strategy
-//        weatherContext.setWeatherStrategy(new BlizzardWeatherStrategy());
-//        // Apply the weather effect to the cells
-//        weatherContext.applyWeather(cell);
     }
 
     /**
@@ -848,10 +836,15 @@ public class Grid {
         }
     }
 
-    public void setWeatherContext(WeatherContext weatherContext) {
-        mWeatherContext = weatherContext;
-    }
-
+    /**
+     * Get the weather context.
+     *
+     * @return mWeatherContext   - weather context.
+     *
+     * @author Rocky Trinh
+     * @version 1.0
+     * @since 2023-05-12
+     */
     public WeatherContext getWeatherContext() {
         return mWeatherContext;
     }

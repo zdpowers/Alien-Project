@@ -1,7 +1,12 @@
 package com.ccsu.designpatterns.fall23.alieninvasionsim.grid;
 
 import java.util.List;
-
+/**
+ * The WeatherContext class has most of the logic to apply the appropriate weather condition to the grid
+ * @author Rocky Trinh
+ * @version 1.0
+ * @since 2023-05-12
+ */
 public class WeatherContext {
     private WeatherStrategy weatherStrategy;
 

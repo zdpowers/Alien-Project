@@ -16,7 +16,6 @@ import java.util.List;
  * @since 2023-10-29
  */
 public class TerrainTile extends Tile {
-    private LifeFormFactory mTileLifeFormFactory = new LifeFormFactory();
 
     public TerrainTile(int column, int row) {
         super(column, row);
@@ -35,36 +34,6 @@ public class TerrainTile extends Tile {
      */
     public void typeOfOccupants() {}
 
-    /**
-     * method to display to users which type of occupants are in the tile
-     * This is probably a great use of the generic for next sprint!!!
-     * We can overlay images a human or various types of alien races
-     *
-     * @author N/A
-     * @version N/A
-     * @since N/A
-     */
-    protected void changeTileDisplay() {
-        //(set color related to nationality
-        //OR place picture of alien race)
-        // put the count of occupants on the tile too
-    }
-
-    /**
-     * method to get the class of the occupants of this tile, then
-     * generates a new lifeform of the same type and adds it to this tile
-     *
-     * @author Vincent Capra
-     * @version 1.0
-     * @since 2023-10-29
-     */
-    public void generateLifeform() {
-        //VC - gets the class of the lifeforms in this tile
-        String class_of_current_occupants = getOccupant().getClass().toString();
-        //VC - creates a new lifeform of the same type and adds it to this tile
-        //occupant.add(mTileLifeFormFactory.makeLifeForm(class_of_current_occupants, this));
-
-    }
 
     @Override
     public void accept(TileVisitor visitor) {

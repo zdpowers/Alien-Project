@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Tile> mTiles = new ArrayList<>();
+    private List<Tile> mTiles;
 
     public GridAdapter(Context context, List<Tile> tiles) {
         mContext = context;
@@ -79,6 +79,7 @@ public class GridAdapter extends BaseAdapter {
             TextView tv = view.findViewById(R.id.tilePopulation);
             tv.setText(Integer.toString(occupant.getPopulationCount()));
         }
+
         //TODO add code to resume animations here?
         return view;
     }

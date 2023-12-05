@@ -59,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
         // Setup the Forward Button
         findViewById(R.id.ibFwd).setOnClickListener(view -> {
             mSimulationGrid.progressSimulation(mSimulationGrid.getTiles());
+
+            // If Martians won
+            if ((mSimulationGrid.getTotalMartianIron() >= 50 &&
+                    mSimulationGrid.getTotalMartianOil() >= 50 &&
+                    mSimulationGrid.getTotalMartianUranium() >= 50) ||
+                    mSimulationGrid.getTotalHumanCount() <= 0) {
+                TextView victoryText = findViewById(R.id.tvWinMessage);
+                victoryText.setText("Martians win!");
+            }
+            // If Humans won
+            else if (mSimulationGrid.getTotalMartianCount() <= 0) {
+                TextView victoryText = findViewById(R.id.tvWinMessage);
+                victoryText.setText("Humans win!");
+            }
+
             gridView.setAdapter(new GridAdapter(this, mSimulationGrid.getTiles()));
         });
     }

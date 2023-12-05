@@ -136,12 +136,49 @@ public class Human extends LifeForm {
     @Override
     protected void attack(Grid grid) {
 //        List<TerrainTile> neighboringTiles = getNeighboringTerrain();
-//        ArrayList<TerrainTile> neighboringTiles = new ArrayList<>();
-//        int[] coords = getTileOfResidence().getTileCoordinates();
-//        for
+        ArrayList<TerrainTile> neighboringTiles = new ArrayList<>();
+        int[] coords = getTileOfResidence().getTileCoordinates();
+        if (coords[1] > 0) { // Tile 1 up from origin
+            try {
+                int[] topTileCoords = new int[]{coords[0], coords[1]-1}; // inverted coords
+                int index = grid.getTileIndex(topTileCoords);
+                Tile tile = grid.getTiles().get(index);
+                if (tile instanceof TerrainTile) {
+                    neighboringTiles.add((TerrainTile) tile);
+                }
+            } catch (NoAvailableTilesException e) {}
+        }
+        if (coords[1] < 9) { // Tile 1 down from origin
+            try {
+                int[] bottomTileCoords = new int[]{coords[0], coords[1]+1}; // inverted coords
+                int index = grid.getTileIndex(bottomTileCoords);
+                Tile tile = grid.getTiles().get(index);
+                if (tile instanceof TerrainTile) {
+                    neighboringTiles.add((TerrainTile) tile);
+                }
+            } catch (NoAvailableTilesException e) {}
+        }
+        if (coords[0] > 0) { // Tile 1 left from origin
+            try {
+                int[] topTileCoords = new int[]{coords[0]-1, coords[1]}; // inverted coords
+                int index = grid.getTileIndex(topTileCoords);
+                Tile tile = grid.getTiles().get(index);
+                if (tile instanceof TerrainTile) {
+                    neighboringTiles.add((TerrainTile) tile);
+                }
+            } catch (NoAvailableTilesException e) {}
+        }
+        if (coords[0] < 9) { // Tile 1 right from origin
+            try {
+                int[] topTileCoords = new int[]{coords[0]+1, coords[1]}; // inverted coords
+                int index = grid.getTileIndex(topTileCoords);
+                Tile tile = grid.getTiles().get(index);
+                if (tile instanceof TerrainTile) {
+                    neighboringTiles.add((TerrainTile) tile);
+                }
+            } catch (NoAvailableTilesException e) {}
+        }
 
-        Tile tile = grid.getTileIndex([coords[0] - 1])
-        neighboringTiles.add()
         for (TerrainTile tile : neighboringTiles) {
             LifeForm lifeForm = tile.getOccupant();
             if (tile.getOccupant() != null && lifeForm instanceof Martian) {
@@ -150,6 +187,7 @@ public class Human extends LifeForm {
                     lifeForm.setPopulationCount(newAlienPopulation);
                     return;
                 } else {
+                    lifeForm.setPopulationCount(newAlienPopulation);
                     setPopulationCount(getPopulationCount() - 3);
                 }
             }

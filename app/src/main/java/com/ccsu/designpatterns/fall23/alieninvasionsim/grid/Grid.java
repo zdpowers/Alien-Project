@@ -375,7 +375,7 @@ public class Grid {
         Tile temp_tile;
         int[] coord;
         //VC - This loop places 4 tiles per resource type on the grid
-        while (humanTileCount < 1) {
+        while (humanTileCount < 3) {
             coord = createRandomCoordinate(); // Coordinate to check
             try {
                 index = getTileIndex(coord);
@@ -385,7 +385,7 @@ public class Grid {
                         temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Human.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
-                    temp_tile.getOccupant().setPopulationCount(3);
+                    temp_tile.getOccupant().setPopulationCount(5);
 
                     humanTileCount++;
                 }
@@ -405,7 +405,7 @@ public class Grid {
                         temp_tile.getOccupant() == null) {
                     temp_tile.setOccupant(lff.makeLifeForm(Martian.class.toString(),(TerrainTile) temp_tile));
                     mLifeForms.add(temp_tile.getOccupant());
-                    temp_tile.getOccupant().setPopulationCount(2);
+                    temp_tile.getOccupant().setPopulationCount(10);
 
                     alienTileCount++;
                 }
@@ -443,7 +443,7 @@ public class Grid {
                 }
             }
         }
-
+        // Remove expired lifeforms
         for (int index = mLifeForms.size() - 1; index >= 0; index--) {
             if (mLifeForms.get(index).getPopulationCount() <= 0) {
                 mLifeForms.get(index).getTileOfResidence().setOccupant(null);

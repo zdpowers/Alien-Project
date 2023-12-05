@@ -6,11 +6,19 @@ import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.URANIUM;
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.WATER;
 
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.BlizzardWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.DroughtWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.FloodingWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
+
+
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Grid;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.NoAvailableTilesException;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.TerrainTile;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.Tile;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +140,15 @@ public class Human extends LifeForm {
         //setNeighboringTerrain(null);
         //setNeighboringResources(null);
     }
+    private WeatherContext mWeatherContext;
+
+    public WeatherContext getWeatherContext() {
+        return mWeatherContext;
+    }
+
+    public void setWeatherContext(WeatherContext weatherContext) {
+        this.mWeatherContext = weatherContext;
+    }
 
     @Override
     protected void attack(Grid grid) {
@@ -182,13 +199,39 @@ public class Human extends LifeForm {
         for (TerrainTile tile : neighboringTiles) {
             LifeForm lifeForm = tile.getOccupant();
             if (tile.getOccupant() != null && lifeForm instanceof Martian) {
-                int newAlienPopulation = lifeForm.getPopulationCount() - 2;
-                if (newAlienPopulation <= 0) {
-                    lifeForm.setPopulationCount(newAlienPopulation);
-                    return;
+                // Get the current weather strategy from the weather context
+                WeatherStrategy weatherStrategy = mWeatherContext.getWeather();
+                // Check if it is a drought weather strategy
+                if (weatherStrategy instanceof DroughtWeatherStrategy) {
+                    // Increase the attack damage by a certain amount, for example 1
+                    int newAlienPopulation = lifeForm.getPopulationCount() - 4; // Change the attack damage from 2 to 4
+                    if (newAlienPopulation <= 0) {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        return;
+                    } else {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        setPopulationCount(getPopulationCount() - 4);
+                    }
+                    // Check for Flooding weather strategy
+                } else if (weatherStrategy instanceof BlizzardWeatherStrategy) {
+                    int newAlienPopulation = lifeForm.getPopulationCount() - 1; //Change the attack damage from 2 to 1
+                    if (newAlienPopulation <= 0) {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        return;
+                    } else {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        setPopulationCount(getPopulationCount() - 3);
+                    }
                 } else {
-                    lifeForm.setPopulationCount(newAlienPopulation);
-                    setPopulationCount(getPopulationCount() - 3);
+                    // Use the normal attack damage
+                    int newAlienPopulation = lifeForm.getPopulationCount() - 2;
+                    if (newAlienPopulation <= 0) {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        return;
+                    } else {
+                        lifeForm.setPopulationCount(newAlienPopulation);
+                        setPopulationCount(getPopulationCount() - 3);
+                    }
                 }
             }
         }
@@ -198,6 +241,8 @@ public class Human extends LifeForm {
     protected void defend(int damage) {
 
     }
+
+
 
     @Override
     public LifeForm clone(TerrainTile residence) {

@@ -12,7 +12,7 @@ import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.Martian;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.EventManager;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.lifeforms.LifeForm;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.utilities.Iterator;
-import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherContext;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,24 +129,6 @@ public class Grid {
         }
     }
 
-    public void updateWeatherDynamic(WeatherStrategy weatherStrategy) {
-        //Clear existing water tiles
-        clearWaterTiles();
-
-        // Place water tiles based on the current weather
-        placeWaterTiles(weatherStrategy);
-    }
-
-    private void clearWaterTiles() {
-        //Remove existing water tiles from grid
-        for (Tile tile : mTiles) {
-            if (tile instanceof ResourceTile) {
-                ResourceTile resourceTile = (ResourceTile) tile;
-                if (resourceTile.getResourceType().equals("water")) {
-                }
-            }
-        }
-    }
 
     /**
      * Implements the Singleton pattern for the Grid class
@@ -233,14 +215,6 @@ public class Grid {
             Log.e("Grid", e.getMessage());
         }
 
-        //Adjust the number of water tiles based on the weather strategy
-
-        if (weatherStrategy instanceof FloodingWeatherStrategy) {
-            maxNumOfWaterTiles *= 2; //This line will increase the max number of water tiles by 2 during a flood
-        }
-        if (weatherStrategy instanceof BlizzardWeatherStrategy) {
-
-        }
 
         while (currentNumOfWaterTiles < maxNumOfWaterTiles) {
             // VC - Acquire the next tile for water resource allocation for each pointer
@@ -634,23 +608,23 @@ public class Grid {
 
         //Apply the buffs/debuffs
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_BUFF, 2);
-        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
+/*        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_BUFF, 2);
         cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF, 2);
         cell.applyBuffDebuff(BuffDebuffTypes.HP_BUFF, 1);
         cell.applyBuffDebuff(BuffDebuffTypes.HP_DEBUFF, -1);
         cell.applyBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF, -1);
-        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -1);
+        cell.applyBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF, -1);*/
         cell.applyBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF, -1);
 
         //Get value(s)
         int attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
-        int speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+/*        int speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
         int defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
-        int hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        int hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);*/
         int attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
-        int speedDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+/*        int speedDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
         int defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
-        int hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+        int hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);*/
 
         //display new stats to logger (not sure if we want to this)
 /*      System.out.println("Attack Buff Value: " + attackBuffValue);
@@ -658,23 +632,23 @@ public class Grid {
 
         //Remove buffs
         cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_BUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_BUFF);
+/*        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_BUFF);
         cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_BUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.HP_BUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_BUFF);*/
         cell.removeBuffDebuff(BuffDebuffTypes.ATTACK_DEBUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF);
+/*        cell.removeBuffDebuff(BuffDebuffTypes.SPEED_DEBUFF);
         cell.removeBuffDebuff(BuffDebuffTypes.DEFENSE_DEBUFF);
-        cell.removeBuffDebuff(BuffDebuffTypes.HP_DEBUFF);
+        cell.removeBuffDebuff(BuffDebuffTypes.HP_DEBUFF);*/
 
         //Get values after removal
         attackBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_BUFF);
-        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
+/*        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_BUFF);
         defenseBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_BUFF);
-        hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);
+        hpBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_BUFF);*/
         attackDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.ATTACK_DEBUFF);
-        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
+/*        speedBuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.SPEED_DEBUFF);
         defenseDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.DEFENSE_DEBUFF);
-        hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);
+        hpDebuffValue = cell.getBuffDebuffValue(BuffDebuffTypes.HP_DEBUFF);*/
 
 /*      System.out.println("Attack Buff Value after removal: " + attackBuffValue);
         System.out.println("Defense Debuff Value after removal: " + defenseDebuffValue);*/

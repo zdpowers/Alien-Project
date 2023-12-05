@@ -7,6 +7,8 @@ import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.
 import static com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ResourceTile.resourceType.WATER;
 
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.BlizzardWeatherStrategy;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.BuffDebuffTypes;
+import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.ClearWeatherStrategy;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.DroughtWeatherStrategy;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.FloodingWeatherStrategy;
 import com.ccsu.designpatterns.fall23.alieninvasionsim.grid.WeatherStrategy;
@@ -140,15 +142,9 @@ public class Human extends LifeForm {
         //setNeighboringTerrain(null);
         //setNeighboringResources(null);
     }
+
     private WeatherContext mWeatherContext;
 
-    public WeatherContext getWeatherContext() {
-        return mWeatherContext;
-    }
-
-    public void setWeatherContext(WeatherContext weatherContext) {
-        this.mWeatherContext = weatherContext;
-    }
 
     @Override
     protected void attack(Grid grid) {
@@ -200,17 +196,20 @@ public class Human extends LifeForm {
             LifeForm lifeForm = tile.getOccupant();
             if (tile.getOccupant() != null && lifeForm instanceof Martian) {
                 // Get the current weather strategy from the weather context
-                WeatherStrategy weatherStrategy = mWeatherContext.getWeather();
+                // Create a WeatherContext object with a FloodingWeatherStrategy and assign it to a variable
+                WeatherContext weatherContext = new WeatherContext();
+                // Use the weather context to get the weather strategy
+                WeatherStrategy weatherStrategy = weatherContext.getWeather();
                 // Check if it is a drought weather strategy
                 if (weatherStrategy instanceof DroughtWeatherStrategy) {
-                    // Increase the attack damage by a certain amount, for example 1
+                    // Increase the attack damage by x amount,
                     int newAlienPopulation = lifeForm.getPopulationCount() - 4; // Change the attack damage from 2 to 4
                     if (newAlienPopulation <= 0) {
                         lifeForm.setPopulationCount(newAlienPopulation);
                         return;
                     } else {
                         lifeForm.setPopulationCount(newAlienPopulation);
-                        setPopulationCount(getPopulationCount() - 4);
+                        setPopulationCount(getPopulationCount() - 3);
                     }
                     // Check for Flooding weather strategy
                 } else if (weatherStrategy instanceof BlizzardWeatherStrategy) {

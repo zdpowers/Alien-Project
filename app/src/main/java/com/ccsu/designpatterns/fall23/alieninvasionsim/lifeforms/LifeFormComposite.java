@@ -71,7 +71,17 @@ public class LifeFormComposite extends LifeForm {
     protected void reproduce() {}
 
     @Override
+    protected void checkForApplicableResources() {
+
+    }
+
+    @Override
     protected void move() {}
+
+    @Override
+    protected void mine(int[] current_coordinates) {
+
+    }
 
     @Override
     protected void attack(Grid grid) {}

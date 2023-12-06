@@ -18,14 +18,11 @@ public class CloneTileVisitor implements TileVisitor {
      */
     @Override
     public void visitTerrainTile(TerrainTile tile) {
-        if(tile.tileIsOccupied()) {
-            TerrainTile tileCopy = new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
+        TerrainTile tileCopy = new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
+        if (tile.getOccupant() != null) { // VC - if true that tile is occupied
             tileCopy.setOccupant(tile.getOccupant().clone(tileCopy));
-            gridClone.add(tileCopy);
-        } else {
-            TerrainTile tileCopy = new TerrainTile(tile.getTileCoordinates()[0], tile.getTileCoordinates()[1]);
-            gridClone.add(tileCopy);
         }
+        gridClone.add(tileCopy);
     }
 
     @Override

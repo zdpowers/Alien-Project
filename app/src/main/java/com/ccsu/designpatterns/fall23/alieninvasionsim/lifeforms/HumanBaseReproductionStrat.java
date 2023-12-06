@@ -28,23 +28,33 @@ public class HumanBaseReproductionStrat implements ReproduceStrategy{
         List<TerrainTile> neighboring_tiles = current_lifeform.getNeighboringTerrain();
 
         // VC - if a neighboring tile is occupied, remove it
-        for(TerrainTile tile : neighboring_tiles){
-            if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
-        }
+        if(!neighboring_tiles.isEmpty()) {
+/*            for (TerrainTile tile : neighboring_tiles) {
+                //if (tile.tileIsOccupied()) neighboring_tiles.remove(tile);
+                if (tile.getOccupant() != null) neighboring_tiles.remove(tile);
+                if(neighboring_tiles.isEmpty()) return starting_population;
+            }*/
 
-        // VC - if the current tile population is over 5 and spawn a new person, spawn them
-        //  into an adjacent tile.
-        if(starting_population >= 5 && !(neighboring_tiles.isEmpty()) ){ // and there is an unoccupied neighboring terrain tile
-            //&& randomNum.nextInt(5) == 3 &&
-            //VC -
-            int randomIndex = randomNum.nextInt(neighboring_tiles.size());
-            TerrainTile temp_tile = neighboring_tiles.get(randomIndex);
-            LifeForm temp_human = lff.makeLifeForm(Human.class.toString(), temp_tile);
-            temp_tile.setOccupant(temp_human);
-            Grid temp_grid = Grid.getInstance(10);
-            temp_grid.addToGridLifeForms(temp_human); //mLifeForms.add(temp_tile.getOccupant());
-        }
+            for (int i = 0; i < neighboring_tiles.size(); i++){
+                if(neighboring_tiles.get(i).getOccupant() != null) neighboring_tiles.remove(i);
+                if(neighboring_tiles.isEmpty()) return starting_population;
+            }
 
+            // VC - if the current tile population is over 5 and spawn a new person, spawn them
+            //  into an adjacent tile.
+            if (starting_population >= 5 && !(neighboring_tiles.isEmpty())) { // and there is an unoccupied neighboring terrain tile
+                //&& randomNum.nextInt(5) == 3 &&
+                //VC -
+                int randomIndex = randomNum.nextInt(neighboring_tiles.size());
+                TerrainTile temp_tile = neighboring_tiles.get(randomIndex);
+                if (temp_tile.getOccupant() == null) {
+                    LifeForm temp_human = lff.makeLifeForm(Human.class.toString(), temp_tile);
+                    temp_tile.setOccupant(temp_human);
+                    Grid temp_grid = Grid.getInstance(10);
+                    temp_grid.addToGridLifeForms(temp_human); //mLifeForms.add(temp_tile.getOccupant());
+                }
+            }
+        }
 
         // VC - if there are 2 humans and some RNG to increase the population
         if (randomNum.nextInt(5) == 3){

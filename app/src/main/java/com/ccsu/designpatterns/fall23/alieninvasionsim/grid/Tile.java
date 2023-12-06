@@ -13,12 +13,12 @@ import java.util.Map;
  * @version 1.0
  * @since 2023-10-26
  */
-public abstract class Tile {
+public abstract class Tile implements TileVisitable {
     private int mColumnPosition;
     private int mRowPosition;
 
-    private boolean mWeatherFlag;
-    LifeForm occupant;
+    private LifeForm occupant;
+    private boolean isOccupied = false;
 
     public Tile(int column, int row) {
         // Need to place the tile in the layout visually
@@ -40,7 +40,15 @@ public abstract class Tile {
     }
 
 
-    //These are the buff and debuff methods
+    /**
+     * Relocated the gridCell methods into this class. These are the methods that apply and remove the buffs or debuffs.
+     *
+     *
+     *
+     * @author Rocky Trinh
+     * @version 1.0
+     * @since 2023-05-12
+     */
 
     private Map<BuffDebuffTypes, Integer> buffsDebuffs;
 
@@ -56,21 +64,8 @@ public abstract class Tile {
         return buffsDebuffs.getOrDefault(type, 0);
     }
 
-    public void setWeatherFlag(boolean weatherFlag) {
-        mWeatherFlag = weatherFlag;
-    }
 
-    public boolean getWeatherFlag() {
-        return mWeatherFlag;
-    }
-
-    /**
-     * Method to accept visitor objects.
-     * @param visitor the Concrete implementation of TileVisitor that is visiting the object.
-     * @return Tile because the visitor is making a clone of the tile.
-     * @author Zack Powers
-     * @version 1.o
-     */
+    @Override
     public abstract void accept(TileVisitor visitor);
 
 

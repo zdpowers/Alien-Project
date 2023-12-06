@@ -77,7 +77,72 @@
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvYear" />
+            app:layout_constraintTop_toBottomOf="@+id/tvYear"
+            app:layout_constraintVertical_bias="1.0"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/total_Martian_Iron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total amount of Martian Iron: "
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martians" />
+
+        <TextView
+            android:id="@+id/total_Martian_Uranium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total Amount of Martian Uranium"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martian_Oil" />
+
+        <TextView
+            android:id="@+id/total_Martian_Oil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Total Amount of Martian Oil"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martian_Iron" />
+
+        <TextView
+            android:id="@+id/total_humans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Number of Humans: "
+            android:textColor="#FEFEFE"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toTopOf="@+id/tvConsole" />
+
+        <TextView
+            android:id="@+id/total_Martians"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Number of Martians: "
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_humans" />
+
+        <TextView
+            android:id="@+id/tvWinMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/tvConsole"
+            app:layout_constraintTop_toBottomOf="@+id/total_Martian_Uranium" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

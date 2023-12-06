@@ -169,7 +169,7 @@ private ReproduceStrategy reproduceStrategy;
 
 
     private WeatherContext mWeatherContext;
-    
+
     @Override
     protected void attack(Grid grid) {
 //        List<TerrainTile> neighboringTiles = getNeighboringTerrain();
